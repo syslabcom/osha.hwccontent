@@ -1,0 +1,3 @@
+<object name="portal_types">
+ <object name="osha.hwccontent.organisation" meta_type="Dexterity FTI" />
+</object>

@@ -1,0 +1,10 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="osha.hwccontent">
+
+    <permission
+        id="osha.hwccontent.AddOrganisation"
+        title="osha.hwccontent: Add Organisation"
+        />
+
+</configure>
