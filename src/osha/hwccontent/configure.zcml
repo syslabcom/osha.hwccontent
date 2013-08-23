@@ -16,6 +16,5 @@
       description="Installs the osha.hwccontent package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-  <!-- -*- extra stuff goes here -*- -->
 
 </configure>
