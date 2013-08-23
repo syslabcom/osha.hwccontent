@@ -9,7 +9,7 @@ from plone.testing import z2
 from zope.configuration import xmlconfig
 
 
-class OshahwccontentLayer(PloneSandboxLayer):
+class OSHAHWContentLayer(PloneSandboxLayer):
 
     defaultBases = (PLONE_FIXTURE,)
 
@@ -32,12 +32,12 @@ class OshahwccontentLayer(PloneSandboxLayer):
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'osha.hwccontent:default')
 
-OSHA_HWCCONTENT_FIXTURE = OshahwccontentLayer()
+OSHA_HWCCONTENT_FIXTURE = OSHAHWContentLayer()
 OSHA_HWCCONTENT_INTEGRATION_TESTING = IntegrationTesting(
     bases=(OSHA_HWCCONTENT_FIXTURE,),
-    name="OshahwccontentLayer:Integration"
+    name="OSHAHWContentLayer:Integration"
 )
 OSHA_HWCCONTENT_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(OSHA_HWCCONTENT_FIXTURE, z2.ZSERVER_FIXTURE),
-    name="OshahwccontentLayer:Functional"
+    name="OSHAHWContentLayer:Functional"
 )
