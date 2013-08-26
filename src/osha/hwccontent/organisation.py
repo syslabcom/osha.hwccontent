@@ -1,4 +1,4 @@
-from osha.hwccontent import _
+from osha.hwccontent import _, vocabularies
 from five import grok
 from plone.app.textfield import RichText
 from plone.supermodel import model
@@ -26,10 +26,10 @@ class IOrganisation(model.Schema):
 
     country = schema.Choice(
         title = _(u"Country"),
-        values = ['Temporary', 'Stuff'], #FIXME
+        vocabulary = vocabularies.countries,
     )
     
-    e_mail = schema.TextLine(
+    email = schema.TextLine(
         title = _(u"E-Mail"),
     )
 
@@ -66,8 +66,8 @@ class IOrganisation(model.Schema):
         title = _(u"Mission statement"),
     )
 
-    our_campain_pledge = schema.Text(
-        title = _(u"Our Campain Pledge"),
+    campaign_pledge = schema.Text(
+        title = _(u"Our Campaign Pledge"),
     )
 
     ceo_image = NamedBlobImage(
@@ -115,3 +115,14 @@ class IOrganisation(model.Schema):
         required=False,
         title = _(u"Telephone number of your organisation's health and safety representative"),
     )
+
+
+class View(grok.View):
+    grok.context(IOrganisation)
+    grok.require('zope2.View')
+
+    def get_events(self):
+        return []
+    
+    def get_news(self):
+        return []    
