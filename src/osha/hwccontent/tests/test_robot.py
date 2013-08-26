@@ -7,7 +7,7 @@ import unittest
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTests([
-        layered(robotsuite.RobotTestSuite("robot_test.txt"),
+        layered(robotsuite.RobotTestSuite("tests.robot"),
                 layer=OSHA_HWCCONTENT_FUNCTIONAL_TESTING)
     ])
     return suite

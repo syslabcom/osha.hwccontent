@@ -3,6 +3,7 @@ from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
+from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
 
 from plone.testing import z2
 
@@ -38,6 +39,6 @@ OSHA_HWCCONTENT_INTEGRATION_TESTING = IntegrationTesting(
     name="OSHAHWContentLayer:Integration"
 )
 OSHA_HWCCONTENT_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(OSHA_HWCCONTENT_FIXTURE, z2.ZSERVER_FIXTURE),
+    bases=(OSHA_HWCCONTENT_FIXTURE, z2.ZSERVER_FIXTURE, AUTOLOGIN_LIBRARY_FIXTURE),
     name="OSHAHWContentLayer:Functional"
 )

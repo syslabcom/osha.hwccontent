@@ -40,9 +40,11 @@ setup(name='osha.hwccontent',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'plone.app.contenttypes',
           'plone.namedfile[blobs]',
       ],
-      extras_require={'test': ['plone.app.testing[robot]>=4.2.2']},
+      extras_require={'test': ['plone.app.testing[robot]>=4.2.2', 
+                               'plone.app.robotframework']},
       entry_points="""
       [z3c.autoinclude.plugin]
       target = plone

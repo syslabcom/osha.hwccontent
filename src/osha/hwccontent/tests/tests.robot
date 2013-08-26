@@ -1,6 +1,6 @@
 *** Settings ***
 
-Library  Selenium2Library  timeout=10  implicit_wait=0.5
+Resource          resource/settings.robot
 
 Suite Setup  Start browser
 Suite Teardown  Close All Browsers
@@ -11,10 +11,11 @@ ${BROWSER} =  firefox
 
 *** Test Cases ***
 
-Plone site
-    [Tags]  start
+Content editor can add Organisation
+    Given I'm logged in as a 'Site Administrator'
     Go to  http://localhost:55001/plone/
     Page should contain  Plone site
+    
 
 *** Keywords ***
 
