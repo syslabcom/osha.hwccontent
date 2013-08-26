@@ -1,4 +1,7 @@
 *** Keywords ***
+Start browser
+    Open browser  ${PLONE_URL}  browser=${BROWSER}
+
 Open Menu
     [Arguments]  ${elementId}
 
@@ -25,23 +28,34 @@ I open the personal menu
 I see the Site Setup -link
     Element should be visible  css=#personaltools-plone_setup
 
-
-I add a Test Definition
+I add an Organisation
     Open Add New Menu
-    Click link  densoqs-content-testdefinition
-    Page Should Contain  HVAC
-    Click link  HVAC
-    Click link  Vibration requirements
-    Click link  Running Smoothness
-    Click element  //span[contains(@class,"dynatree-focused")]/span[@class="dynatree-checkbox"]
-    Input Text  form.widgets.specification_number  EKE-7-T-PANG
-    Input Text  form.widgets.release_date-day  5
-    Select from list  form.widgets.release_date-month  7
-    Input Text  form.widgets.release_date-year  2013
-    Input Text  form.widgets.test_number  4711
-    Select from list  form.widgets.test_location:list  Bench
-    Input Text  form.widgets.test_procedure  Test procedure
-    Input Text  form.widgets.specification  Lorem ipsum
+    Click link           css=#osha-hwccontent-organisation
+    Page Should Contain  Organisation
+    Input Text           form.widgets.IBasic.title       The Organisations Title
+    Input Text           form.widgets.street             O Street
+    Input Text           form.widgets.city               Osterburg
+    Input Text           form.widgets.zip_code           12345
+    Select from list     form.widgets.country:list       Iceland
+    Input Text           form.widgets.email              email@organisation.org
+    Input Text           form.widgets.phone              012346789
+    Input Text           form.widgets.url                http://www.organisation.org/
+    Input Text           form.widgets.campaign_url       http://www.organisation.org/
+    Choose File          form.widgets.logo               ${CURDIR}/logo.gif
+    Input Text           form.widgets.organisation_type  Organised
+    Input Text           form.widgets.business_sector    Organisation
+    Input Text           form.widgets.mission_statement  We organise you!
+    Input Text           form.widgets.campaign_pledge    Making you even more organised!
+    Choose File          form.widgets.ceo_image          ${CURDIR}/ceo.jpg
+    Input Text           form.widgets.ceo_name           Odina Organiser
+    Input Text           form.widgets.ceo_position       CEO
+    Input Text           form.widgets.key_name           Olaf Organiser
+    Input Text           form.widgets.key_position       CTO
+    Input Text           form.widgets.key_email          olaf@organisation.org
+    Input Text           form.widgets.key_phone          0123456789
+
     Click Button  Save
     Page Should Contain  Item created
-    
+
+I see the Organisation    
+    Page Should Contain  The Organisations Title

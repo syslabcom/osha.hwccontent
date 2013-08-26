@@ -44,7 +44,7 @@ setup(name='osha.hwccontent',
           'plone.namedfile[blobs]',
       ],
       extras_require={'test': ['plone.app.testing[robot]>=4.2.2', 
-                               'plone.app.robotframework']},
+                               'plone.app.robotframework[reload]']},
       entry_points="""
       [z3c.autoinclude.plugin]
       target = plone

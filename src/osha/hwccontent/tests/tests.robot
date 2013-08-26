@@ -13,11 +13,6 @@ ${BROWSER} =  firefox
 
 Content editor can add Organisation
     Given I'm logged in as a 'Site Administrator'
-    Go to  http://localhost:55001/plone/
-    Page should contain  Plone site
+      And I add an Organisation
+     Then Page Should Contain  The Organisations Title
     
-
-*** Keywords ***
-
-Start browser
-    Open browser  http://localhost:55001/plone/  browser=${BROWSER}
