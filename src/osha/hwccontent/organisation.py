@@ -1,8 +1,9 @@
-from osha.hwccontent import _, vocabularies
+from Products.CMFCore.utils import getToolByName
 from five import grok
+from osha.hwccontent import _, vocabularies
 from plone.app.textfield import RichText
-from plone.supermodel import model
 from plone.namedfile.field import NamedBlobImage
+from plone.supermodel import model
 from zope import schema
 
 class IOrganisation(model.Schema):
@@ -121,8 +122,18 @@ class View(grok.View):
     grok.context(IOrganisation)
     grok.require('zope2.View')
 
+    @property
+    def portal_catalog(self):
+        return getToolByName(self.context, 'portal_catalog')
+        
     def get_events(self):
-        return []
+        return self.portal_catalog(portal_type='Event', path=self.context.getPhysicalPath())
     
     def get_news(self):
-        return []    
+        return self.portal_catalog(portal_type='News Item', path=self.context.getPhysicalPath())
+    
+    def get_news_folder_url(self):
+        return self.context.restrictedTraverse('news').absolute_url()
+    
+    def get_events_folder_url(self):
+        return self.context.restrictedTraverse('events').absolute_url()    

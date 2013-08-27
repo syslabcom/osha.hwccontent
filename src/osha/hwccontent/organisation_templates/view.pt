@@ -104,20 +104,18 @@
 
             <!-- Events -->
             <div class="expandable opened"
-            tal:define="event_res python:view.get_events();
-                events python:[here.restrictedTraverse(str(x['url']), None) for x in event_res];
-                events python:[x for x in events if x is not None]"
+                tal:define="events view/get_events;"
                 tal:condition="events">
 
                 <h2 class="expandableHeader" i18n:translate="">Events</h2>
                 <dl class="expandableContent" style="display: block" >
                     <tal:loop tal:repeat="item events">
-                    <dt tal:content="python:toLocalizedTime(item.start())"></dt>
+                    <dt tal:content="python:toLocalizedTime(item.start)"></dt>
                     <dd>
                         <h3 class="detailsHeadline">
-                            <a href="" class="summary url" tal:define="relpath python:'/'.join(item.getPhysicalPath())"
-                            tal:attributes="href string:${events_folder_url}/@@hw.telescope?path=$relpath"
-                            tal:content="item/Title">
+                            <a href="" class="summary url"
+                                tal:attributes="href item/getURL"
+                                tal:content="item/Title">
                             Item Title
                             </a>
                         </h3>
@@ -125,27 +123,25 @@
                     <dd class="visualClear"></dd>
                 </tal:loop>
                 <span class="more icon-16px sprite-icon-big-arrow-blue-right">
-                    <a href="/en/campaigns/hw2010/events" tal:attributes="href events_folder_url"
+                    <a href="/en/campaigns/hw2010/events" tal:attributes="href view/get_events_folder_url;"
                         i18n:translate="">More events</a>
                     </span>
                 </dl>
             </div>
 
         <!-- News -->
-        <tal:news define="news_res python:view.get_news();
-                news python:[here.restrictedTraverse(str(x['url']), None) for x in news_res];
-                news python:[x for x in news if x is not None]">
+        <tal:news define="news view/get_news;">
             <div class="expandable closed"
-                tal:condition="python:len(news)">
+                tal:condition="python:news">
 
                 <h2 class="expandableHeader" i18n:translate="">News</h2>
                 <dl class="expandableContent" style="display: block" >
                     <tal:loop tal:repeat="item news">
-                    <dt tal:content="python:toLocalizedTime(item.Date())"></dt>
+                    <dt tal:content="python:toLocalizedTime(item.Date)"></dt>
                     <dd>
                         <h3 class="detailsHeadline">
-                            <a href="" class="summary url" tal:define="relpath python:'/'.join(item.getPhysicalPath())"
-                            tal:attributes="href string:${news_folder_url}/@@hw.telescope?path=$relpath"
+                            <a href="" class="summary url"
+                            tal:attributes="href item/getPath"
                             tal:content="item/Title">
                             Item Title
                             </a>
@@ -154,7 +150,7 @@
                     <dd class="visualClear"></dd>
                 </tal:loop>
                 <span class="more icon-16px sprite-icon-big-arrow-blue-right">
-                    <a href="/en/campaigns/hw2010/news" tal:attributes="href news_folder_url"
+                    <a href="/en/campaigns/hw2010/news" tal:attributes="href view/get_news_folder_url;"
                         i18n:translate="">More news</a>
                     </span>
                 </dl>
