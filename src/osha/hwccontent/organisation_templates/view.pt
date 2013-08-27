@@ -122,9 +122,12 @@
                     </dd>
                     <dd class="visualClear"></dd>
                 </tal:loop>
-                <span class="more icon-16px sprite-icon-big-arrow-blue-right">
-                    <a href="/en/campaigns/hw2010/events" tal:attributes="href view/get_events_folder_url;"
-                        i18n:translate="">More events</a>
+                <span class="more icon-16px sprite-icon-big-arrow-blue-right"
+                      tal:define="events_folder view/get_events_folder_url;">
+                    <a href="/en/campaigns/hw2010/events" 
+                       tal:attributes="href events_folder;"
+                       tal:condition="events_folder"
+                       i18n:translate="">More events</a>
                     </span>
                 </dl>
             </div>
@@ -149,9 +152,12 @@
                     </dd>
                     <dd class="visualClear"></dd>
                 </tal:loop>
-                <span class="more icon-16px sprite-icon-big-arrow-blue-right">
-                    <a href="/en/campaigns/hw2010/news" tal:attributes="href view/get_news_folder_url;"
-                        i18n:translate="">More news</a>
+                <span class="more icon-16px sprite-icon-big-arrow-blue-right"
+                      tal:define="news_folder view/get_news_folder_url;">
+                    <a href="/en/campaigns/hw2010/news" 
+                       tal:attributes="href news_folder"
+                       tal:condition="news_folder"
+                       i18n:translate="">More news</a>
                     </span>
                 </dl>
             </div>

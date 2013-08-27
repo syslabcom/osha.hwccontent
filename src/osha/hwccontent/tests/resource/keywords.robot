@@ -57,5 +57,35 @@ I add an Organisation
     Click Button  Save
     Page Should Contain  Item created
 
-I see the Organisation    
-    Page Should Contain  The Organisations Title
+I add a News Item
+    Open Add New Menu
+    Click link           news-item
+    Page Should Contain  News Item
+    Input Text           form.widgets.IDublinCore.title         The News Item Title
+    Choose File          form.widgets.ILeadImage.image          ${CURDIR}/logo.gif
+    Input Text           form.widgets.ILeadImage.image_caption  The news Item Image
+
+    Click Button  Save
+    Page Should Contain  Item created
+   
+I add an Event
+    Open Add New Menu
+    Click link           event
+    Page Should Contain  Event
+    Input Text           form.widgets.IDublinCore.title  The Event Title
+    Input Text           form.widgets.start_date-day     27
+    Select from list     form.widgets.start_date-month   February
+    Input Text           form.widgets.start_date-year    2016
+    Input Text           form.widgets.start_date-hour    12
+    Input Text           form.widgets.start_date-min     55
+    Input Text           form.widgets.end_date-day       3
+    Select from list     form.widgets.end_date-month     December
+    Input Text           form.widgets.end_date-year      2026
+    Input Text           form.widgets.end_date-hour      10
+    Input Text           form.widgets.end_date-min       05
+
+    Click Button  Save
+    Page Should Contain  Item created
+
+I go to the Organisation
+    Click link  The Organisations Title

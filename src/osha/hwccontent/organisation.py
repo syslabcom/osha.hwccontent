@@ -133,7 +133,13 @@ class View(grok.View):
         return self.portal_catalog(portal_type='News Item', path=self.context.getPhysicalPath())
     
     def get_news_folder_url(self):
-        return self.context.restrictedTraverse('news').absolute_url()
+        try:
+            return self.context.restrictedTraverse('news').absolute_url()
+        except KeyError:
+            return ''
     
     def get_events_folder_url(self):
-        return self.context.restrictedTraverse('events').absolute_url()    
+        try:
+            return self.context.restrictedTraverse('events').absolute_url()    
+        except KeyError:
+            return ''
