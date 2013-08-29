@@ -1,8 +1,18 @@
 <?xml version="1.0"?>
 <rolemap>
+  <roles>
+    <role name="Registrant"/>
+  </roles>
   <permissions>
-    <permission name="osha.hwccontent: Add Organisation" acquire="True">
+    <permission name="Add portal content" acquire="True">
       <role name="Contributor"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Site Administrator"/>
+      <role name="Registrant"/>
+    </permission>
+    <permission name="osha.hwccontent: Add Organisation" acquire="True">
+      <role name="Registrant"/>
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>

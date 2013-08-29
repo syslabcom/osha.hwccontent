@@ -143,3 +143,12 @@ class View(grok.View):
             return self.context.restrictedTraverse('events').absolute_url()    
         except KeyError:
             return ''
+        
+        
+class PostAddView(grok.View):
+    grok.context(IOrganisation)
+
+    def render(self):
+        url = self.context.__parent__.absolute_url()
+        # Add portal message
+        self.redirect(url)

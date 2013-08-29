@@ -11,9 +11,9 @@ ${BROWSER} =  firefox
 
 *** Test Cases ***
 
-Content editor can add Organisation
-    Given I'm logged in as a 'Site Administrator'
-      And I add an Organisation
+Anonymous can add Organisation
+    Given I'm logged out
+      And I register an Organisation
      Then Page Should Contain  The Organisations Title
 
 Organisations can create news and events

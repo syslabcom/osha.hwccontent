@@ -17,6 +17,9 @@ I'm logged in as a '${ROLE}'
     Enable autologin as  ${ROLE}
     Go to  ${PLONE_URL}
 
+I'm logged out
+    Page should contain  Log in
+
 I disable WYSIWYG editor
     Goto  ${PLONE_URL}/@@personal-preferences
     Select from list  form.wysiwyg_editor  None
@@ -28,9 +31,8 @@ I open the personal menu
 I see the Site Setup -link
     Element should be visible  css=#personaltools-plone_setup
 
-I add an Organisation
-    Open Add New Menu
-    Click link           css=#osha-hwccontent-organisation
+I register an Organisation
+    Goto  ${PLONE_URL}/++add++osha.hwccontent.organisation
     Page Should Contain  Organisation
     Input Text           form.widgets.IBasic.title       The Organisations Title
     Input Text           form.widgets.street             O Street
