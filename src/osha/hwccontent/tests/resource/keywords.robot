@@ -2,6 +2,12 @@
 Start browser
     Open browser  ${PLONE_URL}  browser=${BROWSER}
 
+Test Setup
+    Start browser
+    I'm logged in as a 'Site Administrator'
+    I add an Organisations folder
+    Go to  ${PLONE_URL}
+
 Open Menu
     [Arguments]  ${elementId}
 
@@ -13,9 +19,17 @@ Open Menu
 Open Add New Menu
     Open Menu  plone-contentmenu-factories
 
-I'm logged in as a '${ROLE}'
-    Enable autologin as  ${ROLE}
+I'm logged in as a ${ROLE}
+    Go to  ${PLONE_URL}/login_form
+    Input text  __ac_name  ${ROLE}
+    Input text  __ac_password  password
+    Click button  Log in
+    Page should contain  You are now logged in
     Go to  ${PLONE_URL}
+
+I logout
+    Go to  ${PLONE_URL}/logout
+    Page should contain  You are now logged out
 
 I'm logged out
     Page should contain  Log in
@@ -25,14 +39,23 @@ I disable WYSIWYG editor
     Select from list  form.wysiwyg_editor  None
     Click Button  Save
     
-I open the personal menu
-    Click link  css=#user-name
-
 I see the Site Setup -link
     Element should be visible  css=#personaltools-plone_setup
 
+I go to the Organisations folder
+    Click link  Organisations
+
+I add an Organisations folder
+    Goto  ${PLONE_URL}/++add++osha.hwccontent.organisationfolder
+    Page Should Contain  Organisation Folder
+    Input Text           form.widgets.IDublinCore.title       Organisations
+    Click Button  Save
+    Page Should Contain  Item created
+    Page Should Contain  Organisations
+
 I register an Organisation
-    Goto  ${PLONE_URL}/++add++osha.hwccontent.organisation
+    Open Add New Menu
+    Click link  css=#osha-hwccontent-organisation
     Page Should Contain  Organisation
     Input Text           form.widgets.IBasic.title       The Organisations Title
     Input Text           form.widgets.street             O Street

@@ -40,6 +40,7 @@ setup(name='osha.hwccontent',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'plone.api',
           'plone.app.contenttypes',
           'plone.namedfile[blobs]',
       ],

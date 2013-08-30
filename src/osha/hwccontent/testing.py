@@ -1,3 +1,4 @@
+from AccessControl.SecurityManagement import newSecurityManager
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
@@ -7,6 +8,7 @@ from plone.app.robotframework import RemoteLibraryLayer, AutoLogin
 from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
 
 from plone.testing import z2
+from plone import api
 
 from zope.configuration import xmlconfig
 
@@ -33,7 +35,23 @@ class OSHAHWContentLayer(PloneSandboxLayer):
 
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'osha.hwccontent:default')
+        self.__createDefaultUsers(portal)
+        self.__createDefaultContent(portal)
 
+    def __createDefaultUsers(self, portal):
+        acl_users = api.portal.get_tool(name='acl_users')
+
+        for role in ('Admin', 'Site Administrator'):
+            acl_users.userFolderAddUser( role, 'password', [role], [])
+
+    def __createDefaultContent(self, portal):
+        acl_users = api.portal.get_tool(name='acl_users')
+        user = acl_users.getUser('Site Administrator')
+        newSecurityManager(None, user.__of__(acl_users))
+        
+        organisations = api.content.create(portal, type='osha.hwccontent.organisationfolder', title='Organisations')
+        api.content.transition(organisations, 'publish')
+        
 
 class Debugging:
     """This enables the keyword 'start_debugger'
@@ -53,7 +71,7 @@ class Debugging:
 
 PDB_LIBRARY_FIXTURE = RemoteLibraryLayer(
     bases=(PLONE_FIXTURE, ),
-    libraries=(AutoLogin, Debugging,),
+    libraries=(Debugging,),
     name="osha.hwccontent:RobotRemote"
 )
 
