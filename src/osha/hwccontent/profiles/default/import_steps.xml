@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<import-steps>
+
+    <import-step
+        id="setupMultilingual"
+        version="1"
+        handler="osha.hwccontent.setuphandlers.setupMultilingual"
+        title="Setup multilingual site (depends on types setup)">
+
+        <dependency step="types" />
+        <dependency step="portal_languages" />
+
+    </import-step>
+
+
+</import-steps>
