@@ -30,6 +30,7 @@
      <element value="plone.app.dexterity.behaviors.metadata.IBasic" />
      <!-- IReferenceable might not be available, but it will not break. -->
      <element value="plone.app.referenceablebehavior.referenceable.IReferenceable" />
+     <element value="plone.multilingualbehavior.interfaces.IDexterityTranslatable" />
  </property>
 
  <!-- View information -->
