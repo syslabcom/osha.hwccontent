@@ -65,8 +65,7 @@ class IOrganisation(model.Schema):
     logo = NamedBlobImage(
         title = _(u"Company/Organisation logo"),
     )
-    # Currently images can not be language independent.
-    #directives.languageindependent('logo')
+    directives.languageindependent('logo')
 
     organisation_type = schema.TextLine(
         title = _(u"Organisation type"),
@@ -87,8 +86,7 @@ class IOrganisation(model.Schema):
     ceo_image = NamedBlobImage(
         title = _(u"Photo of your CEO, President, General Director or other"),
     )
-    # Currently images can not be language independent.
-    #directives.languageindependent('ceo_image')
+    directives.languageindependent('ceo_image')
 
     ceo_name = schema.TextLine(
         description = _(u"Name / surname of your CEO, President, General Director or other"),
