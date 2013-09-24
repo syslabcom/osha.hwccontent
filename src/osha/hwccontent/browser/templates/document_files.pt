@@ -31,9 +31,7 @@
                 <span class="discreet"
                       tal:define="size file/file/getSize;
                                   kb python:size/1024;
-                                  filename file/file/filename;
                                   modified file/modified;">
-                      &mdash; <span tal:replace="filename" />
                       &mdash; <span tal:replace="kb" /> KB
                       &mdash; <span tal:replace="python:plone.toLocalizedTime(modified, long_format=True)" />
                 </span>
