@@ -16,12 +16,18 @@ class View(grok.View):
         return getToolByName(self.context, 'portal_catalog')
 
     def get_events(self):
-        return self.portal_catalog(
-            portal_type='Event', path=self.context.getPhysicalPath())
+        return [
+            x for x in self.context.objectValues()
+            if x.portal_type == 'Event']
+        # return self.portal_catalog(
+        #     portal_type='Event', path=self.context.getPhysicalPath())
 
     def get_news(self):
-        return self.portal_catalog(
-            portal_type='News Item', path=self.context.getPhysicalPath())
+        return [
+            x for x in self.context.objectValues()
+            if x.portal_type == 'News Item']
+        # return self.portal_catalog(
+        #     portal_type='News Item', path=self.context.getPhysicalPath())
 
     def get_news_folder_url(self):
         try:
