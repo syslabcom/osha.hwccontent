@@ -8,9 +8,10 @@
     i18n_domain="osha.hwccontent">
 
   <include file="permissions.zcml" />
+  <include package=".browser" />
 
   <includeDependencies package="." />
-  
+
   <grok:grok package="." />
 
   <genericsetup:registerProfile
@@ -25,5 +26,5 @@
       name="osha.hwccontent"
       directory="resources"
     />
-    
+
 </configure>

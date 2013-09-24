@@ -1,30 +1,30 @@
-from Products.CMFCore.utils import getToolByName
-from five import grok
+# _+- coding: utf-8 -*-
+
 from osha.hwccontent import _, vocabularies
-from plone.app.textfield import RichText
 from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
 from zope import schema
 from plone.multilingualbehavior import directives
 
+
 class IOrganisation(model.Schema):
-    
+
     street = schema.TextLine(
         title = _(u"Street"),
     )
     directives.languageindependent('street')
-    
+
     address_extra = schema.TextLine(
         required=False,
         title = _(u"Address extra"),
     )
     directives.languageindependent('address_extra')
-    
+
     city = schema.TextLine(
         title = _(u"City"),
     )
     directives.languageindependent('city')
-    
+
     zip_code = schema.TextLine(
         title = _(u"Zip code"),
     )
@@ -35,7 +35,7 @@ class IOrganisation(model.Schema):
         vocabulary = vocabularies.countries,
     )
     directives.languageindependent('country')
-    
+
     email = schema.TextLine(
         title = _(u"E-Mail"),
     )
@@ -45,7 +45,7 @@ class IOrganisation(model.Schema):
         title = _(u"Telephone number"),
     )
     directives.languageindependent('phone')
-     
+
     fax = schema.TextLine(
         required=False,
         title = _(u"Fax number"),
@@ -93,13 +93,13 @@ class IOrganisation(model.Schema):
         title = _(u"CEO"),
     )
     directives.languageindependent('ceo_name')
-    
+
     ceo_position = schema.TextLine(
         description = _(u"Please indicate the actual position, such as President, General Director, CEO, Chairman, etc"),
         title = _(u"Position identifier"),
     )
     directives.languageindependent('ceo_position')
-    
+
     key_name = schema.TextLine(
         description = _(u"Name/Surname of main contact person for the Campaign"),
         title = _(u"Contact person"),
@@ -138,39 +138,3 @@ class IOrganisation(model.Schema):
         title = _(u"Telephone number of your organisation's health and safety representative"),
     )
     directives.languageindependent('representative_phone')
-
-
-class View(grok.View):
-    grok.context(IOrganisation)
-    grok.require('zope2.View')
-
-    @property
-    def portal_catalog(self):
-        return getToolByName(self.context, 'portal_catalog')
-        
-    def get_events(self):
-        return self.portal_catalog(portal_type='Event', path=self.context.getPhysicalPath())
-    
-    def get_news(self):
-        return self.portal_catalog(portal_type='News Item', path=self.context.getPhysicalPath())
-    
-    def get_news_folder_url(self):
-        try:
-            return self.context.restrictedTraverse('news').absolute_url()
-        except KeyError:
-            return ''
-    
-    def get_events_folder_url(self):
-        try:
-            return self.context.restrictedTraverse('events').absolute_url()    
-        except KeyError:
-            return ''
-        
-        
-class PostAddView(grok.View):
-    grok.context(IOrganisation)
-
-    def render(self):
-        url = self.context.__parent__.absolute_url()
-        # Add portal message
-        self.redirect(url)
