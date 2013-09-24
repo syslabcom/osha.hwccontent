@@ -3,4 +3,15 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="osha.hwccontent">
 
+  <browser:page
+    name="document_files_view"
+    class=".document.FilesView"
+    for="plone.app.contenttypes.interfaces.IDocument"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    template="templates/document_files.pt"
+    permission="zope2.View"
+    menu="plone_displayviews"
+    title="Files Listing"
+    />
+
 </configure>

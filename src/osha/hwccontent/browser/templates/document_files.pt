@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:content-core fill-slot="content-core"
+  tal:define="files view/get_files;
+  plone context/@@plone;">
+    <metal:content-core define-macro="content-core">
+        <div id="parent-fieldname-text"
+             tal:condition="context/text"
+             tal:content="structure context/text/output" />
+    </metal:content-core>
+
+  <h3 tal:condition="python:len(files) > 0">Downloads</h3>
+
+  <p tal:repeat="file files">
+
+    <metal:block tal:define="content_type file/file/contentType|nothing;
+                                 v python:context.restrictedTraverse('contenttype_utils');">
+
+                    <a tal:attributes="href string:${file/absolute_url}/@@download/file">
+                    <img tal:attributes="src python: v.getMimeTypeIcon(file.file);
+                                         alt content_type;" border="0"  />
+                    <tal:name tal:content="file/Title" >Filename</tal:name>
+                </a>
+                <span class="discreet"
+                      tal:define="size file/file/getSize;
+                                  kb python:size/1024;
+                                  modified file/modified;">
+                      &mdash; <span tal:replace="kb" /> KB
+                      &mdash; <span tal:replace="python:plone.toLocalizedTime(modified, long_format=True)" />
+                </span>
+
+  </metal:block>
+
+
+  </p>
+
+</metal:content-core>
+
+</body>
+</html>
+

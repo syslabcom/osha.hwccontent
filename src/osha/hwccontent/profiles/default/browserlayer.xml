@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<layers>
+    <layer name="OSHA.HWCContent"
+           interface="osha.hwccontent.interfaces.IOSHAHWCContentLayer" />
+</layers>
