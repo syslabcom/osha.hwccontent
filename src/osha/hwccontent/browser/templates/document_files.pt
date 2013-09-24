@@ -16,30 +16,50 @@
              tal:content="structure context/text/output" />
     </metal:content-core>
 
-  <h3 tal:condition="python:len(files) > 0">Downloads</h3>
+<!-- Inline styles ONLY FOR DEMO - XXX remove them from here for production -->
+<style type="text/css">
+    div.downloads a {
+      text-decoration: none;
+    }
+    div.downloads img {
+      float: left;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    div.downloads .title {
+      font-weight: bold;
+      font-size: 120%;
+    }
+    div.downloads .byline {
+      font-size: 85%;
+      font-style: italic;
+      margin-left: 28px;
+      color: grey;
+    }
+</style>
 
-  <p tal:repeat="file files">
+  <h2 tal:condition="python:len(files) > 0">Downloads</h2>
 
-    <metal:block tal:define="content_type file/file/contentType|nothing;
-                                 v python:context.restrictedTraverse('contenttype_utils');">
+  <div class="downloads">
+    <a tal:repeat="file files" tal:attributes="href string:${file/absolute_url}/@@download/file">
 
-                    <a tal:attributes="href string:${file/absolute_url}/@@download/file">
-                    <img tal:attributes="src python: v.getMimeTypeIcon(file.file);
-                                         alt content_type;" border="0"  />
-                    <tal:name tal:content="file/Title" >Filename</tal:name>
-                </a>
-                <span class="discreet"
-                      tal:define="size file/file/getSize;
-                                  kb python:size/1024;
-                                  modified file/modified;">
-                      &mdash; <span tal:replace="kb" /> KB
-                      &mdash; <span tal:replace="python:plone.toLocalizedTime(modified, long_format=True)" />
-                </span>
+      <metal:block tal:define="content_type file/file/contentType|nothing;
+                                   v python:context.restrictedTraverse('contenttype_utils');">
+        <img tal:attributes="src python: v.getMimeTypeIcon(file.file);
+                     alt content_type;" border="0"  />
 
-  </metal:block>
-
-
-  </p>
+        <div class="title" tal:content="file/Title" >Filename</div>
+        <p class="byline" tal:define="size file/file/getSize;
+                          kb python:size/1024;
+                          filename file/file/filename;
+                          modified file/modified;">
+              <span tal:replace="filename" />
+              &mdash; <span tal:replace="kb" /> KB
+              &mdash; <span tal:replace="python:plone.toLocalizedTime(modified, long_format=True)" />
+        </p>
+      </metal:block>
+    </a>
+  </div>
 
 </metal:content-core>
 
