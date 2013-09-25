@@ -110,11 +110,11 @@
                 <h2 class="expandableHeader" i18n:translate="">Events</h2>
                 <dl class="expandableContent" style="display: block" >
                     <tal:loop tal:repeat="item events">
-                    <dt tal:content="python:toLocalizedTime(item.start)"></dt>
+                    <dt tal:content="python:toLocalizedTime(item.start_date)"></dt>
                     <dd>
                         <h3 class="detailsHeadline">
                             <a href="" class="summary url"
-                                tal:attributes="href item/getURL"
+                                tal:attributes="href item/absolute_url"
                                 tal:content="item/Title">
                             Item Title
                             </a>
@@ -140,11 +140,11 @@
                 <h2 class="expandableHeader" i18n:translate="">News</h2>
                 <dl class="expandableContent" style="display: block" >
                     <tal:loop tal:repeat="item news">
-                    <dt tal:content="python:toLocalizedTime(item.Date)"></dt>
+                    <dt tal:content="python:toLocalizedTime(item.Date())"></dt>
                     <dd>
                         <h3 class="detailsHeadline">
                             <a href="" class="summary url"
-                            tal:attributes="href item/getPath"
+                            tal:attributes="href item/absolute_url"
                             tal:content="item/Title">
                             Item Title
                             </a>
