@@ -160,7 +160,14 @@ class IOrganisationPhase1(model.Schema):
         'campaign_involvement',
         label=_(u"About your involvement in the campaign"),
         fields=[
-            'why_partner', 'promotion_electronic']
+            'why_partner', 'promotion_electronic',
+            'conferences_check', 'conferences_description',
+            'training_check', 'training_description',
+            'partnerships_check', 'partnerships_description',
+            'promotion_check', 'promotion_description',
+            'bestpractice_check', 'bestpractice_description',
+            'otheractivities_check', 'otheractivities_description',
+        ]
     )
 
     why_partner = schema.Text(
@@ -182,11 +189,97 @@ class IOrganisationPhase1(model.Schema):
     )
     directives.languageindependent('promotion_electronic')
 
-    # To be continued...
-    # promotion_other = schema.Text(
-    #     title=_(
-    #         u"")
-    # )
+    conferences_check = schema.Bool(
+        title=_(
+            u"Conferences, seminars or workshops exclusively or partly "
+            "dedicated to the topic of the Campaign"),
+        required=False,
+    )
+    directives.languageindependent('conferences_check')
+
+    conferences_description = schema.Text(
+        title=_(u"Please describe"),
+        description=_(
+            u"Please provide some information on topic, main objectives, "
+            "profile of participants, etc."),
+        required=False,
+    )
+    directives.languageindependent('conferences_description')
+
+    training_check = schema.Bool(
+        title=_(u'Training sessions'),
+        required=False,
+    )
+    directives.languageindependent('training_check')
+
+    training_description = schema.Text(
+        title=_(u"Please describe"),
+        description=_(
+            u"Please provide some information on topic, main objectives, "
+            "profile of participants, etc."),
+        required=False,
+    )
+    directives.languageindependent('training_description')
+
+    partnerships_check = schema.Bool(
+        title=_(
+            u"Partnerships with other organisations and schools / colleges / "
+            "training centres"),
+        required=False,
+    )
+    directives.languageindependent('partnerships_check')
+
+    partnerships_description = schema.Text(
+        title=_(u"Please describe"),
+        description=_(
+            u"Please provide some information on planned activities"),
+        required=False,
+    )
+    directives.languageindependent('partnerships_description')
+
+    promotion_check = schema.Bool(
+        title=_(
+            u"Promotion in the media (press release, press conference, "
+            "advertorials, etc )"),
+        required=False,
+    )
+    directives.languageindependent('promotion_check')
+
+    promotion_description = schema.Text(
+        title=_(u"Please describe"),
+        description=_(
+            u"Please provide some information on planned activities"),
+        required=False,
+    )
+    directives.languageindependent('promotion_description')
+
+    bestpractice_check = schema.Bool(
+        title=_(u"Best Practice competition / activities"),
+        required=False,
+    )
+    directives.languageindependent('bestpractice_check')
+
+    bestpractice_description = schema.Text(
+        title=_(u"Please describe"),
+        description=_(
+            u"Please provide some information on planned activities"),
+        required=False,
+    )
+    directives.languageindependent('bestpractice_description')
+
+    otheractivities_check = schema.Bool(
+        title=_(u"Other activities"),
+        required=False,
+    )
+    directives.languageindependent('otheractivities_check')
+
+    otheractivities_description = schema.Text(
+        title=_(u"Please describe"),
+        description=_(
+            u"Please provide some information on planned activities"),
+        required=False,
+    )
+    directives.languageindependent('otheractivities_description')
 
 
 class IOrganisationPhase2(model.Schema):
