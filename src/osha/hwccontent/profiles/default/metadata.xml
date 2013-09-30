@@ -3,5 +3,6 @@
   <version>1</version>
   <dependencies>
     <dependency>profile-plone.app.contenttypes:default</dependency>
+    <dependency>profile-Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow</dependency>
   </dependencies>
 </metadata>
