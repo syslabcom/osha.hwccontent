@@ -2,4 +2,5 @@
  <object name="osha.hwccontent.organisationfolder" meta_type="Dexterity FTI" />
  <object name="osha.hwccontent.organisation" meta_type="Dexterity FTI" />
  <object name="Event" meta_type="Dexterity FTI" />
+ <object name="Document" meta_type="Dexterity FTI" />
 </object>
