@@ -40,50 +40,7 @@ INTRO_TEXT_PHASE_2 = _(
 )
 
 
-class IOrganisationPhase1(model.Schema):
-
-    # Countries of Activity
-    model.fieldset(
-        'about_organisation',
-        label=_(u'About your organisation'),
-        fields=[
-            'countries', 'additional_countries', 'title', 'organisation_type',
-            'business_sector', 'social_dialogue', 'street', 'address_extra',
-            'city', 'zip_code', 'country', 'email', 'phone', 'fax', 'key_name',
-            'key_position', 'key_email', 'key_phone', 'url', 'campaign_url',
-        ],
-    )
-
-    phase_1_intro = RichText(
-        title=_("Introduction"),
-        required=False,
-    )
-    formdirectives.omitted('phase_1_intro')
-    formdirectives.no_omit(IAddForm, 'phase_1_intro')
-
-    countries = schema.List(
-        title=_(u"Countries of activity"),
-        description=_(
-            u"Only Pan-European or international organisations / "
-            "companies are eligible for the European Campaign Partnership; "
-            "please indicate the countries your company is represented through"
-            " branches / representative offices / network members"),
-        value_type=schema.Choice(
-            vocabulary=vocabularies.countries,
-        ),
-    )
-    directives.languageindependent('countries')
-
-    additional_countries = schema.Text(
-        title=_(u"Other countries"),
-        description=_(
-            u"Other countries in which you organisation is represented (enter "
-            "names)"),
-        required=False,
-    )
-    directives.languageindependent('additional_countries')
-
-    # Organisation's profile and contact details
+class IOrganisationBase(model.Schema):
 
     title = schema.TextLine(
         title=_(u"Company / Organisation name")
@@ -192,20 +149,37 @@ class IOrganisationPhase1(model.Schema):
     )
     directives.languageindependent('campaign_url')
 
-    # About your involvement in the Campaign
-    model.fieldset(
-        'campaign_involvement',
-        label=_(u"About your involvement in the campaign"),
-        fields=[
-            'why_partner', 'promotion_electronic',
-            'conferences_check', 'conferences_description',
-            'training_check', 'training_description',
-            'partnerships_check', 'partnerships_description',
-            'promotion_check', 'promotion_description',
-            'bestpractice_check', 'bestpractice_description',
-            'otheractivities_check', 'otheractivities_description',
-        ]
+
+class IOrganisationExtra(model.Schema):
+
+    phase_1_intro = RichText(
+        title=_("Introduction"),
+        required=False,
     )
+    formdirectives.omitted('phase_1_intro')
+    formdirectives.no_omit(IAddForm, 'phase_1_intro')
+
+    countries = schema.List(
+        title=_(u"Countries of activity"),
+        description=_(
+            u"Only Pan-European or international organisations / "
+            "companies are eligible for the European Campaign Partnership; "
+            "please indicate the countries your company is represented through"
+            " branches / representative offices / network members"),
+        value_type=schema.Choice(
+            vocabulary=vocabularies.countries,
+        ),
+    )
+    directives.languageindependent('countries')
+
+    additional_countries = schema.Text(
+        title=_(u"Other countries"),
+        description=_(
+            u"Other countries in which you organisation is represented (enter "
+            "names)"),
+        required=False,
+    )
+    directives.languageindependent('additional_countries')
 
     why_partner = schema.Text(
         title=_(
@@ -318,18 +292,6 @@ class IOrganisationPhase1(model.Schema):
     )
     directives.languageindependent('otheractivities_description')
 
-
-class IOrganisationPhase2(model.Schema):
-
-    model.fieldset(
-        'additional_information',
-        label=_(u"Additional information"),
-        fields=[
-            'mission_statement', 'ceo_name', 'ceo_position', 'ceo_quote',
-            'representative_name', 'representative_email',
-            'representative_phone', 'logo', 'ceo_image', 'campaign_pledge']
-    )
-
     phase_2_intro = RichText(
         title=_("Introduction"),
         required=False,
@@ -436,8 +398,42 @@ class IOrganisationPhase2(model.Schema):
     formdirectives.no_omit(IEditForm, 'campaign_pledge')
 
 
-class IOrganisation(IOrganisationPhase1, IOrganisationPhase2):
-    pass
+class IOrganisation(IOrganisationBase, IOrganisationExtra):
+
+    model.fieldset(
+        'about_organisation',
+        label=_(u'About your organisation'),
+        fields=[
+            'countries', 'additional_countries', 'title', 'organisation_type',
+            'business_sector', 'social_dialogue', 'street', 'address_extra',
+            'city', 'zip_code', 'country', 'email', 'phone', 'fax', 'key_name',
+            'key_position', 'key_email', 'key_phone', 'url', 'campaign_url',
+        ],
+    )
+
+    # About your involvement in the Campaign
+    model.fieldset(
+        'campaign_involvement',
+        label=_(u"About your involvement in the campaign"),
+        fields=[
+            'why_partner', 'promotion_electronic',
+            'conferences_check', 'conferences_description',
+            'training_check', 'training_description',
+            'partnerships_check', 'partnerships_description',
+            'promotion_check', 'promotion_description',
+            'bestpractice_check', 'bestpractice_description',
+            'otheractivities_check', 'otheractivities_description',
+        ]
+    )
+
+    model.fieldset(
+        'additional_information',
+        label=_(u"Additional information"),
+        fields=[
+            'mission_statement', 'ceo_name', 'ceo_position', 'ceo_quote',
+            'representative_name', 'representative_email',
+            'representative_phone', 'logo', 'ceo_image', 'campaign_pledge']
+    )
 
 
 class AddForm(dexterity.AddForm):
