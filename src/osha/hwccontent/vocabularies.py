@@ -23,6 +23,15 @@ organisation_types = SimpleVocabulary(
     [SimpleTerm(value=item, title=_(item)) for item in ORG_TYPES]
 )
 
+FOP_ORG_TYPES = [
+    'State Agency', 'Labour Inspectorate ', 'Public institution',
+    'Government organisation', 'Private Company', 'Public Company',
+    'Government body', 'Public Authority']
+
+fop_organisation_types = SimpleVocabulary(
+    [SimpleTerm(value=item, title=_(item)) for item in FOP_ORG_TYPES]
+)
+
 YES_NO = [
     ("Please select", None),
     ("Yes", True),

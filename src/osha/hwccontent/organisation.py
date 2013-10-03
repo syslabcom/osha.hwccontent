@@ -1,5 +1,7 @@
 # _+- coding: utf-8 -*-
 
+import re
+from Products.validation.validators.BaseValidators import EMAIL_RE
 from five import grok
 from osha.hwccontent import _, vocabularies
 from plone.namedfile.field import NamedBlobImage
@@ -40,30 +42,20 @@ INTRO_TEXT_PHASE_2 = _(
 )
 
 
+class InvalidEmailError(schema.ValidationError):
+    __doc__ = u'Please enter a valid e-mail address.'
+
+
+def isEmail(value):
+    if re.match('^' + EMAIL_RE, value):
+        return True
+    raise InvalidEmailError
+
+
 class IOrganisationBase(model.Schema):
 
     title = schema.TextLine(
         title=_(u"Company / Organisation name")
-    )
-
-    organisation_type = schema.Choice(
-        title=_(u"Organisation type"),
-        vocabulary=vocabularies.organisation_types,
-    )
-    directives.languageindependent('organisation_type')
-
-    business_sector = schema.TextLine(
-        title=_(u"Business sector"),
-        description=_(u"Business sector in which you operate"),
-    )
-    directives.languageindependent('business_sector')
-
-    social_dialogue = schema.Choice(
-        title=_(u"Social Dialogue Partner?"),
-        description=_(
-            u"Are you a Social Partner within the framework of the European "
-            "Social Dialogue?"),
-        vocabulary=vocabularies.yes_no,
     )
 
     street = schema.TextLine(
@@ -88,13 +80,15 @@ class IOrganisationBase(model.Schema):
     )
     directives.languageindependent('zip_code')
 
-    country = schema.TextLine(
+    country = schema.Choice(
         title=_(u"County"),
+        vocabulary=vocabularies.countries,
     )
     directives.languageindependent('country')
 
     email = schema.TextLine(
-        title=_(u"General company email address"),
+        title=_(u"General email address"),
+        constraint=isEmail,
     )
     directives.languageindependent('email')
 
@@ -117,13 +111,9 @@ class IOrganisationBase(model.Schema):
     )
     directives.languageindependent('key_name')
 
-    key_position = schema.TextLine(
-        title=_(u"Position of the main contact person."),
-    )
-    directives.languageindependent('key_position')
-
     key_email = schema.TextLine(
         title=_(u"Email address of main contact person."),
+        constraint=isEmail,
     )
     directives.languageindependent('key_email')
 
@@ -134,13 +124,13 @@ class IOrganisationBase(model.Schema):
 
     # Organisation's website
 
-    url = schema.TextLine(
+    url = schema.URI(
         title=_(u"Home page"),
         description=_("Organisation's website"),
     )
     directives.languageindependent('url')
 
-    campaign_url = schema.TextLine(
+    campaign_url = schema.URI(
         title=_(u"Dedicated Campaign Website"),
         description=_(
             u'Special web section dealing with issues related to occupational '
@@ -148,6 +138,75 @@ class IOrganisationBase(model.Schema):
         required=False,
     )
     directives.languageindependent('campaign_url')
+
+    campaign_pledge = RichText(
+        title=_(
+            u"How does your organisation plan to contribute to making this "
+            u"Campaign a joint success? (your Campaign pledge)"),
+        description=_(
+            u"Please summarise briefly the support that you will provide "
+            u"described under STEP 2 of this application form (max. 150 "
+            u"words)."),
+    )
+    directives.languageindependent('campaign_pledge')
+    formdirectives.omitted('campaign_pledge')
+    formdirectives.no_omit(IEditForm, 'campaign_pledge')
+
+    representative_name = schema.TextLine(
+        required=False,
+        title=_(
+            u"Name of your organisation's health and safety representative"),
+    )
+    directives.languageindependent('representative_name')
+    formdirectives.omitted('representative_name')
+    formdirectives.no_omit(IEditForm, 'representative_name')
+
+    representative_email = schema.TextLine(
+        required=False,
+        title=_(
+            u"Email address of your organisation's health and safety "
+            "representative"),
+        constraint=isEmail,
+    )
+    directives.languageindependent('representative_email')
+    formdirectives.omitted('representative_email')
+    formdirectives.no_omit(IEditForm, 'representative_email')
+
+    representative_phone = schema.TextLine(
+        required=False,
+        title=_(
+            u"Telephone number of your organisation's health and safety "
+            "representative"),
+    )
+    directives.languageindependent('representative_phone')
+    formdirectives.omitted('representative_phone')
+    formdirectives.no_omit(IEditForm, 'representative_phone')
+
+    mission_statement = schema.Text(
+        title=_(u"Your mission statement"),
+        description=_(u"Briefly outline the mission of your company"),
+    )
+    directives.languageindependent('mission_statement')
+    formdirectives.omitted('mission_statement')
+    formdirectives.no_omit(IEditForm, 'mission_statement')
+
+    logo = NamedBlobImage(
+        title=_(u"Company / Organisation logo"),
+        description=_(
+            u"Please add an image with the company / organisation logo. "
+            u"Please use a format suited for web display if possible (JPEG, "
+            u"PNG or GIF).")
+    )
+    directives.languageindependent('logo')
+    formdirectives.omitted('logo')
+    formdirectives.no_omit(IEditForm, 'logo')
+
+    ceo_image = NamedBlobImage(
+        title=_(u"Photo of your CEO, President, General Director or other"),
+    )
+    directives.languageindependent('ceo_image')
+    formdirectives.omitted('ceo_image')
+    formdirectives.no_omit(IEditForm, 'ceo_image')
 
 
 class IOrganisationExtra(model.Schema):
@@ -180,6 +239,20 @@ class IOrganisationExtra(model.Schema):
         required=False,
     )
     directives.languageindependent('additional_countries')
+
+    business_sector = schema.TextLine(
+        title=_(u"Business sector"),
+        description=_(u"Business sector in which you operate"),
+    )
+    directives.languageindependent('business_sector')
+
+    social_dialogue = schema.Choice(
+        title=_(u"Social Dialogue Partner?"),
+        description=_(
+            u"Are you a Social Partner within the framework of the European "
+            "Social Dialogue?"),
+        vocabulary=vocabularies.yes_no,
+    )
 
     why_partner = schema.Text(
         title=_(
@@ -297,15 +370,7 @@ class IOrganisationExtra(model.Schema):
         required=False,
     )
     formdirectives.omitted('phase_2_intro')
-    # formdirectives.no_omit(IEditForm, 'phase_2_intro')
-
-    mission_statement = schema.Text(
-        title=_(u"Your mission statement"),
-        description=_(u"Briefly outline the mission of your company"),
-    )
-    directives.languageindependent('mission_statement')
-    formdirectives.omitted('mission_statement')
-    formdirectives.no_omit(IEditForm, 'mission_statement')
+    formdirectives.no_omit(IEditForm, 'phase_2_intro')
 
     ceo_name = schema.TextLine(
         title=_(u"CEO"),
@@ -328,74 +393,25 @@ class IOrganisationExtra(model.Schema):
     formdirectives.omitted('ceo_position')
     formdirectives.no_omit(IEditForm, 'ceo_position')
 
-    ceo_quote = schema.TextLine(
+    description = schema.Text(
         title=_(
             u'His / her quote on the Healthy Workplaces Campaign on "Working '
             'together for risk prevention"'),
     )
-    directives.languageindependent('ceo_quote')
-    formdirectives.omitted('ceo_quote')
-    formdirectives.no_omit(IEditForm, 'ceo_quote')
+    directives.languageindependent('description')
+    formdirectives.omitted('description')
+    formdirectives.no_omit(IEditForm, 'description')
 
-    representative_name = schema.TextLine(
-        required=False,
-        title=_(
-            u"Name of your organisation's health and safety representative"),
+    organisation_type = schema.Choice(
+        title=_(u"Organisation type"),
+        vocabulary=vocabularies.organisation_types,
     )
-    directives.languageindependent('representative_name')
-    formdirectives.omitted('representative_name')
-    formdirectives.no_omit(IEditForm, 'representative_name')
+    directives.languageindependent('organisation_type')
 
-    representative_email = schema.TextLine(
-        required=False,
-        title=_(
-            u"Email address of your organisation's health and safety "
-            "representative"),
+    key_position = schema.TextLine(
+        title=_(u"Position of the main contact person."),
     )
-    directives.languageindependent('representative_email')
-    formdirectives.omitted('representative_email')
-    formdirectives.no_omit(IEditForm, 'representative_email')
-
-    representative_phone = schema.TextLine(
-        required=False,
-        title=_(
-            u"Telephone number of your organisation's health and safety "
-            "representative"),
-    )
-    directives.languageindependent('representative_phone')
-    formdirectives.omitted('representative_phone')
-    formdirectives.no_omit(IEditForm, 'representative_phone')
-
-    logo = NamedBlobImage(
-        title=_(u"Company / Organisation logo"),
-        description=_(
-            u"Please add an image with the company / organisation logo. "
-            u"Please use a format suited for web display if possible (JPEG, "
-            u"PNG or GIF).")
-    )
-    directives.languageindependent('logo')
-    formdirectives.omitted('logo')
-    formdirectives.no_omit(IEditForm, 'logo')
-
-    ceo_image = NamedBlobImage(
-        title=_(u"Photo of your CEO, President, General Director or other"),
-    )
-    directives.languageindependent('ceo_image')
-    formdirectives.omitted('ceo_image')
-    formdirectives.no_omit(IEditForm, 'ceo_image')
-
-    campaign_pledge = schema.Text(
-        title=_(
-            u"How does your organisation plan to contribute to making this "
-            u"Campaign a joint success? (your Campaign pledge)"),
-        description=_(
-            u"Please summarise briefly the support that you will provide "
-            u"described under STEP 2 of this application form (max. 150 "
-            u"words)."),
-    )
-    directives.languageindependent('campaign_pledge')
-    formdirectives.omitted('campaign_pledge')
-    formdirectives.no_omit(IEditForm, 'campaign_pledge')
+    directives.languageindependent('key_position')
 
 
 class IOrganisation(IOrganisationBase, IOrganisationExtra):
@@ -430,7 +446,7 @@ class IOrganisation(IOrganisationBase, IOrganisationExtra):
         'additional_information',
         label=_(u"Additional information"),
         fields=[
-            'mission_statement', 'ceo_name', 'ceo_position', 'ceo_quote',
+            'mission_statement', 'ceo_name', 'ceo_position', 'description',
             'representative_name', 'representative_email',
             'representative_phone', 'logo', 'ceo_image', 'campaign_pledge']
     )
