@@ -17,14 +17,11 @@ class IFocalPoint(IOrganisationBase):
         'about_fop',
         label=_(u'About your Focal Point'),
         fields=[
-            'title', 'organisation_type', 'description',
-            'street', 'address_extra',
-            'city', 'zip_code', 'country', 'email', 'phone', 'fax',
-            'url', 'campaign_url',
-            'logo', 'mission_statement',
-            'campaign_pledge', 'ceo_image',
-            'key_name', 'key_email', 'key_phone',
-            'representative_name', 'representative_email',
+            'title', 'organisation_type', 'description', 'street',
+            'address_extra', 'city', 'zip_code', 'country', 'email', 'phone',
+            'fax', 'url', 'campaign_url', 'logo', 'mission_statement',
+            'campaign_pledge', 'ceo_image', 'key_name', 'key_email',
+            'key_phone', 'representative_name', 'representative_email',
             'representative_phone'
         ],
     )
@@ -65,7 +62,6 @@ class FormBase(object):
         self.groups[0].widgets['ceo_image'].label = _(u"Organisation logo")
         self.groups[0].widgets['mission_statement'].label = _(u"Mandate")
         self.groups[0].widgets['mission_statement'].field.description = u""
-        self.groups[0].widgets['key_phone'].field.required = False
 
 
 class AddForm(dexterity.AddForm, FormBase):

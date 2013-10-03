@@ -119,6 +119,7 @@ class IOrganisationBase(model.Schema):
 
     key_phone = schema.TextLine(
         title=_(u"Telephone number of main contact person."),
+        required=False,
     )
     directives.languageindependent('key_phone')
 
