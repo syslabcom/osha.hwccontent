@@ -2,7 +2,7 @@ from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from osha.hwccontent import _
 
 COUNTRIES = [
-    'Austria', 'Belgium', 'Bulgaria', 'Cyprus',
+    'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus',
     'Czech Republic', 'Denmark', 'Estonia', 'Finland',
     'France', 'Germany', 'Greece', 'Hungary', 'Iceland',
     'Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania',
