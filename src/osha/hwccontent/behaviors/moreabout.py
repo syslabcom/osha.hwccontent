@@ -6,7 +6,7 @@ from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.interfaces import IDexterityContent
 from plone.directives import form
 from plone.formwidget.contenttree import (
-    ContentTreeFieldWidget,
+    MultiContentTreeFieldWidget,
     ObjPathSourceBinder,
 )
 from plone.supermodel import model
@@ -80,14 +80,18 @@ class RelatedSites(object):
 class ISeeAlso(model.Schema):
     """Marker / Form interface for internal references"""
 
-    see_also = RelationChoice(
+    see_also = schema.List(
         title=_(u"See also"),
         description=_(u"Pick existing items"),
         required=False,
-        source=ObjPathSourceBinder(),
+        value_type=RelationChoice(
+            title=_(u"Select an existing item"),
+            required=False,
+            source=ObjPathSourceBinder(),
+        ),
     )
 
-    form.widget(see_also=ContentTreeFieldWidget)
+    form.widget(see_also=MultiContentTreeFieldWidget)
 
 
 @interface.implementer(ISeeAlso)
