@@ -76,7 +76,7 @@
 
  <transition transition_id="approve_phase_1" title="Reviewer gives phase 1 approval" new_state="approved_phase_1" trigger="USER" before_script="" after_script="">
   <description>Phase 1 approval creates a user account and enables the new user to enter information required for the next approval phase</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=publish" category="workflow" icon="">Publish</action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=approve_phase_1" category="workflow" icon="">Approve (Phase 1)</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
