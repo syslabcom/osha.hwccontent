@@ -14,4 +14,13 @@
     title="Files Listing"
     />
 
+  <browser:page
+    name="hw2014_front_page"
+    class=".front_page.FrontPageView"
+    for="plone.app.layout.navigation.interfaces.INavigationRoot"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    template="templates/front_page.pt"
+    permission="zope2.View"
+    />
+
 </configure>
