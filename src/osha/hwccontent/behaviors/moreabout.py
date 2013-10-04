@@ -8,7 +8,6 @@ from plone.directives import form
 from plone.supermodel import model
 from z3c.form import interfaces
 from z3c.form.widget import FieldWidget
-from zope.interface import alsoProvides, implements
 from zope import component
 from zope import interface
 from zope import schema
@@ -20,11 +19,10 @@ class ICustomTableWidget(interface.Interface):
     """Subclass the widget, required for template customization"""
 
 
+@interface.implementer(ICustomTableWidget)
 class CustomTableWidget(DataGridField):
     """This grid should be applied to an schema.List item which has
        schema.Object and an interface"""
-
-    interface.implements(ICustomTableWidget)
 
     allow_insert = True
     allow_delete = True
@@ -50,6 +48,7 @@ class ITableRowSchema(form.Schema):
     )
 
 
+@interface.provider(IFormFieldProvider)
 class IRelatedSites(model.Schema):
     """Marker / Form interface for additional links """
 
@@ -63,11 +62,9 @@ class IRelatedSites(model.Schema):
     )
     form.widget(see_also_links=CustomTableWidgetFactory)
 
-alsoProvides(IRelatedSites, IFormFieldProvider)
 
-
+@interface.implementer(IRelatedSites)
 class RelatedSites(object):
-    implements(IRelatedSites)
     adapts(IDexterityContent)
 
     def __init__(self, context):
