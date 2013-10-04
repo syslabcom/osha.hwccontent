@@ -5,9 +5,14 @@ from osha.hwccontent import _
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.interfaces import IDexterityContent
 from plone.directives import form
+from plone.formwidget.contenttree import (
+    ContentTreeFieldWidget,
+    ObjPathSourceBinder,
+)
 from plone.supermodel import model
 from z3c.form import interfaces
 from z3c.form.widget import FieldWidget
+from z3c.relationfield.schema import RelationChoice
 from zope import component
 from zope import interface
 from zope import schema
@@ -52,19 +57,41 @@ class ITableRowSchema(form.Schema):
 class IRelatedSites(model.Schema):
     """Marker / Form interface for additional links """
 
-    see_also_links = schema.List(
-        title=_(u"See also"),
+    related_sites_links = schema.List(
+        title=_(u"Related sites"),
         required=False,
         value_type=DictRow(
             title=_(u"tablerow"),
             required=False,
             schema=ITableRowSchema,),
     )
-    form.widget(see_also_links=CustomTableWidgetFactory)
+    form.widget(related_sites_links=CustomTableWidgetFactory)
 
 
 @interface.implementer(IRelatedSites)
 class RelatedSites(object):
+    adapts(IDexterityContent)
+
+    def __init__(self, context):
+        self.context = context
+
+
+@interface.provider(IFormFieldProvider)
+class ISeeAlso(model.Schema):
+    """Marker / Form interface for internal references"""
+
+    see_also = RelationChoice(
+        title=_(u"See also"),
+        description=_(u"Pick existing items"),
+        required=False,
+        source=ObjPathSourceBinder(),
+    )
+
+    form.widget(see_also=ContentTreeFieldWidget)
+
+
+@interface.implementer(ISeeAlso)
+class SeeAlso(object):
     adapts(IDexterityContent)
 
     def __init__(self, context):

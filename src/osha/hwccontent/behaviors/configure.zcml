@@ -15,4 +15,13 @@
     marker=".moreabout.IRelatedSites"
     />
 
+  <plone:behavior
+    title="See also"
+    description='Lets you add internal links'
+    provides=".moreabout.ISeeAlso"
+    factory=".moreabout.SeeAlso"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    marker=".moreabout.ISeeAlso"
+    />
+
 </configure>
