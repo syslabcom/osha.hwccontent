@@ -41,7 +41,7 @@
 
  <state state_id="approved_phase_1" title="Approved (Phase 1)">
   <description>Waiting to be reviewed.</description>
-  <exit-transition transition_id="approve_phase_1"/>
+  <exit-transition transition_id="revoke_phase_1"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
@@ -74,9 +74,16 @@
   </permission-map>
  </state>
 
- <transition transition_id="approve_phase_1" title="Reviewer gives phase 1 approval" new_state="approved_phase_1" trigger="USER" before_script="" after_script="">
+ <transition transition_id="approve_phase_1" title="Reviewer gives phase 1 approval" new_state="approved_phase_1" trigger="USER" before_script="" after_script="add_user_and_send_notifications">
   <description>Phase 1 approval creates a user account and enables the new user to enter information required for the next approval phase</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=approve_phase_1" category="workflow" icon="">Approve (Phase 1)</action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=approve_phase_1" category="workflow" icon="">Approve Profile (Phase 1)</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="revoke_phase_1" title="Reviewer revokes phase 1 approval" new_state="pending" trigger="USER" before_script="" after_script="">
+  <description>iRevokes phase 1 approval</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=revoke_phase_1" category="workflow" icon="">Revoke Approval (Phase 1)</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
