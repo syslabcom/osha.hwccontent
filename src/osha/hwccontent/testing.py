@@ -19,12 +19,17 @@ class OSHAHWContentLayer(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
         # Load ZCML
+        import Products.CMFPlacefulWorkflow
+        self.loadZCML('configure.zcml', package=Products.CMFPlacefulWorkflow)
+
         import osha.hwccontent
         xmlconfig.file(
             'configure.zcml',
             osha.hwccontent,
             context=configurationContext
         )
+        # Why not do it like this?
+        # self.loadZCML('configure.zcml', package=osha.hwccontent)
 
         # Install products that use an old-style initialize() function
         #z2.installProduct(app, 'Products.PloneFormGen')
@@ -34,6 +39,7 @@ class OSHAHWContentLayer(PloneSandboxLayer):
 #        z2.uninstallProduct(app, 'Products.PloneFormGen')
 
     def setUpPloneSite(self, portal):
+        #applyProfile(portal, 'plone.multilingualbehavior:default')
         applyProfile(portal, 'osha.hwccontent:default')
         self.__createDefaultUsers(portal)
         self.__createDefaultContent(portal)
