@@ -6,6 +6,7 @@ from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
 from plone.app.robotframework import RemoteLibraryLayer, AutoLogin
 from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
+from Testing.ZopeTestCase.utils import setupCoreSessions
 
 from plone.testing import z2
 from plone import api
@@ -18,6 +19,7 @@ class OSHAHWContentLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
+        setupCoreSessions(app)
         # Load ZCML
         import Products.CMFPlacefulWorkflow
         self.loadZCML('configure.zcml', package=Products.CMFPlacefulWorkflow)
@@ -39,7 +41,6 @@ class OSHAHWContentLayer(PloneSandboxLayer):
 #        z2.uninstallProduct(app, 'Products.PloneFormGen')
 
     def setUpPloneSite(self, portal):
-        #applyProfile(portal, 'plone.multilingualbehavior:default')
         applyProfile(portal, 'osha.hwccontent:default')
         self.__createDefaultUsers(portal)
         self.__createDefaultContent(portal)
@@ -57,7 +58,7 @@ class OSHAHWContentLayer(PloneSandboxLayer):
         
         organisations = api.content.create(portal, type='osha.hwccontent.organisationfolder', title='Organisations')
         api.content.transition(organisations, 'publish')
-        
+
 
 class Debugging:
     """This enables the keyword 'start_debugger'

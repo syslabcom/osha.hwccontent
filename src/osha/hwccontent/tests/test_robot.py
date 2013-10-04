@@ -10,4 +10,5 @@ def test_suite():
         layered(robotsuite.RobotTestSuite("tests.robot"),
                 layer=OSHA_HWCCONTENT_FUNCTIONAL_TESTING)
     ])
+    suite.level = 2
     return suite

@@ -1,0 +1,18 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="thorn.teaserable">
+
+  <include package="plone.behavior" file="meta.zcml" />
+
+  <plone:behavior
+    title="Related Sites"
+    description='Lets you add links to related sites'
+    provides=".moreabout.IRelatedSites"
+    factory=".moreabout.RelatedSites"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    marker=".moreabout.IRelatedSites"
+    />
+
+</configure>

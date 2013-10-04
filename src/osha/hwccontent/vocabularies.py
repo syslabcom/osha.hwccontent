@@ -16,8 +16,8 @@ countries = SimpleVocabulary(
 )
 
 ORG_TYPES = [
-    'Private company', 'Trade union', 'Employer organisation',
-    'OSH professional organisation', 'Research organisation', 'Other']
+    'Enterprise', 'Trade union', 'Employer organisation', 'OSH professionals',
+    'Research', 'Other']
 
 organisation_types = SimpleVocabulary(
     [SimpleTerm(value=item, title=_(item)) for item in ORG_TYPES]
