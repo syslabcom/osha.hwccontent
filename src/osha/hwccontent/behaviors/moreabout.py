@@ -16,15 +16,15 @@ from zope.component import adapts
 from zope.schema.interfaces import IField
 
 
-class IFixedTableWidget(interface.Interface):
+class ICustomTableWidget(interface.Interface):
     """Subclass the widget, required for template customization"""
 
 
-class FixedTableWidget(DataGridField):
+class CustomTableWidget(DataGridField):
     """This grid should be applied to an schema.List item which has
        schema.Object and an interface"""
 
-    interface.implements(IFixedTableWidget)
+    interface.implements(ICustomTableWidget)
 
     allow_insert = True
     allow_delete = True
@@ -34,9 +34,9 @@ class FixedTableWidget(DataGridField):
 
 @component.adapter(IField, interfaces.IFormLayer)
 @interface.implementer(interfaces.IFieldWidget)
-def FixedTableWidgetFactory(field, request):
+def CustomTableWidgetFactory(field, request):
     """IFieldWidget factory for DataGridField."""
-    return FieldWidget(field, FixedTableWidget(request))
+    return FieldWidget(field, CustomTableWidget(request))
 
 
 class ITableRowSchema(form.Schema):
@@ -61,7 +61,7 @@ class IRelatedSites(model.Schema):
             required=False,
             schema=ITableRowSchema,),
     )
-    form.widget(see_also_links=FixedTableWidgetFactory)
+    form.widget(see_also_links=CustomTableWidgetFactory)
 
 alsoProvides(IRelatedSites, IFormFieldProvider)
 
