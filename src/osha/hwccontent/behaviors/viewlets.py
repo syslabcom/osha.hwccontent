@@ -26,6 +26,16 @@ class SeeAlsoViewlet(ViewletBase):
 class RelatedSitesViewlet(ViewletBase):
     """ A simple viewlet which renders see_also """
 
+    def get_datacontext(self, obj):
+        if IRelatedSites.providedBy(obj):
+            return IRelatedSites(obj)
+        if not INavigationRoot.providedBy(obj):
+            return self.get_datacontext(aq_parent(obj))
+        return None
+
     def update(self):
-        self.context = IRelatedSites(self.context)
-        self.available = True if self.context.related_sites_links else False
+        self.context = self.get_datacontext(self.context)
+        self.available = True if (
+            self.context and self.context.related_sites_links) else False
+        self.items = [x for x in self.context.related_sites_links] \
+            if self.available else []

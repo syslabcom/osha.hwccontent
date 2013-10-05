@@ -35,4 +35,13 @@
     permission="zope2.View"
     />
 
+  <browser:viewlet
+    name="contentrelatedsites"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    class=".viewlets.RelatedSitesViewlet"
+    manager="plone.app.layout.viewlets.interfaces.IBelowContent"
+    template="relatedsites.pt"
+    permission="zope2.View"
+    />
+
 </configure>
