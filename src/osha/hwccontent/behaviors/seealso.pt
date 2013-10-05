@@ -2,7 +2,7 @@
      tal:condition="view/available">
      <h2 i18n:translate="See also">See also</h2>
      <ul>
-        <li tal:repeat="item context/see_also">
+        <li tal:repeat="item view/items">
             <a href="#" tal:attributes="href item/absolute_url" tal:content="item/Title">link</a>
         </li>
      </ul>

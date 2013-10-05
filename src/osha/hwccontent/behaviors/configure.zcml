@@ -28,7 +28,7 @@
 
   <browser:viewlet
     name="contentseealso"
-    for=".moreabout.ISeeAlso"
+    for="plone.dexterity.interfaces.IDexterityContent"
     class=".viewlets.SeeAlsoViewlet"
     manager="plone.app.layout.viewlets.interfaces.IBelowContent"
     template="seealso.pt"

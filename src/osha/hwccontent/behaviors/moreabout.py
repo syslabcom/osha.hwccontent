@@ -12,7 +12,7 @@ from plone.formwidget.contenttree import (
 from plone.supermodel import model
 from z3c.form import interfaces
 from z3c.form.widget import FieldWidget
-from z3c.relationfield.schema import RelationChoice
+from z3c.relationfield.schema import RelationChoice, RelationList
 from zope import component
 from zope import interface
 from zope import schema
@@ -80,7 +80,7 @@ class RelatedSites(object):
 class ISeeAlso(model.Schema):
     """Marker / Form interface for internal references"""
 
-    see_also = schema.List(
+    see_also = RelationList(
         title=_(u"See also"),
         description=_(u"Pick existing items"),
         required=False,
