@@ -9,6 +9,7 @@ from plone.formwidget.contenttree import (
     MultiContentTreeFieldWidget,
     ObjPathSourceBinder,
 )
+from plone.multilingualbehavior import directives
 from plone.supermodel import model
 from z3c.form import interfaces
 from z3c.form.widget import FieldWidget
@@ -57,6 +58,9 @@ class ITableRowSchema(form.Schema):
 class IRelatedSites(model.Schema):
     """Marker / Form interface for additional links """
 
+    model.fieldset('settings', label=_(u"Settings"),
+                   fields=['related_sites_links'])
+
     related_sites_links = schema.List(
         title=_(u"Related sites"),
         required=False,
@@ -80,6 +84,9 @@ class RelatedSites(object):
 class ISeeAlso(model.Schema):
     """Marker / Form interface for internal references"""
 
+    model.fieldset('settings', label=_(u"Settings"),
+                   fields=['see_also'])
+
     see_also = RelationList(
         title=_(u"See also"),
         description=_(u"Pick existing items"),
@@ -92,6 +99,7 @@ class ISeeAlso(model.Schema):
     )
 
     form.widget(see_also=MultiContentTreeFieldWidget)
+    directives.languageindependent('see_also')
 
 
 @interface.implementer(ISeeAlso)
@@ -106,6 +114,9 @@ class SeeAlso(object):
 class ISectionImage(form.Schema):
     """Marker / Form interface for adding section image(s)"""
 
+    model.fieldset('settings', label=_(u"Settings"),
+                   fields=['section_image'])
+
     section_image = RelationList(
         title=_(u"Section images"),
         description=_(u"Pick one or more existing images"),
@@ -118,6 +129,7 @@ class ISectionImage(form.Schema):
     )
 
     form.widget(section_image=MultiContentTreeFieldWidget)
+    directives.languageindependent('section_image')
 
 
 @interface.implementer(ISectionImage)

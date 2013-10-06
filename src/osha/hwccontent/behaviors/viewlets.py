@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_parent
+from plone import api
 from plone.app.layout.viewlets import ViewletBase
 from osha.hwccontent.behaviors.moreabout import (
     IRelatedSites, ISeeAlso, ISectionImage)
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.multilingual.interfaces import (
+    ITranslatable, ITranslationManager)
 
 
 class SeeAlsoViewlet(ViewletBase):
@@ -20,8 +23,17 @@ class SeeAlsoViewlet(ViewletBase):
         self.context = self.get_datacontext(self.context)
         self.available = True if (self.context and self.context.see_also) \
             else False
-        self.items = [x.to_object for x in self.context.see_also] \
-            if self.available else []
+        if self.available:
+            language = api.portal.get_tool(
+                'portal_languages').getPreferredLanguage()
+            items = list()
+            for relation in self.context.see_also:
+                obj = relation.to_object
+                if ITranslatable.providedBy(obj):
+                    obj = ITranslationManager(obj).get_translation(
+                        language) or obj
+                items.append(obj)
+            self.items = items
 
 
 class RelatedSitesViewlet(ViewletBase):
