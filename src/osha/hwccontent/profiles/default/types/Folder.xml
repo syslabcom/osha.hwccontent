@@ -8,6 +8,7 @@
         <element value="plone.multilingualbehavior.interfaces.IDexterityTranslatable" />
         <element value="osha.hwccontent.behaviors.moreabout.IRelatedSites" />
         <element value="osha.hwccontent.behaviors.moreabout.ISeeAlso" />
+        <element value="osha.hwccontent.behaviors.moreabout.ISectionImage" />
     </property>
 
 </object>
