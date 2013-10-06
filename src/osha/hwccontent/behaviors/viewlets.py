@@ -54,7 +54,7 @@ class SectionImageViewlet(ViewletBase):
 
     def update(self):
         self.context = self.get_datacontext(self.context)
-        self.available = True if (self.context and self.context.see_also) \
-            else False
+        self.available = True if (
+            self.context and self.context.section_image) else False
         self.items = [x.to_object for x in self.context.section_image] \
             if self.available else []
