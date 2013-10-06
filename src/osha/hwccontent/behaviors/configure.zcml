@@ -25,6 +25,14 @@
     marker=".moreabout.ISeeAlso"
     />
 
+  <plone:behavior
+    title="Section image"
+    description='Lets you add one or more images to a section'
+    provides=".moreabout.ISectionImage"
+    factory=".moreabout.SectionImage"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    marker=".moreabout.ISectionImage"
+    />
 
   <browser:viewlet
     name="contentseealso"
@@ -41,6 +49,15 @@
     class=".viewlets.RelatedSitesViewlet"
     manager="plone.app.layout.viewlets.interfaces.IBelowContent"
     template="relatedsites.pt"
+    permission="zope2.View"
+    />
+
+  <browser:viewlet
+    name="contentsectionimage"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    class=".viewlets.SectionImageViewlet"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+    template="sectionimage.pt"
     permission="zope2.View"
     />
 

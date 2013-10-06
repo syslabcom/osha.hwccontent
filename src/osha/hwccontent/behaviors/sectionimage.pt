@@ -1,0 +1,9 @@
+<div id="sectionImage"
+     tal:condition="view/available">
+    <span tal:repeat="item view/items" tal:omit-tag="">
+      <img tal:define="scales item/@@images"
+           tal:replace="structure python: scales.tag('image', scale='preview')" />
+           <br tal:condition="not:repeat/item/end" />
+    </span>
+
+</div>

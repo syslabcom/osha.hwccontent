@@ -100,3 +100,29 @@ class SeeAlso(object):
 
     def __init__(self, context):
         self.context = context
+
+
+@interface.provider(IFormFieldProvider)
+class ISectionImage(form.Schema):
+    """Marker / Form interface for adding section image(s)"""
+
+    section_image = RelationList(
+        title=_(u"Section images"),
+        description=_(u"Pick one or more existing images"),
+        required=False,
+        value_type=RelationChoice(
+            title=_(u"Browse for images in the site"),
+            required=False,
+            source=ObjPathSourceBinder(portal_type='Image'),
+        ),
+    )
+
+    form.widget(section_image=MultiContentTreeFieldWidget)
+
+
+@interface.implementer(ISectionImage)
+class SectionImage(object):
+    adapts(IDexterityContent)
+
+    def __init__(self, context):
+        self.context = context
