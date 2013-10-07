@@ -56,27 +56,29 @@
 
       </div>
 
-      <!-- The categories are still hard-coded -->
-      <div id="partners">
-        <h2 i18n:translate="partners">Partners</h2>
-        <div class="partners-menu">
-          <ul class="nav nav-pills nav-justified row-fluid">
-            <li class="span2"><a href="">National focal points</a></li>
-            <li class="span2"><a href="">Employers' associations</a></li>
-            <li class="span2"><a href="">Workers' associations</a></li>
-            <li class="span2 active"><a href="#">Enterprises </a></li>
-            <li class="span2"><a href="">Others 1 </a></li>
-            <li class="span2"><a href="">Others 2</a></li>
-          </ul>
-        </div>
+      <div class="row-fluid partners" id="frontpage-partners" tal:define="partners view/partners">
+        <h2 i18n:translate="Partners">Partners</h2>
+        <div class="partners-menu tabbable">
+            <ul class="nav nav-tabs nav-justified row-fluid">
+                <span tal:repeat="category partners/keys" tal:omit-tag="">
+                  <li class="span2" tal:define="active repeat/category/start" tal:attributes="class python:active and 'span2 active' or 'span2'"><a href="#tab" tal:attributes="href string:#tab${repeat/category/number}" data-toggle="tab" tal:content="category" i18n:translate="">category</a></li>
+                </span>
 
-        <div id="partners-logos">
-          <div class="row-fluid" tal:repeat="row view/partners">
-            <div class="span2" tal:repeat="partner row">
-              <a tal:attributes="href partner/absolute_url"><img tal:define="scales partner/@@images"
-           tal:replace="structure python: scales.tag('logo', scale='logo_preview')" /></a>
+            </ul>
+
+            <div class="partners-logos tab-content" id="partners-logos">
+              <span tal:repeat="category partners/keys" tal:omit-tag="">
+                <div id="tab1" class="tab-pane active" tal:define="active repeat/category/start"
+                  tal:attributes="class python:active and 'tab-pane active' or 'tab-pane';
+                    id string:tab${repeat/category/number}">
+                  <div class="row-fluid" tal:repeat="row python:partners[category]">
+                      <div class="span2" tal:repeat="partner row"><a tal:attributes="href partner/absolute_url"><img
+                        tal:define="scales partner/@@images" tal:replace="structure python: scales.tag('logo', scale='logo_preview')" /></a></div>
+                  </div>
+                </div>
+              </span>
             </div>
-          </div>
+
         </div>
       </div>
 

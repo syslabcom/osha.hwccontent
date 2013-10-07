@@ -1,7 +1,8 @@
 # _+- coding: utf-8 -*-
 
-from Acquisition import aq_parent
 from Products.Five.browser import BrowserView
+from collections import OrderedDict
+from osha.hwccontent import vocabularies
 from plone import api
 
 
@@ -34,18 +35,24 @@ class FrontPageView(BrowserView):
         results = catalog(
             portal_type="osha.hwccontent.organisation",
             review_state='published')
-        partners = list()
-        row = list()
-        i = 0
+        partners = OrderedDict()
+        for term in vocabularies.organisation_types:
+            partners[term.token] = [[]]
+
         for result in results:
-            if i > 0 and i % 6 == 0:
-                partners.append(row)
-                row = list()
             try:
                 partner = result.getObject()
             except:
                 continue
+            ot = partner.organisation_type
+            if ot not in partners:
+                # XXX we should probably log this...
+                continue
+            # get the last row
+            row = partners[ot][-1]
+            if len(row) and len(row) % 6 == 0:
+                # if the row is "full", create a new one
+                partners[ot].append([])
+                row = partners[ot][-1]
             row.append(partner)
-            i += 1
-        partners.append(row)
         return partners
