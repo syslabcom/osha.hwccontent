@@ -13,11 +13,8 @@
         <div class="span6">
 		  <h2 i18n:translate="">News</h2>
           <tal:news repeat="news_item news">
-		    <div class="news first item">
-		      <div class="row-fluid"></div>
-		    </div>
-		  
-		  <div class="news item">
+		  <div class="news item"
+               tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['news_item'].start else '')">
 		    <div class="row-fluid">
 		      <h3><a href="#"
                      tal:content="news_item/Title"
