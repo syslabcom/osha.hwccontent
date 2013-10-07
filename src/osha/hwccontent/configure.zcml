@@ -28,6 +28,9 @@
       directory="resources"
     />
 
+  <adapter name="organisation_type" factory=".organisation.organisation_type" />
+  <adapter name="organisation_type" factory=".focalpoint.organisation_type" />
+
   <interface interface=".interfaces.ITwoImages" />
 
 </configure>

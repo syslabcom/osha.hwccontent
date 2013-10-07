@@ -2,14 +2,18 @@
 <import-steps>
 
     <import-step
+        id="setupVarious"
+        version="1"
+        handler="osha.hwccontent.setuphandlers.setupVarious">
+    </import-step>
+
+    <import-step
         id="setupMultilingual"
         version="1"
         handler="osha.hwccontent.setuphandlers.setupMultilingual"
         title="Setup multilingual site (depends on types setup)">
-
         <dependency step="types" />
         <dependency step="portal_languages" />
-
     </import-step>
 
 
