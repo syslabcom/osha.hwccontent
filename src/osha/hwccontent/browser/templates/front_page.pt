@@ -9,45 +9,48 @@
 
     <metal:content-core fill-slot="content-core">
       <div class="news-events"
-           tal:define="news view/news">
+           tal:define="news view/news;
+                       events view/events">
         <div class="span6">
 		  <h2 i18n:translate="">News</h2>
           <tal:news repeat="news_item news">
-		  <div class="news item"
-               tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['news_item'].start else '')">
-		    <div class="row-fluid">
-		      <h3><a href="#"
-                     tal:content="news_item/Title"
-                     tal:attributes="href news_item/getURL">Good health and safety is good for business</a></h3>
-              <img src="/oshahwc2014/++theme++osha.hwctheme/HWManageStress_files/images/newsimage2.jpg" class="pull-left"/><p class="data"
-              tal:content="python:news_item.effective.strftime('%d/%m/%y')">17/5/13</p>
-		      <p tal:content="news_item/Description">EU-OSHA’s Healthy Workplaces Campaigns are its principal tools for raising awareness on occupational safety and health. The Campaigns, each of which runs for two years, involve hundreds of organisations from all of the EU Member States ...</p>
+		    <div class="news item"
+                 tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['news_item'].start else '')">
+		      <div class="row-fluid">
+		        <h3><a href="#"
+                       tal:content="news_item/Title"
+                       tal:attributes="href news_item/getURL">Good health and safety is good for business</a></h3>
+                <img src="/oshahwc2014/++theme++osha.hwctheme/HWManageStress_files/images/newsimage2.jpg" class="pull-left"/><p class="data"
+                tal:content="python:news_item.effective.strftime('%d/%m/%y')">17/5/13</p>
+		        <p tal:content="news_item/Description">EU-OSHA’s Healthy Workplaces Campaigns are its principal tools for raising awareness on occupational safety and health. The Campaigns, each of which runs for two years, involve hundreds of organisations from all of the EU Member States ...</p>
+		      </div>
 		    </div>
-		  </div>
-        </tal:news>
+          </tal:news>
 		  <p class="row-fluid"><a href="#" class="btn">see all news</a></p>
         </div>
 		
         <div class="span6">
           <h2 i18n:translate="">Events</h2>
-          <div class="event first item">
-		    <div class="row-fluid"></div>
-		  </div>
-		  
-		  <div class="event item">
-		    <div class="row-fluid">
-		      <h3><a href="#">Positive psychology at work - towards flourishing workplaces</a></h3>
-              <div class="databox pull-left">
-		        <p class="day">17</p>
-		        <p class="mounth">september</p>
-		        <p class="year">2013</p>
+          <tal:news repeat="event events">
+		    <div class="event item"
+                 tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['event'].start else '')">
+		      <div class="row-fluid">
+		        <h3><a href="#"
+                       tal:content="event/Title"
+                       tal:attributes="href event/getURL">Positive psychology at work - towards flourishing workplaces</a></h3>
+                <div class="databox pull-left">
+		          <p class="day"
+                     tal:content="python:event.effective.strftime('%d')">17</p>
+		          <p class="mounth"
+                     tal:content="python:event.effective.strftime('%M')">september</p>
+		          <p class="year"
+                     tal:content="python:event.effective.strftime('%Y')">2013</p>
+		        </div>
+		        <p><strong>LOCATION:</strong> FINLAND</p>
+		        <p><strong>ORGANIZER:</strong> <br/> Niva - The Nordic Institute for Advanced Training in occupational health . Niva - The Nordic Institute for Advanced Training in occupational health</p>
 		      </div>
-		      <p><strong>LOCATION:</strong> FINLAND</p>
-		      <p><strong>ORGANIZER:</strong> <br/> Niva - The Nordic Institute for Advanced Training in occupational health . Niva - The Nordic Institute for Advanced Training in occupational health</p>
 		    </div>
-		    
-		    
-		  </div>
+          </tal:news>
 		  <p class="row-fluid"><a href="#" class="btn">see all events</a></p>
         </div>
        

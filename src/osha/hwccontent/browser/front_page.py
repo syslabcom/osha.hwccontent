@@ -24,3 +24,7 @@ class FrontPageView(BrowserView):
     @property
     def news(self):
         return self._get_feed_contents("/news/combined-feed-folder/")
+
+    @property
+    def events(self):
+        return self._get_feed_contents("/events/combined-feed-folder/")
