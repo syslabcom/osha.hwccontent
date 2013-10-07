@@ -28,4 +28,6 @@
       directory="resources"
     />
 
+  <interface interface=".interfaces.ITwoImages" />
+
 </configure>
