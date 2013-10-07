@@ -4,7 +4,6 @@ import re
 from Products.validation.validators.BaseValidators import EMAIL_RE
 from five import grok
 from osha.hwccontent import _, vocabularies
-from plone.indexer.decorator import indexer
 from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
 from z3c.form import field
@@ -452,11 +451,6 @@ class IOrganisation(IOrganisationBase, IOrganisationExtra):
             'representative_name', 'representative_email',
             'representative_phone', 'logo', 'ceo_image', 'campaign_pledge']
     )
-
-
-@indexer(IOrganisation)
-def organisation_type(obj):
-    return obj.organisation_type
 
 
 class AddForm(dexterity.AddForm):

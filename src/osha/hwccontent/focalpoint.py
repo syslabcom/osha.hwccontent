@@ -7,7 +7,6 @@ from z3c.form.interfaces import IAddForm
 from zope import schema
 from plone.autoform import directives as formdirectives
 from plone.directives import dexterity
-from plone.indexer.decorator import indexer
 from plone.multilingualbehavior import directives
 from osha.hwccontent.organisation import IOrganisationBase
 
@@ -45,11 +44,6 @@ class IFocalPoint(IOrganisationBase):
         vocabulary=vocabularies.fop_organisation_types,
     )
     directives.languageindependent('organisation_type')
-
-
-@indexer(IFocalPoint)
-def organisation_type(obj):
-    return obj.organisation_type
 
 
 class FormBase(object):
