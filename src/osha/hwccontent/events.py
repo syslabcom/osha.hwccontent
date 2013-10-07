@@ -62,7 +62,8 @@ def add_user_and_send_notifications(obj):
     roles = ["Reader", "Contributor", "Editor"]
     obj.manage_setLocalRoles(username, roles)
     if data['from_addr']:
-        portal.MailHost.send(mail_body_tpl.format(**data))
+        MailHost = getToolByName(portal, 'MailHost')
+        MailHost.send(mail_body_tpl.format(**data))
 
 
 @grok.subscribe(IOrganisation, IBeforeTransitionEvent)
