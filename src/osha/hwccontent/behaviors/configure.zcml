@@ -43,6 +43,7 @@
     permission="zope2.View"
     />
 
+  <!-- viewlets for our behaviors -->
   <browser:viewlet
     name="contentrelatedsites"
     for="plone.dexterity.interfaces.IDexterityContent"
@@ -68,6 +69,17 @@
     manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
     template="sectionimagehorizontal.pt"
     permission="zope2.View"
+    />
+
+  <!-- override lead image viewlet -->
+  <browser:viewlet
+    name="contentleadimage"
+    for="plone.app.contenttypes.behaviors.leadimage.ILeadImage"
+    class="plone.app.contenttypes.behaviors.viewlets.LeadImageViewlet"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+    template="leadimage.pt"
+    permission="zope2.View"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
     />
 
 </configure>
