@@ -28,3 +28,24 @@ class FrontPageView(BrowserView):
     @property
     def events(self):
         return self._get_feed_contents("/events/combined-feed-folder/")
+
+    def partners(self):
+        catalog = api.portal.get_tool(name='portal_catalog')
+        results = catalog(
+            portal_type="osha.hwccontent.organisation",
+            review_state='published')
+        partners = list()
+        row = list()
+        i = 0
+        for result in results:
+            if i > 0 and i % 6 == 0:
+                partners.append(row)
+                row = list()
+            try:
+                partner = result.getObject()
+            except:
+                continue
+            row.append(partner)
+            i += 1
+        partners.append(row)
+        return partners
