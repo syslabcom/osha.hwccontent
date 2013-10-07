@@ -27,13 +27,13 @@
         </tal:news>
 		  <p class="row-fluid"><a href="#" class="btn">see all news</a></p>
         </div>
-		
+
         <div class="span6">
           <h2 i18n:translate="">Events</h2>
           <div class="event first item">
 		    <div class="row-fluid"></div>
 		  </div>
-		  
+
 		  <div class="event item">
 		    <div class="row-fluid">
 		      <h3><a href="#">Positive psychology at work - towards flourishing workplaces</a></h3>
@@ -45,13 +45,38 @@
 		      <p><strong>LOCATION:</strong> FINLAND</p>
 		      <p><strong>ORGANIZER:</strong> <br/> Niva - The Nordic Institute for Advanced Training in occupational health . Niva - The Nordic Institute for Advanced Training in occupational health</p>
 		    </div>
-		    
-		    
+
+
 		  </div>
 		  <p class="row-fluid"><a href="#" class="btn">see all events</a></p>
         </div>
-       
+
       </div>
+
+      <!-- The categories are still hard-coded -->
+      <div id="partners">
+        <h2 i18n:translate="partners">Partners</h2>
+        <div class="partners-menu">
+          <ul class="nav nav-pills nav-justified row-fluid">
+            <li class="span2"><a href="">National focal points</a></li>
+            <li class="span2"><a href="">Employers' associations</a></li>
+            <li class="span2"><a href="">Workers' associations</a></li>
+            <li class="span2 active"><a href="#">Enterprises </a></li>
+            <li class="span2"><a href="">Others 1 </a></li>
+            <li class="span2"><a href="">Others 2</a></li>
+          </ul>
+        </div>
+
+        <div id="partners-logos">
+          <div class="row-fluid" tal:repeat="row view/partners">
+            <div class="span2" tal:repeat="partner row">
+              <a tal:attributes="href partner/absolute_url"><img tal:define="scales partner/@@images"
+           tal:replace="structure python: scales.tag('logo', scale='logo_preview')" /></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     </metal:content-core>
 

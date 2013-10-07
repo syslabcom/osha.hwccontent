@@ -4,6 +4,10 @@
         i18n:domain="plone"
         xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
+    <property name="view_methods" purge="False">
+        <element value="hw2014_front_page" />
+    </property>
+
     <property name="behaviors" purge="false">
         <element value="plone.multilingualbehavior.interfaces.IDexterityTranslatable" />
         <element value="osha.hwccontent.behaviors.moreabout.IRelatedSites" />
