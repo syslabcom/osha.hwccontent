@@ -45,15 +45,20 @@ username = data['creator_email']
 if not use_email_as_username:
     username = username.split('@')[0]
 data['username'] = username
-chars = string.ascii_letters + string.digits
-password = ''.join(random.choice(chars) for x in range(16))
-portal.portal_registration.addMember(
-    username,
-    password,
-    [],
-    properties={'email': data['creator_email'],
-                'username': username}
-)
+if portal.portal_membership.getMemberById(username) is None:
+    chars = string.ascii_letters + string.digits + '\'()[]{}$%&#+*~.,;:-_'
+    password = ''.join(random.choice(chars) for x in range(16))
+    while portal.portal_registration.testPasswordValidity(password):
+        password = ''.join(random.choice(chars) for x in range(16))
+    portal.portal_registration.addMember(
+        username,
+        password,
+        [],
+        properties={'email': data['creator_email'],
+                    'username': username,
+                    'fullname': data['creator_name'],
+        }
+    )
 roles = ["Reader", "Contributor", "Editor"]
 obj.manage_setLocalRoles(username, roles)
 if data['from_addr']:
