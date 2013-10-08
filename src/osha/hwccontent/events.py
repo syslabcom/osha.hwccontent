@@ -4,27 +4,35 @@ import random
 from Products.CMFCore.utils import getToolByName
 from Products.DCWorkflow.interfaces import IBeforeTransitionEvent
 from five import grok
+from zope.component import getMultiAdapter
 
 from osha.hwccontent.organisation import IOrganisation
+from osha.hwccontent.interfaces import IOSHAHWCContentLayer
 
-mail_body_tpl = """From: {from_addr}
-To: {creator_email}
-Subject: {subject}
 
-Dear {creator_name},
+class ApprovePhase1MailTemplate(grok.View):
+    """ """
+    grok.name('mail_approve_phase_1')
+    grok.context(IOrganisation)
+    grok.layer(IOSHAHWCContentLayer)
+    grok.require('cmf.ReviewPortalContent')
 
-Your organisation profile has been approved. You can set a password for your user account here:
+    def __init__(self, context, request):
+        super(ApprovePhase1MailTemplate, self).__init__(context, request)
+        obj = self.context
+        portal = getToolByName(obj, 'portal_url').getPortalObject()
+        self.object_url = obj.absolute_url()
+        self.portal_url = portal.absolute_url()
+        self.creator_name = obj.key_name
+        self.creator_email = obj.key_email
+        self.from_addr = portal.getProperty('email_from_address', '')
+        self.subject = 'Profile approved'
 
-    {portal_url}/mail_password_form?userid={username}
-
-You can then view and complete the profile here:
-
-    {object_url}
-
-Best regards,
-
-The Site Administration
-"""
+    def render(self, username):
+        self.username = username
+        self.template = grok.PageTemplateFile(
+            'templates/mail_approve_phase_1.pt')
+        return self.template.render(self)
 
 
 def add_user_and_send_notifications(obj):
@@ -32,19 +40,12 @@ def add_user_and_send_notifications(obj):
     site_props = getToolByName(obj, 'portal_properties').get('site_properties')
     portal_membership = getToolByName(obj, 'portal_membership')
     portal_registration = getToolByName(obj, 'portal_registration')
-    data = dict(
-        object_url=obj.absolute_url(),
-        portal_url=portal.absolute_url(),
-        creator_name=obj.key_name,
-        creator_email=obj.key_email,
-        from_addr=portal.getProperty('email_from_address', ''),
-        subject='Profile approved',
-    )
     use_email_as_username = site_props.use_email_as_login
-    username = data['creator_email']
+    creator_name = obj.key_name
+    username = creator_email = obj.key_email
+
     if not use_email_as_username:
         username = username.split('@')[0]
-    data['username'] = username
     if portal_membership.getMemberById(username) is None:
         chars = string.ascii_letters + string.digits + '\'()[]{}$%&#+*~.,;:-_'
         password = ''.join(random.choice(chars) for x in range(16))
@@ -54,16 +55,19 @@ def add_user_and_send_notifications(obj):
             username,
             password,
             [],
-            properties={'email': data['creator_email'],
+            properties={'email': creator_email,
                         'username': username,
-                        'fullname': data['creator_name'],
+                        'fullname': creator_name,
                         }
         )
     roles = ["Reader", "Contributor", "Editor"]
     obj.manage_setLocalRoles(username, roles)
-    if data['from_addr']:
-        MailHost = getToolByName(portal, 'MailHost')
-        MailHost.send(mail_body_tpl.format(**data))
+
+    mail_template = getMultiAdapter(
+        (obj, obj.REQUEST),
+        name="mail_approve_phase_1")
+    MailHost = getToolByName(portal, 'MailHost')
+    MailHost.send(mail_template.render(username))
 
 
 @grok.subscribe(IOrganisation, IBeforeTransitionEvent)
