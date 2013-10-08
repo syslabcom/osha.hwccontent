@@ -17,12 +17,11 @@ class MailTemplateBase(grok.View):
 
     def __init__(self, context, request):
         super(MailTemplateBase, self).__init__(context, request)
-        obj = self.context
-        portal = getToolByName(obj, 'portal_url').getPortalObject()
-        self.object_url = obj.absolute_url()
+        portal = getToolByName(context, 'portal_url').getPortalObject()
+        self.object_url = context.absolute_url()
         self.portal_url = portal.absolute_url()
-        self.creator_name = obj.key_name
-        self.creator_email = obj.key_email
+        self.creator_name = context.key_name
+        self.creator_email = context.key_email
         self.from_addr = portal.getProperty('email_from_address', '')
 
 
