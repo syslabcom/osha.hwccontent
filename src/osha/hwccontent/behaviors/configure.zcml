@@ -63,7 +63,7 @@
     />
 
   <browser:viewlet
-    name="contentsectiontwoimages"
+    name="contentsectionimage"
     for="osha.hwccontent.interfaces.ITwoImages"
     class=".viewlets.SectionImageViewlet"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
@@ -71,15 +71,13 @@
     permission="zope2.View"
     />
 
-  <!-- override lead image viewlet -->
   <browser:viewlet
-    name="contentleadimage"
-    for="plone.app.contenttypes.behaviors.leadimage.ILeadImage"
-    class="plone.app.contenttypes.behaviors.viewlets.LeadImageViewlet"
+    name="contentsectionimage"
+    for="osha.hwccontent.interfaces.ISectionIntro"
+    class=".viewlets.SectionImageViewlet"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
-    template="leadimage.pt"
+    template="sectionintroimage.pt"
     permission="zope2.View"
-    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
     />
 
 </configure>

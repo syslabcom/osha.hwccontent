@@ -29,5 +29,6 @@
     />
 
   <interface interface=".interfaces.ITwoImages" />
+  <interface interface=".interfaces.ISectionIntro" />
 
 </configure>

@@ -1,5 +1,6 @@
 <div id="intro-image"
      tal:condition="view/available">
-  <img tal:define="scales context/@@images"
+  <img tal:define="image python:view.items[0];
+        scales image/@@images"
        tal:replace="structure python: scales.tag('image', width=1170, height=262, direction='down')" />
 </div>

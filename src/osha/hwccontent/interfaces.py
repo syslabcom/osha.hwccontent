@@ -1,6 +1,7 @@
 # _+- coding: utf-8 -*-
 from plone.app.contenttypes.interfaces import IPloneAppContenttypesLayer
-from zope.interface import Interface
+from plone.dexterity.interfaces import IDexterityContent
+# from zope.interface import Interface
 
 
 class IOSHAHWCContentLayer(IPloneAppContenttypesLayer):
@@ -8,6 +9,10 @@ class IOSHAHWCContentLayer(IPloneAppContenttypesLayer):
     """
 
 
-class ITwoImages(Interface):
+class ITwoImages(IDexterityContent):
     """Marker Interface to indicate that a page has 2 horizontal image slots
     """
+
+
+class ISectionIntro(IDexterityContent):
+    """Marker Interface for section intro """
