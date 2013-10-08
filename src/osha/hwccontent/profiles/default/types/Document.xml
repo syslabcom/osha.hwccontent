@@ -7,4 +7,8 @@
   <element value="document_files_view"/>
  </property>
 
+    <property name="behaviors" purge="false">
+        <element value="plone.multilingualbehavior.interfaces.IDexterityTranslatable" />
+    </property>
+
 </object>
