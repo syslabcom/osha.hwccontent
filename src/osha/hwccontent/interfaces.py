@@ -1,7 +1,6 @@
 # _+- coding: utf-8 -*-
 from plone.app.contenttypes.interfaces import IPloneAppContenttypesLayer
 from plone.dexterity.interfaces import IDexterityContent
-# from zope.interface import Interface
 
 
 class IOSHAHWCContentLayer(IPloneAppContenttypesLayer):

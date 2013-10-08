@@ -32,4 +32,14 @@
         layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
         />
 
+
+  <!-- Override folder_listing (default view) for ISectionIntro -->
+  <browser:page
+    name="folder_listing"
+    permission="zope2.View"
+    for="osha.hwccontent.interfaces.ISectionIntro"
+    template="templates/section_view.pt"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    />
+
 </configure>

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from osha.hwccontent.interfaces import ITwoImages
+from osha.hwccontent.interfaces import ITwoImages, ISectionIntro
 from plone.app.layout.globals import layout
 
 
@@ -16,5 +16,12 @@ class LayoutPolicy(layout.LayoutPolicy):
         # the marker interface can also be set on the view
         if ITwoImages.providedBy(view):
             body_class += " two-images"
+
+        # is there a marker interface for section intro
+        if ISectionIntro.providedBy(self.context):
+            body_class += " section-intro"
+        # the marker interface can also be set on the view
+        if ISectionIntro.providedBy(view):
+            body_class += " section-intro"
 
         return body_class
