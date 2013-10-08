@@ -20,13 +20,14 @@
 		        <h3><a href="#"
                        tal:content="news_item/Title"
                        tal:attributes="href news_item/getURL">Good health and safety is good for business</a></h3>
-                <img src="/oshahwc2014/++theme++osha.hwctheme/HWManageStress_files/images/newsimage2.jpg" class="pull-left"/><p class="data"
+                <img src="/oshahwc2014/++theme++osha.hwctheme/HWManageStress_files/images/newsimage2.jpg" class="pull-left"
+                     tal:attributes="src string:${news_item/getPath}/@@images/image/thumb"/><p class="data"
                 tal:content="python:news_item.effective.strftime('%d/%m/%y')">17/5/13</p>
 		        <p tal:content="news_item/Description">EU-OSHA’s Healthy Workplaces Campaigns are its principal tools for raising awareness on occupational safety and health. The Campaigns, each of which runs for two years, involve hundreds of organisations from all of the EU Member States ...</p>
 		      </div>
 		    </div>
           </tal:news>
-		  <p class="row-fluid"><a href="#" class="btn">see all news</a></p>
+		  <p class="row-fluid"><a href="news" class="btn">see all news</a></p>
         </div>
 
         <div class="span6">
@@ -40,18 +41,18 @@
                        tal:attributes="href event/getURL">Positive psychology at work - towards flourishing workplaces</a></h3>
                 <div class="databox pull-left">
 		          <p class="day"
-                     tal:content="python:event.effective.strftime('%d')">17</p>
+                     tal:content="python:event.start.strftime('%d')">17</p>
 		          <p class="mounth"
-                     tal:content="python:event.effective.strftime('%M')">september</p>
+                     tal:content="python:event.start.strftime('%m')">september</p>
 		          <p class="year"
-                     tal:content="python:event.effective.strftime('%Y')">2013</p>
+                     tal:content="python:event.start.strftime('%Y')">2013</p>
 		        </div>
-		        <p><strong>LOCATION:</strong> FINLAND</p>
-		        <p><strong>ORGANIZER:</strong> <br/> Niva - The Nordic Institute for Advanced Training in occupational health . Niva - The Nordic Institute for Advanced Training in occupational health</p>
+		        <p tal:condition="event/location"><strong>LOCATION:</strong> <tal:location content="event/location">FINLAND</tal:location></p>
+		        <p tal:condition="event/Description"><strong>ORGANIZER:</strong> <br/><tal:description content="event/Description"> Niva - The Nordic Institute for Advanced Training in occupational health . Niva - The Nordic Institute for Advanced Training in occupational health</tal:description></p>
 		      </div>
 		    </div>
           </tal:news>
-		  <p class="row-fluid"><a href="#" class="btn">see all events</a></p>
+		  <p class="row-fluid"><a href="events" class="btn">see all events</a></p>
         </div>
 
       </div>
