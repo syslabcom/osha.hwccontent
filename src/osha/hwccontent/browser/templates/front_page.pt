@@ -43,7 +43,7 @@
 		          <p class="day"
                      tal:content="python:event.start.strftime('%d')">17</p>
 		          <p class="mounth"
-                     tal:content="python:event.start.strftime('%m')">september</p>
+                     tal:content="python:event.start.strftime('%B')">september</p>
 		          <p class="year"
                      tal:content="python:event.start.strftime('%Y')">2013</p>
 		        </div>
