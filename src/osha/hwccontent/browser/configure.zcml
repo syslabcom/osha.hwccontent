@@ -33,10 +33,21 @@
         />
 
 
-  <!-- Override folder_listing (default view) for ISectionIntro -->
+  <!-- Override folder_listing (default view for folder) for ISectionIntro -->
   <browser:page
     name="folder_listing"
     permission="zope2.View"
+    class=".section.SectionIntro"
+    for="osha.hwccontent.interfaces.ISectionIntro"
+    template="templates/section_view.pt"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    />
+
+<!-- Override document_view (default view for document) for ISectionIntro -->
+  <browser:page
+    name="document_view"
+    permission="zope2.View"
+    class=".section.SectionIntro"
     for="osha.hwccontent.interfaces.ISectionIntro"
     template="templates/section_view.pt"
     layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
