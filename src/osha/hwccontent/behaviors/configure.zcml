@@ -63,11 +63,11 @@
     />
 
   <browser:viewlet
-    name="contentsectionimage"
+    name="contentsectiontwoimages"
     for="osha.hwccontent.interfaces.ITwoImages"
     class=".viewlets.SectionImageViewlet"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
-    template="sectionimagehorizontal.pt"
+    template="sectiontwoimages.pt"
     permission="zope2.View"
     />
 
