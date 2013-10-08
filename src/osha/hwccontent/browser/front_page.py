@@ -27,6 +27,9 @@ class FrontPageView(BrowserView):
         return self._get_feed_contents("/news/combined-feed-folder/")
 
     @property
+    def events(self):
+        return self._get_feed_contents("/events/combined-feed-folder/")
+
     def partners(self):
         catalog = api.portal.get_tool(name='portal_catalog')
         results = catalog(

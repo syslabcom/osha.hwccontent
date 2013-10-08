@@ -1,0 +1,17 @@
+From: <tal:from tal:replace="view/from_addr">us@site.org</tal:from>
+To: <tal:recipient tal:replace="view/creator_email">user@organisation.org</tal:recipient>
+Subject: <tal:subject tal:replace="view/subject">Profile approved</tal:subject>
+
+Dear <tal:creator_name tal:replace="view/creator_name">User</tal:creator_name>,
+
+Your organisation profile has been approved. You can set a password for your user account here:
+
+    <tal:portal_url tal:replace="view/portal_url">http://nohost</tal:portal_url>/mail_password_form?userid=<tal:username tal:replace="view/username">user</tal:username>
+
+You can then view and complete the profile here:
+
+    <tal:object_url tal:replace="view/object_url">http://nohost/organisation</tal:object_url>
+
+Best regards,
+
+The Site Administration

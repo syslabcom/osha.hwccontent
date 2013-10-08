@@ -23,6 +23,8 @@ class OSHAHWContentLayer(PloneSandboxLayer):
         # Load ZCML
         import Products.CMFPlacefulWorkflow
         self.loadZCML('configure.zcml', package=Products.CMFPlacefulWorkflow)
+        import five.grok
+        self.loadZCML('configure.zcml', package=five.grok)
 
         import osha.hwccontent
         xmlconfig.file(
@@ -32,6 +34,22 @@ class OSHAHWContentLayer(PloneSandboxLayer):
         )
         # Why not do it like this?
         # self.loadZCML('configure.zcml', package=osha.hwccontent)
+
+        # Apparently the mail template is not grokked properly, registering
+        # manually
+        xmlconfig.string(
+            """<configure xmlns="http://namespaces.zope.org/zope">
+                <adapter
+                    for="osha.hwccontent.organisation.IOrganisation
+                         ZPublisher.HTTPRequest.HTTPRequest"
+                    provides="grokcore.view.interfaces.IGrokView"
+                    factory="osha.hwccontent.events.ApprovePhase1MailTemplate"
+                    name="mail_approve_phase_1"
+                    />
+               </configure>
+            """,
+            context=configurationContext
+        )
 
         # Install products that use an old-style initialize() function
         #z2.installProduct(app, 'Products.PloneFormGen')
