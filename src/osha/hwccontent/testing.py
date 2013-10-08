@@ -46,6 +46,20 @@ class OSHAHWContentLayer(PloneSandboxLayer):
                     factory="osha.hwccontent.events.ApprovePhase1MailTemplate"
                     name="mail_approve_phase_1"
                     />
+                <adapter
+                    for="osha.hwccontent.organisation.IOrganisation
+                         ZPublisher.HTTPRequest.HTTPRequest"
+                    provides="grokcore.view.interfaces.IGrokView"
+                    factory="osha.hwccontent.events.OrganisationCreatedCreatorMailTemplate"
+                    name="mail_organisation_created_creator"
+                    />
+                <adapter
+                    for="osha.hwccontent.organisation.IOrganisation
+                         ZPublisher.HTTPRequest.HTTPRequest"
+                    provides="grokcore.view.interfaces.IGrokView"
+                    factory="osha.hwccontent.events.OrganisationCreatedSiteOwnerMailTemplate"
+                    name="mail_organisation_created_siteowner"
+                    />
                </configure>
             """,
             context=configurationContext

@@ -1,3 +1,5 @@
+# vim: set fileencoding=utf-8 :
+
 import unittest2 as unittest
 
 from Products.CMFCore.utils import getToolByName
@@ -12,15 +14,13 @@ class TestWorkflow(unittest.TestCase):
 
     layer = OSHA_HWCCONTENT_INTEGRATION_TESTING
 
+    def _mock_send(self, msg):
+        self.sent_mails.append(msg)
+
     def setUp(self):
         self.app = self.layer['app']
         self.portal = self.layer['portal']
-
-        def mock_send(msg):
-            self.sent_mails.append(msg)
         self.portal.email_from_address = 'hwc@hwc.org'
-        self.sent_mails = []
-        self.portal.MailHost.send = mock_send
 
         self.organisations = self.portal.get('organisations')
         self.wftool = getToolByName(self.portal, 'portal_workflow')
@@ -32,8 +32,11 @@ class TestWorkflow(unittest.TestCase):
             type='osha.hwccontent.organisation',
             title='Test Organisation',
             id='test-organization',
-            key_email='harold@testorganisation.com',
-            key_name='Harold van Testinger')
+            key_email=u'harold@testorganisation.com',
+            key_name=u'Harold van Testinger')
+
+        self.sent_mails = []
+        self.portal.MailHost.send = self._mock_send
 
     def tearDown(self):
         helpers.login(self.app, SITE_OWNER_NAME)
@@ -42,6 +45,22 @@ class TestWorkflow(unittest.TestCase):
             email='harold@testorganisation.com')
         if res:
             api.user.delete(res[0])
+
+    def test_organisation_created(self):
+        new_org = api.content.create(
+            self.organisations,
+            type='osha.hwccontent.organisation',
+            title='New Organisation',
+            id='new-organization',
+            key_email=u'ignatius@neworganisation.com',
+            key_name=u'Ignatius Schliefenmühl')
+        self.assertEqual(len(self.sent_mails), 2, msg='Mail not sent')
+        self.assertIn('To: ignatius@neworganisation.com',
+                      '\n'.join(self.sent_mails))
+        self.assertIn('To: ' + self.portal.email_from_address,
+                      '\n'.join(self.sent_mails))
+        self.assertIn(new_org.absolute_url(),
+                      '\n'.join(self.sent_mails))
 
     def test_reviewer_approves_organization(self):
         helpers.login(self.portal, 'Site Administrator')
