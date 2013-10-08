@@ -1,9 +1,13 @@
 # _+- coding: utf-8 -*-
 
 from Products.Five.browser import BrowserView
-from collections import OrderedDict
 from osha.hwccontent import vocabularies
 from plone import api
+
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
 
 
 class FrontPageView(BrowserView):
