@@ -11,7 +11,7 @@
 
       <div id="banner">
         <div class="banner-image">
-	    <img src="/oshahwc2014/++theme++osha.hwctheme/HWManageStress_files/images/banner-en.jpg" class="pull-left"
+	    <img src="/++theme++osha.hwctheme/HWManageStress_files/images/banner-en.jpg" class="pull-left"
              tal:attributes="src string:/++theme++osha.hwctheme/HWManageStress_files/images/banner-${context/getId}.jpg"/></div>
 	    <div class="banner-text1 span4">
 	      <p><strong i18n:translate="banner_text_1">A collection of practical tools, resources and guidance</strong> <span i18n:translate="banner_text_2">to help manage stress and psychosocial risks in your workplace.</span></p>
@@ -30,7 +30,7 @@
 		        <h3><a href="#"
                        tal:content="news_item/Title"
                        tal:attributes="href news_item/getURL">Good health and safety is good for business</a></h3>
-                <img src="/oshahwc2014/++theme++osha.hwctheme/HWManageStress_files/images/newsimage2.jpg" class="pull-left"
+                <img src="/++theme++osha.hwctheme/HWManageStress_files/images/newsimage2.jpg" class="pull-left"
                      tal:attributes="src string:${news_item/getPath}/@@images/image/thumb"/><p class="data"
                 tal:content="python:news_item.effective.strftime('%d/%m/%y')">17/5/13</p>
 		        <p tal:content="news_item/Description">EU-OSHA’s Healthy Workplaces Campaigns are its principal tools for raising awareness on occupational safety and health. The Campaigns, each of which runs for two years, involve hundreds of organisations from all of the EU Member States ...</p>
