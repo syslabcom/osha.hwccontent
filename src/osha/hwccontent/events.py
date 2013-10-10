@@ -118,5 +118,5 @@ def handle_organisation_created(obj, event):
         (obj, obj.REQUEST),
         name="mail_organisation_created_siteowner")
     MailHost = getToolByName(obj, 'MailHost')
-    MailHost.send(mail_template_creator.render())
-    MailHost.send(mail_template_siteowner.render())
+    MailHost.send(mail_template_creator.render(), charset='UTF-8')
+    MailHost.send(mail_template_siteowner.render(), charset='UTF-8')
