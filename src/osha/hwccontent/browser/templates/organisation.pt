@@ -6,168 +6,166 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<body>
+  <body>
 
-<metal:block fill-slot="main"
-    tal:define="id request/id|nothing;
-                toLocalizedTime nocall:context/@@plone/toLocalizedTime;
-                folder python:here.aq_parent;">
-    <tal:set define="dummy python:request.RESPONSE.setHeader('X-Deliverance-Page-Class', 'general partner-detail')" />
-    <tal:block define="images python: context.absolute_url() + '/@@images';
-                       ceo_img python: images + '/ceo_image/mini';
-                       logo python: images + '/logo/mini';
-                       ">
+    <metal:block fill-slot="main"
+                 tal:define="id request/id|nothing;
+                             toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                             folder python:here.aq_parent;">
+      <tal:set define="dummy python:request.RESPONSE.setHeader('X-Deliverance-Page-Class', 'general partner-detail')" />
+      <tal:block define="images python: context.absolute_url() + '/@@images';
+                         ceo_img python: images + '/ceo_image/mini';
+                         logo python: images + '/logo/mini';
+                         ">
 
         <h1 id="title">
-            <span id="parent-fieldname-title" tal:content="context/title">title</span>
+          <span id="parent-fieldname-title" tal:content="context/title">title</span>
         </h1>
 
         <div id="campaign-partner-details">
 
-            <p id="CEO">
-                <img src="" tal:attributes="src ceo_img" /><br />
-                <span tal:replace="context/ceo_name">Name</span><br />
-                <span tal:replace="context/ceo_position">Name</span>
-            </p>
-            <p class="documentDescription" id="parent-fieldname-description"><span tal:content="context/description">quotes</span></p>
+          <p id="CEO">
+            <img src="" tal:attributes="src ceo_img" /><br />
+            <span tal:replace="context/ceo_name">Name</span><br />
+            <span tal:replace="context/ceo_position">Name</span>
+          </p>
+          <p class="documentDescription" id="parent-fieldname-description"><span tal:content="context/description">quotes</span></p>
 
 
-            <div id="content-core"
-                tal:define="url context/campaignurl|context/url">
-                <dl class="detailsListing grid" id="partner-profile">
+          <div id="content-core"
+               tal:define="url context/campaignurl|context/url">
+            <dl class="detailsListing grid" id="partner-profile">
 
-                    <dt>Type of organisation:</dt>
-                    <dd tal:content="context/organisation_type">org_type</dd>
+              <dt>Type of organisation:</dt>
+              <dd tal:content="context/organisation_type">org_type</dd>
 
-                    <dt>Business sector:</dt>
-                    <dd tal:content="context/business_sector">business</dd>
+              <dt>Business sector:</dt>
+              <dd tal:content="context/business_sector">business</dd>
 
-                    <dt>Mission statement:</dt>
-                    <dd tal:content="context/mission_statement">mission</dd>
+              <dt>Mission statement:</dt>
+              <dd tal:content="context/mission_statement">mission</dd>
 
-                    <dt>URL:</dt>
-                    <dd>
-                        <a href="" tal:attributes="href url" tal:content="url">url</a>
-                    </dd>
+              <dt>URL:</dt>
+              <dd>
+                <a href="" tal:attributes="href url" tal:content="url">url</a>
+              </dd>
+              <dt>Our Campaign Pledge:</dt>
+              <dd tal:content="structure context/campaign_pledge/output">pledge</dd>
+            </dl>
+          </div>
 
-                    <dt>Our Campaign Pledge:</dt>
-                    <dd tal:content="structure context/campaign_pledge/output">pledge</dd>
-                </dl>
-            </div>
-
-
-    <div id="portlet portletPartnerPortlet" class="portlet">
+          <div id="portlet portletPartnerPortlet" class="portlet">
 
 
             <img src="" tal:attributes="src logo" />
 
-        <dd class="portletItem odd">
-            <span tal:replace="context/title">org_name</span><br />
-            <span tal:replace="context/street">org_address</span><br />
-            <span tal:replace="context/zip_code">post code</span>
-            <span tal:replace="context/city">city</span><br />
-            <span tal:replace="context/country">country</span>
-        </dd>
+            <dd class="portletItem odd">
+              <span tal:replace="context/title">org_name</span><br />
+              <span tal:replace="context/street">org_address</span><br />
+              <span tal:replace="context/zip_code">post code</span>
+              <span tal:replace="context/city">city</span><br />
+              <span tal:replace="context/country">country</span>
+            </dd>
 
-        <dd class="portletItem even">
-            <span tal:replace="context/email">email</span><br />
-            <a href="" tal:attributes="href context/url" tal:content="context/url">url</a>
-        </dd>
+            <dd class="portletItem even">
+              <span tal:replace="context/email">email</span><br />
+              <a href="" tal:attributes="href context/url" tal:content="context/url">url</a>
+            </dd>
 
-        <dd class="portletItem odd">
-            Tel: <span tal:replace="context/phone">phone</span><br />
-            Fax: <span tal:replace="context/fax">fax</span>
-        </dd>
-
-
-    </div>
-
-    <div id="portlet portletContactsPortlet" class="portlet">
-
-        <h4>Contact Persons</h4>
+            <dd class="portletItem odd">
+              Tel: <span tal:replace="context/phone">phone</span><br />
+              Fax: <span tal:replace="context/fax">fax</span>
+            </dd>
 
 
-        <dd class="portletItem odd">
-            <strong tal:content="context/key_position">key position</strong><br />
-            <span tal:replace="context/key_name">key name</span><br />
+          </div>
 
-        </dd>
+          <div id="portlet portletContactsPortlet" class="portlet">
 
-        <dd class="portletItem even">
-            <tal:c condition="context/representative_name">
-              <strong>Health and Safety Representative</strong><br />
-              <span tal:replace="context/representative_name">repr. name</span><br />
-            </tal:c>
-        </dd>
+            <h4>Contact Persons</h4>
 
-    </div>
 
-            <!-- Events -->
-            <div class="expandable opened"
-                tal:define="events view/get_events;"
-                tal:condition="events">
+            <dd class="portletItem odd">
+              <strong tal:content="context/key_position">key position</strong><br />
+              <span tal:replace="context/key_name">key name</span><br />
 
-                <h2 class="expandableHeader" i18n:translate="">Events</h2>
-                <dl class="expandableContent" style="display: block" >
-                    <tal:loop tal:repeat="item events">
-                    <dt tal:content="python:toLocalizedTime(item.start_date)"></dt>
-                    <dd>
-                        <h3 class="detailsHeadline">
-                            <a href="" class="summary url"
-                                tal:attributes="href item/absolute_url"
-                                tal:content="item/Title">
-                            Item Title
-                            </a>
-                        </h3>
-                    </dd>
-                    <dd class="visualClear"></dd>
-                </tal:loop>
-                <span class="more icon-16px sprite-icon-big-arrow-blue-right"
-                      tal:define="events_folder view/get_events_folder_url;">
-                    <a href="/en/campaigns/hw2010/events" 
-                       tal:attributes="href events_folder;"
-                       tal:condition="events_folder"
-                       i18n:translate="">More events</a>
-                    </span>
-                </dl>
-            </div>
+            </dd>
 
-        <!-- News -->
-        <tal:news define="news view/get_news;">
+            <dd class="portletItem even">
+              <tal:c condition="context/representative_name">
+                <strong>Health and Safety Representative</strong><br />
+                <span tal:replace="context/representative_name">repr. name</span><br />
+              </tal:c>
+            </dd>
+
+          </div>
+
+          <!-- Events -->
+          <div class="expandable opened"
+               tal:define="events view/get_events;"
+               tal:condition="events">
+
+            <h2 class="expandableHeader" i18n:translate="">Events</h2>
+            <dl class="expandableContent" style="display: block" >
+              <tal:loop tal:repeat="item events">
+                <dt tal:content="python:toLocalizedTime(item.start_date)"></dt>
+                <dd>
+                  <h3 class="detailsHeadline">
+                    <a href="" class="summary url"
+                       tal:attributes="href item/absolute_url"
+                       tal:content="item/Title">
+                      Item Title
+                    </a>
+                  </h3>
+                </dd>
+                <dd class="visualClear"></dd>
+              </tal:loop>
+              <span class="more icon-16px sprite-icon-big-arrow-blue-right"
+                    tal:define="events_folder view/get_events_folder_url;">
+                <a href="/en/campaigns/hw2010/events" 
+                   tal:attributes="href events_folder;"
+                   tal:condition="events_folder"
+                   i18n:translate="">More events</a>
+              </span>
+            </dl>
+          </div>
+
+          <!-- News -->
+          <tal:news define="news view/get_news;">
             <div class="expandable closed"
-                tal:condition="python:news">
+                 tal:condition="python:news">
 
-                <h2 class="expandableHeader" i18n:translate="">News</h2>
-                <dl class="expandableContent" style="display: block" >
-                    <tal:loop tal:repeat="item news">
-                    <dt tal:content="python:toLocalizedTime(item.Date())"></dt>
-                    <dd>
-                        <h3 class="detailsHeadline">
-                            <a href="" class="summary url"
-                            tal:attributes="href item/absolute_url"
-                            tal:content="item/Title">
-                            Item Title
-                            </a>
-                        </h3>
-                    </dd>
-                    <dd class="visualClear"></dd>
+              <h2 class="expandableHeader" i18n:translate="">News</h2>
+              <dl class="expandableContent" style="display: block" >
+                <tal:loop tal:repeat="item news">
+                  <dt tal:content="python:toLocalizedTime(item.Date())"></dt>
+                  <dd>
+                    <h3 class="detailsHeadline">
+                      <a href="" class="summary url"
+                         tal:attributes="href item/absolute_url"
+                         tal:content="item/Title">
+                        Item Title
+                      </a>
+                    </h3>
+                  </dd>
+                  <dd class="visualClear"></dd>
                 </tal:loop>
                 <span class="more icon-16px sprite-icon-big-arrow-blue-right"
                       tal:define="news_folder view/get_news_folder_url;">
-                    <a href="/en/campaigns/hw2010/news" 
-                       tal:attributes="href news_folder"
-                       tal:condition="news_folder"
-                       i18n:translate="">More news</a>
-                    </span>
-                </dl>
+                  <a href="/en/campaigns/hw2010/news" 
+                     tal:attributes="href news_folder"
+                     tal:condition="news_folder"
+                     i18n:translate="">More news</a>
+                </span>
+              </dl>
             </div>
-        </tal:news>
-    </div>
-    </tal:block>
+          </tal:news>
+        </div>
+      </tal:block>
 
-</metal:block>
+    </metal:block>
 
 
 
-</body>
+  </body>
 </html>
