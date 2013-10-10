@@ -5,16 +5,16 @@ from five import grok
 from osha.hwccontent.focalpoint import IFocalPoint
 from osha.hwccontent.organisation import IOrganisation
 from plone.api import content
+from plone.app.textfield.interfaces import IRichText
+from plone.app.textfield.value import RichTextValue
 from plone.directives import form
+from plone.namedfile.file import NamedBlobImage
+from plone.namedfile.interfaces import INamedImageField
 from z3c.form import button
 from zope import schema
 from zope.schema import getFieldsInOrder
 import base64
 import json
-from plone.namedfile.interfaces import INamedImageField
-from plone.namedfile.file import NamedBlobImage
-from plone.app.textfield.interfaces import IRichText
-from plone.app.textfield.value import RichTextValue
 
 class IHWCImportForm(form.Schema):
 
@@ -101,26 +101,11 @@ class HWCImportForm(form.SchemaForm):
             count += 1
 
         # Set status on this form page
-        # (this status message is not bind to the session and does not go thru redirects)
         self.status = "%s partners imported" % count
 
     @button.buttonAndHandler(u"Cancel")
     def handleCancel(self, action):
         """User cancelled. Redirect back to the front page.
         """
-        
-#class HWCImportView(BaseView):
-    #"""View for exporting partners and focalpoints
-    #"""
 
-    #def hwcimport(self):
-        #for brain in brains:
-            #ob = brain.getObject()
-            #mapping = self._getMapping(ob)
-            #mapping['_type'] = ob.portal_type
-            #mapping['_path'] = url.getRelativeContentURL(ob)
-            #content.append(mapping)
-            
-        #json_data = 
-        #self.request.response.setHeader("Content-type", "application/json")
-        #return json_data
+        
