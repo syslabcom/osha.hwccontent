@@ -51,7 +51,7 @@
               </dd>
 
               <dt>Our Campaign Pledge:</dt>
-              <dd tal:content="context/campaign_pledge">pledge</dd>
+              <dd tal:content="structure context/campaign_pledge/output">pledge</dd>
             </dl>
           </div>
 
