@@ -4,7 +4,7 @@ import unittest2 as unittest
 
 from Products.CMFCore.utils import getToolByName
 from plone import api
-from plone.app.testing import helpers, SITE_OWNER_NAME
+from plone.app.testing import helpers, SITE_OWNER_NAME, TEST_USER_ID
 
 from osha.hwccontent.testing import \
     OSHA_HWCCONTENT_INTEGRATION_TESTING
@@ -71,11 +71,12 @@ class TestWorkflow(unittest.TestCase):
         res = self.portal.portal_membership.searchForMembers(
             email='harold@testorganisation.com')
         self.assertEqual(len(res), 1)
+        user = res[0]
         self.assertEqual(
-            res[0].getProperty('fullname'),
+            user.getProperty('fullname'),
             'Harold van Testinger')
         self.assertEqual(
-            set(self.org.get_local_roles_for_userid(res[0].getId())),
+            set(self.org.get_local_roles_for_userid(user.getId())),
             set(('Reader', 'Contributor', 'Editor')))
         self.assertNotIn(
             'View',
@@ -83,3 +84,17 @@ class TestWorkflow(unittest.TestCase):
                 if p['selected']])
         self.assertEqual(len(self.sent_mails), 1, msg='Mail not sent')
         self.assertIn('harold@testorganisation.com', self.sent_mails[0])
+        self.sent_mails = []
+
+        helpers.login(self.portal, user.getId())
+        self.wftool.doActionFor(self.org, 'submit')
+        self.assertEqual(
+            self.wftool.getInfoFor(self.org, 'review_state'),
+            'pending_phase_2')
+        self.assertEqual(len(self.sent_mails), 2, msg='Mail not sent')
+        self.assertIn('To: harold@testorganisation.com',
+                      '\n'.join(self.sent_mails))
+        self.assertIn('To: ' + self.portal.email_from_address,
+                      '\n'.join(self.sent_mails))
+        self.assertIn(self.org.absolute_url(),
+                      '\n'.join(self.sent_mails))
