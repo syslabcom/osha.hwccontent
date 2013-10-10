@@ -60,6 +60,20 @@ class OSHAHWContentLayer(PloneSandboxLayer):
                     factory="osha.hwccontent.events.OrganisationCreatedSiteOwnerMailTemplate"
                     name="mail_organisation_created_siteowner"
                     />
+                <adapter
+                    for="osha.hwccontent.organisation.IOrganisation
+                         ZPublisher.HTTPRequest.HTTPRequest"
+                    provides="grokcore.view.interfaces.IGrokView"
+                    factory="osha.hwccontent.events.OrganisationSubmittedCreatorMailTemplate"
+                    name="mail_organisation_submitted_creator"
+                    />
+                <adapter
+                    for="osha.hwccontent.organisation.IOrganisation
+                         ZPublisher.HTTPRequest.HTTPRequest"
+                    provides="grokcore.view.interfaces.IGrokView"
+                    factory="osha.hwccontent.events.OrganisationSubmittedSiteOwnerMailTemplate"
+                    name="mail_organisation_submitted_siteowner"
+                    />
                </configure>
             """,
             context=configurationContext
