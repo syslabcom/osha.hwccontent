@@ -9,6 +9,9 @@ from zope.app.container.interfaces import IObjectAddedEvent
 
 from osha.hwccontent.organisation import IOrganisation
 from osha.hwccontent.interfaces import IOSHAHWCContentLayer
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class MailTemplateBase(grok.View):
@@ -65,6 +68,8 @@ class OrganisationCreatedSiteOwnerMailTemplate(MailTemplateBase):
         self.subject = 'Profile created'
         self.template = grok.PageTemplateFile(
             'templates/mail_organisation_created_siteowner.pt')
+        if not self.from_addr:
+            raise KeyError('email_from_address')
         return self.template.render(self)
 
 
@@ -119,4 +124,8 @@ def handle_organisation_created(obj, event):
         name="mail_organisation_created_siteowner")
     MailHost = getToolByName(obj, 'MailHost')
     MailHost.send(mail_template_creator.render())
-    MailHost.send(mail_template_siteowner.render())
+    try:
+        MailHost.send(mail_template_siteowner.render())
+    except KeyError as e:
+        log.warn('No {0}, cannot send notification to site '
+                 'owner'.format(str(e)))
