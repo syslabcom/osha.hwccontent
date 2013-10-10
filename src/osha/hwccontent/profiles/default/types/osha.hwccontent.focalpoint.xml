@@ -12,7 +12,7 @@
  <property name="filter_content_types">True</property>
  <property name="allowed_content_types">
      <element value="News Item" />
-     <element value="Event" />
+     <element value="plone.app.event.dx.event" />
  </property>
 
  <!-- schema interface -->
