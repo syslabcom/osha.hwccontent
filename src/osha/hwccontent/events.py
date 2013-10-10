@@ -111,7 +111,7 @@ def add_user_and_send_notifications(obj):
 
 @grok.subscribe(IOrganisation, IBeforeTransitionEvent)
 def handle_wf_transition(obj, event):
-    if event.new_state.id == 'approved_phase_1':
+    if event.transition.id == 'approve_phase_1':
         add_user_and_send_notifications(obj)
 
 
