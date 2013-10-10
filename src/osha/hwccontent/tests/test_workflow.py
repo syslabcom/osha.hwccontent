@@ -14,7 +14,7 @@ class TestWorkflow(unittest.TestCase):
 
     layer = OSHA_HWCCONTENT_INTEGRATION_TESTING
 
-    def _mock_send(self, msg):
+    def _mock_send(self, msg, *args, **kw):
         self.sent_mails.append(msg)
 
     def setUp(self):
