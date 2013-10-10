@@ -49,8 +49,10 @@
               <dd>
                 <a href="" tal:attributes="href url" tal:content="url">url</a>
               </dd>
+              
               <dt>Our Campaign Pledge:</dt>
               <dd tal:content="structure context/campaign_pledge/output">pledge</dd>
+              
             </dl>
           </div>
 
