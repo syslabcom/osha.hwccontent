@@ -7,15 +7,16 @@
       i18n:domain="plone">
   <body>
 
-    <metal:content-core fill-slot="content-core">
+    <metal:content-core fill-slot="content-core" tal:define="portal_url context/@@plone_portal_state/portal_url">
 
       <div id="banner">
         <div class="banner-image">
 	    <img src="/++theme++osha.hwctheme/HWManageStress_files/images/banner-en.jpg" class="pull-left"
-             tal:attributes="src string:/++theme++osha.hwctheme/HWManageStress_files/images/banner-${context/getId}.jpg"/></div>
+             tal:attributes="src string:${portal_url}/++theme++osha.hwctheme/HWManageStress_files/images/banner-${context/getId}.jpg"/></div>
 	    <div class="banner-text1 span4">
 	      <p><strong i18n:translate="banner_text_1">A collection of practical tools, resources and guidance</strong> <span i18n:translate="banner_text_2">to help manage stress and psychosocial risks in your workplace.</span></p>
-	    <img src="/++theme++osha.hwctheme/HWManageStress_files/images/bannerimage.gif" class="pull-right"/></div>
+	    <img src="/++theme++osha.hwctheme/HWManageStress_files/images/bannerimage.gif" class="pull-right"
+        tal:attributes="src string:${portal_url}/++theme++osha.hwctheme/HWManageStress_files/images/bannerimage.gif" /></div>
 	  </div>
 
       <div class="news-events"
