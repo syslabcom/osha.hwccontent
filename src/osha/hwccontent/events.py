@@ -84,6 +84,7 @@ def add_user_and_send_notifications(obj):
 
     if not use_email_as_username:
         username = username.split('@')[0]
+    username = username.encode('utf-8')
     if portal_membership.getMemberById(username) is None:
         chars = string.ascii_letters + string.digits + '\'()[]{}$%&#+*~.,;:-_'
         password = ''.join(random.choice(chars) for x in range(16))
