@@ -13,6 +13,7 @@ import logging
 
 log = logging.getLogger(__name__)
 
+_send_emails = True
 
 class MailTemplateBase(grok.View):
     """ """
@@ -152,12 +153,13 @@ def handle_wf_transition(obj, event):
         return
     if event.transition.id == 'approve_phase_1':
         add_user_and_send_notifications(obj)
-    elif event.transition.id == 'submit':
+    elif event.transition.id == 'submit' and _send_emails:
         _send_notification(obj, "mail_organisation_submitted_creator")
         _send_notification(obj, "mail_organisation_submitted_siteowner")
 
 
 @grok.subscribe(IOrganisation, IObjectAddedEvent)
 def handle_organisation_created(obj, event):
-    _send_notification(obj, "mail_organisation_created_creator")
-    _send_notification(obj, "mail_organisation_created_siteowner")
+    if _send_emails:
+        _send_notification(obj, "mail_organisation_created_creator")
+        _send_notification(obj, "mail_organisation_created_siteowner")

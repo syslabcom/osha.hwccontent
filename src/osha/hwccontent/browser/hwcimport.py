@@ -4,6 +4,7 @@ from Products.CMFCore.interfaces import ISiteRoot
 from five import grok
 from osha.hwccontent.focalpoint import IFocalPoint
 from osha.hwccontent.organisation import IOrganisation
+from osha.hwccontent import events
 from plone.api import content
 from plone.app.textfield.interfaces import IRichText
 from plone.app.textfield.value import RichTextValue
@@ -45,63 +46,70 @@ class HWCImportForm(form.SchemaForm):
             self.status = self.formErrorsMessage
             return
                 
-        en_folder = self.context.restrictedTraverse('en')
-        if 'organisations' in en_folder:
-            org_folder = en_folder.restrictedTraverse('organisations')
-        else:
-            org_folder = content.create(en_folder,
-                                        type='osha.hwccontent.organisationfolder',
-                                        title='Organisations')
-        if 'focalpoints' in en_folder:
-            fop_folder = en_folder.restrictedTraverse('focalpoints')
-        else:
-            fop_folder = content.create(en_folder,
-                                        type='osha.hwccontent.organisationfolder',
-                                        title='Focalpoints')
-    
-        type_mapping = {
-            u'Organisation': {
-                'type': 'osha.hwccontent.organisation',
-                'schema': dict(getFieldsInOrder(IOrganisation)),
-                'folder': org_folder
-            },
-                
-            u'Focalpoint': {
-                'type': 'osha.hwccontent.focalpoint',
-                'schema': dict(getFieldsInOrder(IFocalPoint)),
-                'folder': fop_folder
+        events._send_emails = False
+        try:
+            
+            en_folder = self.context.restrictedTraverse('en')
+            if 'organisations' in en_folder:
+                org_folder = en_folder.restrictedTraverse('organisations')
+            else:
+                org_folder = content.create(en_folder,
+                                            type='osha.hwccontent.organisationfolder',
+                                            title='Organisations')
+            if 'focalpoints' in en_folder:
+                fop_folder = en_folder.restrictedTraverse('focalpoints')
+            else:
+                fop_folder = content.create(en_folder,
+                                            type='osha.hwccontent.organisationfolder',
+                                            title='Focalpoints')
+        
+            type_mapping = {
+                u'Organisation': {
+                    'type': 'osha.hwccontent.organisation',
+                    'schema': dict(getFieldsInOrder(IOrganisation)),
+                    'folder': org_folder
+                },
+                    
+                u'Focalpoint': {
+                    'type': 'osha.hwccontent.focalpoint',
+                    'schema': dict(getFieldsInOrder(IFocalPoint)),
+                    'folder': fop_folder
+                }
             }
-        }
-
-        count = 0
-        for data in json.loads(data['json']):
-            
-            # Only keep the data that's in the main schema:
-            type_info = type_mapping[data['_type']]
-            schema = type_info['schema']
-            fields = {}
-            
-            for name, field in schema.items():
-                if name in data:
-                    value = data[name]
-                    if value and INamedImageField.providedBy(field):
-                        content_type = data.get('_%s_content_type' % name, '')
-                        filename = data.get('_%s_filename' % name , None)
-                        value = NamedBlobImage(base64.b64decode(value), content_type, filename)
-                    elif value and IRichText.providedBy(field):
-                        content_type = data.get('_%s_content_type', None)
-                        value = RichTextValue(value, mimeType=content_type)
-
-                    fields[name] = value
-
-            content.create(container=type_info['folder'],
-                           type= type_info['type'], 
-                           id=data['id'],
-                           **fields)
-            count += 1
-
-        # Set status on this form page
-        self.status = "%s partners imported" % count
+    
+            count = 0
+            for data in json.loads(data['json']):
+                
+                # Only keep the data that's in the main schema:
+                type_info = type_mapping[data['_type']]
+                schema = type_info['schema']
+                fields = {}
+                
+                for name, field in schema.items():
+                    if name in data:
+                        value = data[name]
+                        if value and INamedImageField.providedBy(field):
+                            content_type = data.get('_%s_content_type' % name, '')
+                            filename = data.get('_%s_filename' % name , None)
+                            value = NamedBlobImage(base64.b64decode(value), content_type, filename)
+                        elif value and IRichText.providedBy(field):
+                            content_type = data.get('_%s_content_type', None)
+                            value = RichTextValue(value, mimeType=content_type)
+    
+                        fields[name] = value
+    
+                content.create(container=type_info['folder'],
+                               type= type_info['type'], 
+                               id=data['id'],
+                               **fields)
+                count += 1
+    
+            # Set status on this form page
+            self.status = "%s partners imported" % count
+        except Exception:
+            # Enable emails again:
+            events._send_emails = True
+            raise
 
     @button.buttonAndHandler(u"Cancel")
     def handleCancel(self, action):
