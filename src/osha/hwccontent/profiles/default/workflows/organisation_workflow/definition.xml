@@ -130,46 +130,99 @@
   </permission-map>
  </state>
 
- <transition transition_id="approve_phase_1" title="Reviewer gives phase 1 approval" new_state="approved_phase_1" trigger="USER" before_script="" after_script="">
-  <description>Phase 1 approval creates a user account and enables the new user to enter information required for the next approval phase</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=approve_phase_1" category="workflow" icon="">Approve Profile (Phase 1)</action>
+ <transition transition_id="approve_phase_1"
+             title="Reviewer gives phase 1 approval"
+             new_state="approved_phase_1"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <description>
+         Phase 1 approval creates a user account and enables the new user to enter information required for the next approval phase
+  </description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=approve_phase_1"
+          category="workflow" icon="">Approve Profile (Phase 1)</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
- <transition transition_id="revoke_phase_1" title="Reviewer revokes phase 1 approval" new_state="pending" trigger="USER" before_script="" after_script="">
-  <description>Revokes phase 1 approval</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=revoke_phase_1" category="workflow" icon="">Revoke Approval (Phase 1)</action>
+
+ <transition transition_id="revoke_phase_1"
+             title="Reviewer revokes phase 1 approval"
+             new_state="pending"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <description>
+      Revokes phase 1 approval
+  </description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=revoke_phase_1"
+          category="workflow" icon="">Revoke Approval (Phase 1)</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
- <transition transition_id="submit" title="User submits profile for publication" new_state="pending_phase_2" trigger="USER" before_script="" after_script="">
-  <description>Submits for publication on the site</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=submit" category="workflow" icon="">Submit for publication</action>
+
+ <transition transition_id="submit"
+             title="User submits profile for publication"
+             new_state="pending_phase_2"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <description>
+     Submits for publication on the site
+  </description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=submit"
+          category="workflow" icon="">Submit for publication</action>
   <guard>
    <guard-permission>Request review</guard-permission>
    <!-- This relies on the fact that the object can only be saved when all fields in the "Additional Information" schema have been filled in, so we only need to check one of them -->
    <guard-expression>here/mission_statement</guard-expression>
   </guard>
  </transition>
- <transition transition_id="retract" title="User retracts submission" new_state="approved_phase_1" trigger="USER" before_script="" after_script="">
-  <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=retract" category="workflow" icon="">Retract</action>
+
+ <transition transition_id="retract"
+             title="User retracts submission"
+             new_state="approved_phase_1"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <description>
+     If you submitted the item by mistake or want to perform additional edits, this will take it back.
+  </description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=retract"
+          category="workflow" icon="">Retract</action>
   <guard>
    <guard-permission>Request review</guard-permission>
   </guard>
  </transition>
- <transition transition_id="reject" title="Reviewer sends content back for re-drafting" new_state="approved_phase_1" trigger="USER" before_script="" after_script="">
-  <description>Sending the item back will return the item to the original author instead of publishing it.</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=reject" category="workflow" icon="">Reject</action>
+
+ <transition transition_id="reject"
+             title="Reviewer sends content back for re-drafting"
+             new_state="approved_phase_1"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <description>
+      Sending the item back will return the item to the original author instead of publishing it.
+  </description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=reject"
+          category="workflow" icon="">Reject</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
- <transition transition_id="publish" title="Reviewer publishes organisation profile" new_state="published" trigger="USER" before_script="" after_script="">
-  <description>Publishing the item makes it visible to everyone.</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=publish" category="workflow" icon="">Publish</action>
+
+ <transition transition_id="publish"
+             title="Reviewer publishes organisation profile"
+             new_state="published"
+             trigger="USER"
+             before_script=""
+             after_script="">
+  <description>
+     Publishing the item makes it visible to everyone.
+  </description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=publish"
+          category="workflow" icon="">Publish</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
