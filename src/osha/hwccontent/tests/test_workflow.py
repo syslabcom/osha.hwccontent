@@ -105,3 +105,14 @@ class TestWorkflow(unittest.TestCase):
                       '\n'.join(self.sent_mails))
         self.assertIn(self.org.absolute_url(),
                       '\n'.join(self.sent_mails))
+        self.sent_mails = []
+
+        helpers.login(self.portal, 'Site Administrator')
+        self.wftool.doActionFor(self.org, 'publish')
+        self.assertEqual(
+            self.wftool.getInfoFor(self.org, 'review_state'),
+            'published')
+        self.assertIn(
+            'View',
+            [p['name'] for p in self.org.permissionsOfRole('Anonymous')
+                if p['selected']])
