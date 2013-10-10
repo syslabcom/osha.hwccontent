@@ -87,6 +87,13 @@ class TestWorkflow(unittest.TestCase):
         self.sent_mails = []
 
         helpers.login(self.portal, user.getId())
+        self.assertNotIn(
+            'submit',
+            [a['id'] for a in self.wftool.listActions(object=self.org)])
+        self.org.mission_statement = u'We Care Because We Can'
+        self.assertIn(
+            'submit',
+            [a['id'] for a in self.wftool.listActions(object=self.org)])
         self.wftool.doActionFor(self.org, 'submit')
         self.assertEqual(
             self.wftool.getInfoFor(self.org, 'review_state'),

@@ -16,6 +16,8 @@ from zope import schema
 from zope.schema import getFieldsInOrder
 import base64
 import json
+import logging
+logger = logging.getLogger('HWC Partner Import')
 
 class IHWCImportForm(form.Schema):
 
@@ -67,13 +69,15 @@ class HWCImportForm(form.SchemaForm):
                 u'Organisation': {
                     'type': 'osha.hwccontent.organisation',
                     'schema': dict(getFieldsInOrder(IOrganisation)),
-                    'folder': org_folder
+                    'folder': org_folder,
+                    'wf_actions': ('approve_phase_1',),
                 },
                     
                 u'Focalpoint': {
                     'type': 'osha.hwccontent.focalpoint',
                     'schema': dict(getFieldsInOrder(IFocalPoint)),
-                    'folder': fop_folder
+                    'folder': fop_folder,
+                    'wf_actions': ('publish',),
                 }
             }
     
@@ -98,10 +102,17 @@ class HWCImportForm(form.SchemaForm):
     
                         fields[name] = value
     
-                content.create(container=type_info['folder'],
-                               type= type_info['type'], 
-                               id=data['id'],
-                               **fields)
+                new_obj = content.create(container=type_info['folder'],
+                                         type= type_info['type'], 
+                                         id=data['id'],
+                                         **fields)
+                for transition in type_info['wf_actions']:
+                    try:
+                        content.transition(new_obj, transition)
+                    except Exception, e:
+                        logger.exception('Could not execute %s transition for %s' % (transition, '/'.join(new_obj.getPhysicalPath())))
+                        
+                logger.info('Imported %s' % new_obj.getId())
                 count += 1
     
             # Set status on this form page
