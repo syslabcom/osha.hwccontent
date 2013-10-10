@@ -105,6 +105,9 @@ class OrganisationSubmittedSiteOwnerMailTemplate(MailTemplateBase):
 
 
 def _send_notification(obj, template_name, *extra_args):
+    if not _send_emails:
+        return
+    
     mail_template = getMultiAdapter(
         (obj, obj.REQUEST),
         name=template_name)
@@ -153,13 +156,12 @@ def handle_wf_transition(obj, event):
         return
     if event.transition.id == 'approve_phase_1':
         add_user_and_send_notifications(obj)
-    elif event.transition.id == 'submit' and _send_emails:
+    elif event.transition.id == 'submit':
         _send_notification(obj, "mail_organisation_submitted_creator")
         _send_notification(obj, "mail_organisation_submitted_siteowner")
 
 
 @grok.subscribe(IOrganisation, IObjectAddedEvent)
 def handle_organisation_created(obj, event):
-    if _send_emails:
-        _send_notification(obj, "mail_organisation_created_creator")
-        _send_notification(obj, "mail_organisation_created_siteowner")
+    _send_notification(obj, "mail_organisation_created_creator")
+    _send_notification(obj, "mail_organisation_created_siteowner")
