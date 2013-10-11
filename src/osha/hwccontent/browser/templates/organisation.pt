@@ -49,10 +49,10 @@
               <dd>
                 <a href="" tal:attributes="href url" tal:content="url">url</a>
               </dd>
-              
+
               <dt>Our Campaign Pledge:</dt>
-              <dd tal:content="structure context/campaign_pledge/output">pledge</dd>
-              
+              <dd tal:condition="context/campaign_pledge" tal:content="structure context/campaign_pledge/output">pledge</dd>
+
             </dl>
           </div>
 
@@ -124,7 +124,7 @@
               </tal:loop>
               <span class="more icon-16px sprite-icon-big-arrow-blue-right"
                     tal:define="events_folder view/get_events_folder_url;">
-                <a href="/en/campaigns/hw2010/events" 
+                <a href="/en/campaigns/hw2010/events"
                    tal:attributes="href events_folder;"
                    tal:condition="events_folder"
                    i18n:translate="">More events</a>
@@ -154,7 +154,7 @@
                 </tal:loop>
                 <span class="more icon-16px sprite-icon-big-arrow-blue-right"
                       tal:define="news_folder view/get_news_folder_url;">
-                  <a href="/en/campaigns/hw2010/news" 
+                  <a href="/en/campaigns/hw2010/news"
                      tal:attributes="href news_folder"
                      tal:condition="news_folder"
                      i18n:translate="">More news</a>
