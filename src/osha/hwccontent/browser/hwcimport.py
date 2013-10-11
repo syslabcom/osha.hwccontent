@@ -89,13 +89,16 @@ class HWCImportForm(form.SchemaForm):
                 schema = type_info['schema']
                 fields = {}
                 
+                if data['title'].startswith('MC-'):
+                    continue
+                
                 for name, field in schema.items():
                     if name in data:
                         value = data[name]
                         if value and INamedImageField.providedBy(field):
                             content_type = data.get('_%s_content_type' % name, '')
                             filename = data.get('_%s_filename' % name , None)
-                            value = NamedBlobImage(base64.b64decode(value), content_type, filename)
+                            value = NamedBlobImage(base64.b64decode(value), str(content_type), filename)
                         elif value and IRichText.providedBy(field):
                             content_type = data.get('_%s_content_type', None)
                             value = RichTextValue(value, mimeType=content_type)
