@@ -3,6 +3,15 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="osha.hwccontent">
 
+
+   <browser:page
+       for="*"
+       name="hw_view"
+       class=".helper.HelperView"
+       permission="zope.Public"
+       allowed_interface="osha.hwccontent.browser.helper.IHelperView"
+       />
+
   <browser:page
     name="document_files_view"
     class=".document.FilesView"
