@@ -18,19 +18,20 @@
                          logo python: images + '/logo/mini';
                          ">
 
-        <h1 id="title">
+        <h1 id="title" class="documentFirstHeading">
           <span id="parent-fieldname-title" tal:content="context/title">title</span>
         </h1>
 
         <div id="campaign-partner-details">
 
-          <p id="CEO">
-            <img src="" tal:attributes="src ceo_img" /><br />
-            <span tal:replace="context/ceo_name">Name</span><br />
-            <span tal:replace="context/ceo_position">Name</span>
-          </p>
-          <p class="documentDescription" id="parent-fieldname-description"><span tal:content="context/description">quotes</span></p>
-
+          <div class="documentDescription">
+            <p id="CEO">
+              <img src="" tal:attributes="src ceo_img" /><br />
+              <span tal:replace="context/ceo_name">Name</span><br />
+              <span tal:replace="context/ceo_position">Name</span>
+            </p>
+            <p id="parent-fieldname-description"><span tal:content="context/description">quotes</span></p>
+          </div>
 
           <div id="content-core"
                tal:define="url context/campaignurl|context/url">
