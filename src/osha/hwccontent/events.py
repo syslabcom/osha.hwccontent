@@ -4,6 +4,7 @@ import random
 from Products.CMFCore.utils import getToolByName
 from Products.DCWorkflow.interfaces import IBeforeTransitionEvent
 from five import grok
+from plone import api
 from zope.component import getMultiAdapter
 from zope.app.container.interfaces import IObjectAddedEvent
 
@@ -14,6 +15,7 @@ import logging
 log = logging.getLogger(__name__)
 
 _send_emails = True
+
 
 class MailTemplateBase(grok.View):
     """ """
@@ -159,6 +161,8 @@ def handle_wf_transition(obj, event):
     elif event.transition.id == 'submit':
         _send_notification(obj, "mail_organisation_submitted_creator")
         _send_notification(obj, "mail_organisation_submitted_siteowner")
+    elif event.transition.id == 'reject':
+        api.content.delete(obj=obj)
 
 
 @grok.subscribe(IOrganisation, IObjectAddedEvent)

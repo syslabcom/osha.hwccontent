@@ -6,6 +6,7 @@
 
  <state state_id="pending" title="Pending review (Phase 1)">
   <description i18n:translate="">Waiting to be reviewed.</description>
+  <exit-transition transition_id="reject"/>
   <exit-transition transition_id="approve_phase_1"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>Manager</permission-role>
@@ -197,13 +198,13 @@
  </transition>
 
  <transition transition_id="reject"
-             title="Reviewer sends content back for re-drafting"
-             new_state="approved_phase_1"
+             title="Reviewer rejects organisation profile, causing it to be deleted"
+             new_state="pending"
              trigger="USER"
              before_script=""
              after_script="">
   <description>
-      Sending the item back will return the item to the original author instead of publishing it.
+      Rejecting the item will delete it and notify the original author.
   </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=reject"
           category="workflow" icon="">Reject</action>
