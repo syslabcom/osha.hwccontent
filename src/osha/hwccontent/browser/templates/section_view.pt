@@ -19,8 +19,7 @@
                         limit_display limit_display|request/limit_display|nothing;
                         limit_display python:limit_display and int(limit_display) or None;
                         more_url more_url|request/more_url|string:folder_contents;
-                        folderContents folderContents|nothing;
-                        folderContents python:folderContents or context.getFolderContents(contentFilter, batch=True, b_size=limit_display or 100);
+                        folderContents python:context.getFolderContents(contentFilter, batch=True, b_size=limit_display or 100, full_objects=True);
                         site_properties context/portal_properties/site_properties;
                         use_view_action site_properties/typesUseViewActionInListings|python:();
                         Batch python:modules['Products.CMFPlone'].Batch;
@@ -32,7 +31,8 @@
                         show_about python:not isAnon or site_properties.allowAnonymousViewAbout;
                         navigation_root_url context/@@plone_portal_state/navigation_root_url;
                         pas_member context/@@pas_member;
-                        plone_view context/@@plone;">
+                        plone_view context/@@plone;
+                        isDefaultPage nocall:context/plone_utils/isDefaultPage">
     <tal:listing condition="batch">
       <div id="intronavigation">
         <ul>
@@ -40,7 +40,8 @@
             <tal:block tal:define="item_url item/getURL|item/absolute_url;
                                    item_title_or_id item/pretty_title_or_id;
                                    item_description item/Description;
-                                   item_type item/portal_type">
+                                   item_type item/portal_type"
+                    tal:condition="python:not isDefaultPage(item)">
                 <metal:block define-slot="entry">
                 <li>
                         <a href="#"
