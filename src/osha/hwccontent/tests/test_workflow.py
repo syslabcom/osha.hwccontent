@@ -127,6 +127,6 @@ class TestWorkflow(unittest.TestCase):
         self.assertNotIn(
             'test-organisation',
             self.organisations.objectIds())
-#        self.assertEqual(len(self.sent_mails), 1, msg='Mail not sent')
-#        self.assertIn('harold@testorganisation.com', self.sent_mails[0])
-#        self.assertIn('rejected', self.sent_mails[0])
+        self.assertEqual(len(self.sent_mails), 1, msg='Mail not sent')
+        self.assertIn('harold@testorganisation.com', self.sent_mails[0])
+        self.assertIn('rejected', self.sent_mails[0])

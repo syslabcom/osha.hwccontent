@@ -1,6 +1,7 @@
 import string
 import random
 
+from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from Products.DCWorkflow.interfaces import IBeforeTransitionEvent
 from five import grok
@@ -106,6 +107,22 @@ class OrganisationSubmittedSiteOwnerMailTemplate(MailTemplateBase):
         return self.template.render(self)
 
 
+class OrganisationRejectedMailTemplate(MailTemplateBase):
+    """ """
+    grok.name('mail_organisation_rejected')
+    grok.context(IOrganisation)
+    grok.layer(IOSHAHWCContentLayer)
+    grok.require('cmf.ReviewPortalContent')
+
+    def render(self):
+        self.subject = 'Profile rejected'
+        self.template = grok.PageTemplateFile(
+            'templates/mail_organisation_rejected.pt')
+        if not self.from_addr:
+            raise KeyError('email_from_address')
+        return self.template.render(self)
+
+
 def _send_notification(obj, template_name, *extra_args):
     if not _send_emails:
         return
@@ -162,6 +179,7 @@ def handle_wf_transition(obj, event):
         _send_notification(obj, "mail_organisation_submitted_creator")
         _send_notification(obj, "mail_organisation_submitted_siteowner")
     elif event.transition.id == 'reject':
+        _send_notification(obj, "mail_organisation_rejected")
         api.content.delete(obj=obj)
 
 
