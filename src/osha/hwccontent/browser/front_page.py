@@ -29,7 +29,7 @@ class FrontPageView(BrowserView):
             portal_type="plone.app.event.dx.event",
             sort_limit=num_results,
             sort_on="start",
-            sort_order="ascending",
+            sort_order="descending",
         )[:num_results]
 
     def partners(self):
