@@ -26,7 +26,7 @@ class FrontPageView(BrowserView):
         catalog = api.portal.get_tool(name='portal_catalog')
         num_results = 2
         return catalog.searchResults(
-            portal_type="Event",
+            portal_type="plone.app.event.dx.event",
             sort_limit=num_results,
             sort_on="start",
             sort_order="descending",
