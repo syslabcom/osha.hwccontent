@@ -5,7 +5,13 @@ import re
 from Acquisition import aq_parent
 from Products.validation.validators.BaseValidators import EMAIL_RE
 from five import grok
-from osha.hwccontent import _, vocabularies
+from plone import api
+from plone.app.textfield import RichText
+from plone.app.textfield.value import RichTextValue
+from plone.autoform import directives as formdirectives
+from plone.dexterity.content import Container
+from plone.directives import dexterity
+from plone.multilingualbehavior import directives
 from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
 from z3c.form import field
@@ -14,13 +20,8 @@ from zope import event
 from zope import interface
 from zope import schema
 from zope.component.interfaces import IObjectEvent, ObjectEvent
-from plone import api
-from plone.app.textfield import RichText
-from plone.app.textfield.value import RichTextValue
-from plone.autoform import directives as formdirectives
-from plone.dexterity.content import Container
-from plone.directives import dexterity
-from plone.multilingualbehavior import directives
+
+from osha.hwccontent import _, vocabularies
 
 
 INTRO_TEXT_PHASE_1 = _(
