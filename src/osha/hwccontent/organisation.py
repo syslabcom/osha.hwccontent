@@ -1,19 +1,27 @@
 # _+- coding: utf-8 -*-
 
 import re
+
+from Acquisition import aq_parent
 from Products.validation.validators.BaseValidators import EMAIL_RE
 from five import grok
-from osha.hwccontent import _, vocabularies
+from plone import api
+from plone.app.textfield import RichText
+from plone.app.textfield.value import RichTextValue
+from plone.autoform import directives as formdirectives
+from plone.dexterity.content import Container
+from plone.directives import dexterity
+from plone.multilingualbehavior import directives
 from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
 from z3c.form import field
 from z3c.form.interfaces import IAddForm, IEditForm
+from zope import event
+from zope import interface
 from zope import schema
-from plone.app.textfield import RichText
-from plone.app.textfield.value import RichTextValue
-from plone.autoform import directives as formdirectives
-from plone.directives import dexterity
-from plone.multilingualbehavior import directives
+from zope.component.interfaces import IObjectEvent, ObjectEvent
+
+from osha.hwccontent import _, vocabularies
 
 
 INTRO_TEXT_PHASE_1 = _(
@@ -454,6 +462,24 @@ class IOrganisation(IOrganisationBase, IOrganisationExtra):
     )
 
 
+class IProfileRejectedEvent(IObjectEvent):
+    """ """
+
+
+class ProfileRejectedEvent(ObjectEvent):
+    """ """
+    interface.implements(IProfileRejectedEvent)
+
+
+class Organisation(Container):
+    """Implementation of Organisation content"""
+
+    def reject(self):
+        """Delete the object and send notification to key_email"""
+        event.notify(ProfileRejectedEvent(self))
+        api.content.delete(obj=self)
+
+
 class AddForm(dexterity.AddForm):
     grok.name('osha.hwccontent.organisation')
     grok.context(IOrganisation)
@@ -488,3 +514,16 @@ class EditForm(dexterity.EditForm):
             self.widgets['phase_2_intro'].value = RichTextValue(
                 INTRO_TEXT_PHASE_2, "text/html", "text/html")
             self.widgets['phase_2_intro'].mode = 'display'
+
+
+class RejectView(grok.View):
+    grok.context(IOrganisation)
+    grok.require("zope2.DeleteObjects")
+    grok.name("reject")
+
+    def render(self):
+        msg = 'The organisation profile "{0}" has been rejected'.format(
+            self.context.Title())
+        self.context.reject()
+        api.portal.show_message(message=msg, request=self.request)
+        self.request.response.redirect(aq_parent(self.context).absolute_url())

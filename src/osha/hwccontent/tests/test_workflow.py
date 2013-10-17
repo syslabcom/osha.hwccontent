@@ -4,7 +4,7 @@ import unittest2 as unittest
 
 from Products.CMFCore.utils import getToolByName
 from plone import api
-from plone.app.testing import helpers, SITE_OWNER_NAME, TEST_USER_ID
+from plone.app.testing import helpers, SITE_OWNER_NAME
 
 from osha.hwccontent.testing import \
     OSHA_HWCCONTENT_INTEGRATION_TESTING
@@ -31,7 +31,7 @@ class TestWorkflow(unittest.TestCase):
             self.organisations,
             type='osha.hwccontent.organisation',
             title='Test Organisation',
-            id='test-organization',
+            id='test-organisation',
             key_email=u'harold@testorganisation.com',
             key_name=u'Harold van Testinger')
 
@@ -40,7 +40,8 @@ class TestWorkflow(unittest.TestCase):
 
     def tearDown(self):
         helpers.login(self.app, SITE_OWNER_NAME)
-        api.content.delete(self.org)
+        if 'test-organisation' in self.organisations.objectIds():
+            api.content.delete(self.org)
         res = self.portal.portal_membership.searchForMembers(
             email='harold@testorganisation.com')
         if res:
@@ -51,7 +52,7 @@ class TestWorkflow(unittest.TestCase):
             self.organisations,
             type='osha.hwccontent.organisation',
             title='New Organisation',
-            id='new-organization',
+            id='new-organisation',
             key_email=u'ignatius@neworganisation.com',
             key_name=u'Ignatius Schliefenmühl')
         self.assertEqual(len(self.sent_mails), 2, msg='Mail not sent')
@@ -62,7 +63,7 @@ class TestWorkflow(unittest.TestCase):
         self.assertIn(new_org.absolute_url(),
                       '\n'.join(self.sent_mails))
 
-    def test_reviewer_approves_organization(self):
+    def test_reviewer_approves_organisation(self):
         helpers.login(self.portal, 'Site Administrator')
         self.wftool.doActionFor(self.org, 'approve_phase_1')
         self.assertEqual(
@@ -116,3 +117,16 @@ class TestWorkflow(unittest.TestCase):
             'View',
             [p['name'] for p in self.org.permissionsOfRole('Anonymous')
                 if p['selected']])
+
+    def test_reviewer_rejects_organisation(self):
+        helpers.login(self.portal, 'Site Administrator')
+        self.assertIn(
+            'test-organisation',
+            self.organisations.objectIds())
+        self.org.reject()
+        self.assertNotIn(
+            'test-organisation',
+            self.organisations.objectIds())
+        self.assertEqual(len(self.sent_mails), 1, msg='Mail not sent')
+        self.assertIn('harold@testorganisation.com', self.sent_mails[0])
+        self.assertIn('rejected', self.sent_mails[0])

@@ -7,13 +7,17 @@ from five import grok
 from zope.component import getMultiAdapter
 from zope.app.container.interfaces import IObjectAddedEvent
 
-from osha.hwccontent.organisation import IOrganisation
+from osha.hwccontent.organisation import (
+    IOrganisation,
+    IProfileRejectedEvent,
+)
 from osha.hwccontent.interfaces import IOSHAHWCContentLayer
 import logging
 
 log = logging.getLogger(__name__)
 
 _send_emails = True
+
 
 class MailTemplateBase(grok.View):
     """ """
@@ -104,10 +108,26 @@ class OrganisationSubmittedSiteOwnerMailTemplate(MailTemplateBase):
         return self.template.render(self)
 
 
+class OrganisationRejectedMailTemplate(MailTemplateBase):
+    """ """
+    grok.name('mail_organisation_rejected')
+    grok.context(IOrganisation)
+    grok.layer(IOSHAHWCContentLayer)
+    grok.require('cmf.ReviewPortalContent')
+
+    def render(self):
+        self.subject = 'Profile rejected'
+        self.template = grok.PageTemplateFile(
+            'templates/mail_organisation_rejected.pt')
+        if not self.from_addr:
+            raise KeyError('email_from_address')
+        return self.template.render(self)
+
+
 def _send_notification(obj, template_name, *extra_args):
     if not _send_emails:
         return
-    
+
     mail_template = getMultiAdapter(
         (obj, obj.REQUEST),
         name=template_name)
@@ -159,6 +179,11 @@ def handle_wf_transition(obj, event):
     elif event.transition.id == 'submit':
         _send_notification(obj, "mail_organisation_submitted_creator")
         _send_notification(obj, "mail_organisation_submitted_siteowner")
+
+
+@grok.subscribe(IOrganisation, IProfileRejectedEvent)
+def handle_after_wf_transition(obj, event):
+    _send_notification(obj, "mail_organisation_rejected")
 
 
 @grok.subscribe(IOrganisation, IObjectAddedEvent)
