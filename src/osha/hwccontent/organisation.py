@@ -15,7 +15,8 @@ from plone.multilingualbehavior import directives
 from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
 from z3c.form import field
-from z3c.form.interfaces import IAddForm, IEditForm
+from z3c.form.browser import select
+from z3c.form.interfaces import IAddForm, IEditForm, NO_VALUE
 from zope import event
 from zope import interface
 from zope import schema
@@ -59,6 +60,27 @@ def isEmail(value):
         return True
     raise InvalidEmailError
 
+
+class NonMissingSelectWidget(select.SelectWidget):
+    def extract(self, default=NO_VALUE):
+        """See z3c.form.interfaces.IWidget."""
+        if (self.name not in self.request and
+            self.name + '-empty-marker' in self.request):
+            return []
+        value = self.request.get(self.name, default)
+        if value != default:
+            if not isinstance(value, (tuple, list)):
+                value = (value,)
+            # do some kind of validation, at least only use existing values
+            for token in value:
+                if token == self.noValueToken:
+                    continue
+                try:
+                    self.terms.terms.getTermByToken(token)
+                except LookupError:
+                    return default
+        return value
+    
 
 class IOrganisationBase(model.Schema):
 
@@ -417,6 +439,7 @@ class IOrganisationExtra(model.Schema):
         vocabulary=vocabularies.organisation_types,
     )
     directives.languageindependent('organisation_type')
+    formdirectives.widget('organisation_type', NonMissingSelectWidget)
 
     key_position = schema.TextLine(
         title=_(u"Position of the main contact person."),
