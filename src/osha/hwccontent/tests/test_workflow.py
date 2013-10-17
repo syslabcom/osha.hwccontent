@@ -4,7 +4,7 @@ import unittest2 as unittest
 
 from Products.CMFCore.utils import getToolByName
 from plone import api
-from plone.app.testing import helpers, SITE_OWNER_NAME, TEST_USER_ID
+from plone.app.testing import helpers, SITE_OWNER_NAME
 
 from osha.hwccontent.testing import \
     OSHA_HWCCONTENT_INTEGRATION_TESTING
@@ -123,7 +123,7 @@ class TestWorkflow(unittest.TestCase):
         self.assertIn(
             'test-organisation',
             self.organisations.objectIds())
-        self.wftool.doActionFor(self.org, 'reject')
+        self.org.reject()
         self.assertNotIn(
             'test-organisation',
             self.organisations.objectIds())

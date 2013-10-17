@@ -1,15 +1,16 @@
 import string
 import random
 
-from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from Products.DCWorkflow.interfaces import IBeforeTransitionEvent
 from five import grok
-from plone import api
 from zope.component import getMultiAdapter
 from zope.app.container.interfaces import IObjectAddedEvent
 
-from osha.hwccontent.organisation import IOrganisation
+from osha.hwccontent.organisation import (
+    IOrganisation,
+    IProfileRejectedEvent,
+)
 from osha.hwccontent.interfaces import IOSHAHWCContentLayer
 import logging
 
@@ -126,7 +127,7 @@ class OrganisationRejectedMailTemplate(MailTemplateBase):
 def _send_notification(obj, template_name, *extra_args):
     if not _send_emails:
         return
-    
+
     mail_template = getMultiAdapter(
         (obj, obj.REQUEST),
         name=template_name)
@@ -178,9 +179,11 @@ def handle_wf_transition(obj, event):
     elif event.transition.id == 'submit':
         _send_notification(obj, "mail_organisation_submitted_creator")
         _send_notification(obj, "mail_organisation_submitted_siteowner")
-    elif event.transition.id == 'reject':
-        _send_notification(obj, "mail_organisation_rejected")
-        api.content.delete(obj=obj)
+
+
+@grok.subscribe(IOrganisation, IProfileRejectedEvent)
+def handle_after_wf_transition(obj, event):
+    _send_notification(obj, "mail_organisation_rejected")
 
 
 @grok.subscribe(IOrganisation, IObjectAddedEvent)

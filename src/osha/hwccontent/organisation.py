@@ -8,10 +8,15 @@ from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
 from z3c.form import field
 from z3c.form.interfaces import IAddForm, IEditForm
+from zope import event
+from zope import interface
 from zope import schema
+from zope.component.interfaces import IObjectEvent, ObjectEvent
+from plone import api
 from plone.app.textfield import RichText
 from plone.app.textfield.value import RichTextValue
 from plone.autoform import directives as formdirectives
+from plone.dexterity.content import Container
 from plone.directives import dexterity
 from plone.multilingualbehavior import directives
 
@@ -451,6 +456,24 @@ class IOrganisation(IOrganisationBase, IOrganisationExtra):
             'representative_name', 'representative_email',
             'representative_phone', 'logo', 'ceo_image', 'campaign_pledge']
     )
+
+
+class IProfileRejectedEvent(IObjectEvent):
+    """ """
+
+
+class ProfileRejectedEvent(ObjectEvent):
+    """ """
+    interface.implements(IProfileRejectedEvent)
+
+
+class Organisation(Container):
+    """Implementation of Organisation content"""
+
+    def reject(self):
+        """Delete the object and send notification to key_email"""
+        event.notify(ProfileRejectedEvent(self))
+        api.content.delete(obj=self)
 
 
 class AddForm(dexterity.AddForm):
