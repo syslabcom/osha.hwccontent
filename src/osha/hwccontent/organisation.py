@@ -1,6 +1,8 @@
 # _+- coding: utf-8 -*-
 
 import re
+
+from Acquisition import aq_parent
 from Products.validation.validators.BaseValidators import EMAIL_RE
 from five import grok
 from osha.hwccontent import _, vocabularies
@@ -510,3 +512,16 @@ class EditForm(dexterity.EditForm):
             self.widgets['phase_2_intro'].value = RichTextValue(
                 INTRO_TEXT_PHASE_2, "text/html", "text/html")
             self.widgets['phase_2_intro'].mode = 'display'
+
+
+class RejectView(grok.View):
+    grok.context(IOrganisation)
+    grok.require("zope2.DeleteObjects")
+    grok.name("reject")
+
+    def render(self):
+        msg = 'The organisation profile "{0}" has been rejected'.format(
+            self.context.Title())
+        self.context.reject()
+        api.portal.show_message(message=msg, request=self.request)
+        self.request.response.redirect(aq_parent(self.context).absolute_url())
