@@ -65,7 +65,7 @@ class NonMissingSelectWidget(select.SelectWidget):
     def extract(self, default=NO_VALUE):
         """See z3c.form.interfaces.IWidget."""
         if (self.name not in self.request and
-            self.name + '-empty-marker' in self.request):
+                self.name + '-empty-marker' in self.request):
             return []
         value = self.request.get(self.name, default)
         if value != default:
@@ -80,7 +80,7 @@ class NonMissingSelectWidget(select.SelectWidget):
                 except LookupError:
                     return default
         return value
-    
+
 
 class IOrganisationBase(model.Schema):
 
@@ -111,7 +111,7 @@ class IOrganisationBase(model.Schema):
     directives.languageindependent('zip_code')
 
     country = schema.Choice(
-        title=_(u"County"),
+        title=_(u"Country"),
         vocabulary=vocabularies.countries,
     )
     directives.languageindependent('country')
