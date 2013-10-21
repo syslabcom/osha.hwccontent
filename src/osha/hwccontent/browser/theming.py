@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_parent
 from Products.CMFPlone.utils import getDefaultPage
-from osha.hwccontent.interfaces import ITwoImages, ISectionIntro
+from osha.hwccontent.interfaces import ITwoImages, ISectionIntro, IFullWidth
 from plone.app.layout.globals import layout
 from plone.app.layout.navigation.interfaces import INavigationRoot
 
@@ -28,21 +28,25 @@ class LayoutPolicy(layout.LayoutPolicy):
 
         body_class = super(LayoutPolicy, self).bodyClass(template, view)
 
-        # is there a marker interface for 2 images on the context?
-        if ITwoImages.providedBy(self.context):
-            body_class += " two-images"
-        # the marker interface can also be set on the view
-        if ITwoImages.providedBy(view):
-            body_class += " two-images"
+        is_special = False
 
-        # is there a marker interface for section intro
-        if ISectionIntro.providedBy(self.context):
-            body_class += " section-intro"
-        # the marker interface can also be set on the view
-        if ISectionIntro.providedBy(view):
-            body_class += " section-intro"
+        # is there a marker interface for 2 images on the context or view?
+        if ITwoImages.providedBy(self.context) or ITwoImages.providedBy(view):
+            body_class += " two-images"
+            is_special = True
 
-        if self.is_subsection(self.context, view):
+        # is there a marker interface for section intro?
+        if ISectionIntro.providedBy(self.context) or \
+                ISectionIntro.providedBy(view):
+            body_class += " section-intro"
+            is_special = True
+
+        # is there a marker interface for 2 full width?
+        if IFullWidth.providedBy(self.context) or IFullWidth.providedBy(view):
+            body_class += " full-width"
+            is_special = True
+
+        if not is_special and self.is_subsection(self.context, view):
             body_class += " subsection"
 
         return body_class

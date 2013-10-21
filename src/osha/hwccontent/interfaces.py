@@ -8,6 +8,11 @@ class IOSHAHWCContentLayer(IPloneAppContenttypesLayer):
     """
 
 
+class IFullWidth(IDexterityContent):
+    """Marker Interface to indicate that a page uses full-width layout
+    """
+
+
 class ITwoImages(IDexterityContent):
     """Marker Interface to indicate that a page has 2 horizontal image slots
     """
