@@ -28,6 +28,7 @@
           <div id="sectionImage" class="span4">
             <img src="#" tal:replace="structure ceo_img/tag" />
             <p><strong tal:content="context/ceo_name">Rafael Mateo</strong></p>
+            <p tal:content="context/ceo_position">CEO</p>
             <p class="quote">&quot;<span tal:replace="context/description">
               "Our responsibility as leaders is to guide
               Acciona Energia's management team on the
