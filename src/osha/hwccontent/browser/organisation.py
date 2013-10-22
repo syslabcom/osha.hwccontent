@@ -18,7 +18,7 @@ class View(grok.View):
     def get_events(self):
         return [
             x for x in self.context.objectValues()
-            if x.portal_type == 'Event']
+            if x.portal_type == 'plone.app.event.dx.event']
         # return self.portal_catalog(
         #     portal_type='Event', path=self.context.getPhysicalPath())
 

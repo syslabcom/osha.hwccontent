@@ -111,7 +111,7 @@
             <h2 class="expandableHeader" i18n:translate="">Events</h2>
             <dl class="expandableContent" style="display: block" >
               <tal:loop tal:repeat="item events">
-                <dt tal:content="python:toLocalizedTime(item.start_date)"></dt>
+                <dt tal:content="python:toLocalizedTime(item.start)"></dt>
                 <dd>
                   <h3 class="detailsHeadline">
                     <a href="" class="summary url"
