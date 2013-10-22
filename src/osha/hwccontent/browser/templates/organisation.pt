@@ -13,9 +13,9 @@
                              toLocalizedTime nocall:context/@@plone/toLocalizedTime;
                              folder python:here.aq_parent;">
       <tal:set define="dummy python:request.RESPONSE.setHeader('X-Deliverance-Page-Class', 'general partner-detail')" />
-      <tal:block define="images python: context.absolute_url() + '/@@images';
-                         ceo_img python: images + '/ceo_image/mini';
-                         logo python: images + '/logo/mini';
+      <tal:block define="images context/@@images;
+                         ceo_img python: images.scale('ceo_image', width=335, height=335);
+                         logo python: images.scale('logo', width=166, height=166);
                          ">
 
         <h1 id="title" class="documentFirstHeading">
@@ -24,63 +24,88 @@
 
         <div id="campaign-partner-details">
 
-          <div class="documentDescription">
-            <p id="CEO">
-              <img src="" tal:attributes="src ceo_img" /><br />
-              <span tal:replace="context/ceo_name">Name</span><br />
-              <span tal:replace="context/ceo_position">Name</span>
-            </p>
-            <p id="parent-fieldname-description"><span tal:content="context/description">quotes</span></p>
+        <div class="row-fluid">
+          <div id="sectionImage" class="span4">
+            <img src="#" tal:replace="structure ceo_img/tag" />
+            <P><strong tal:content="context/ceo_name">Rafael Mateo</strong></P>
+            <P class="quote" tal:content="context/description">
+              "Our responsibility as leaders is to guide
+              Acciona Energia's management team on the
+              promotion of health and safety issues in all
+              our different activities, including internal and
+              external staff."
+            </P>
           </div>
 
-          <div id="content-core"
-               tal:define="url context/campaignurl|context/url">
-            <dl class="detailsListing grid" id="partner-profile">
-
-              <dt>Type of organisation:</dt>
-              <dd tal:content="context/organisation_type">org_type</dd>
-
-              <dt>Business sector:</dt>
-              <dd tal:content="context/business_sector">business</dd>
-
-              <dt>Mission statement:</dt>
-              <dd tal:content="context/mission_statement">mission</dd>
-
-              <dt>URL:</dt>
-              <dd>
-                <a href="" tal:attributes="href url" tal:content="url">url</a>
-              </dd>
-
-              <dt>Our Campaign Pledge:</dt>
-              <dd tal:condition="context/campaign_pledge" tal:content="structure context/campaign_pledge/output">pledge</dd>
-
-            </dl>
-          </div>
-
-          <div id="portlet portletPartnerPortlet" class="portlet">
-
-
-            <img src="" tal:attributes="src logo" />
-
-            <dd class="portletItem odd">
-              <span tal:replace="context/title">org_name</span><br />
-              <span tal:replace="context/street">org_address</span><br />
-              <span tal:replace="context/zip_code">post code</span>
-              <span tal:replace="context/city">city</span><br />
-              <span tal:replace="context/country">country</span>
-            </dd>
-
-            <dd class="portletItem even">
-              <span tal:replace="context/email">email</span><br />
-              <a href="" tal:attributes="href context/url" tal:content="context/url">url</a>
-            </dd>
-
-            <dd class="portletItem odd">
-              Tel: <span tal:replace="context/phone">phone</span><br />
-              Fax: <span tal:replace="context/fax">fax</span>
-            </dd>
-
-
+          <div id="content-core">
+              <dl class="row-fluid">
+                <dt class="span4">Type of organisation:</dt>
+                <dd class="span7" tal:content="structure view/w/organisation_type/render">Private company</dd>
+              </dl>
+              <dl class="row-fluid">
+                <dt class="span4">Business sector:</dt>
+                <dd class="span8" tal:content="structure view/w/business_sector/render">Renewable energy</dd>
+              </dl>
+              <dl class="row-fluid">
+                <dt class="span4">Mission statement:</dt>
+                <dd class="span8" tal:content="context/mission_statement">Acciona Energía's mission is to be pioneers in development
+                  and sustainability. Acciona Energía takes on this strategic
+                  premise and applies it to research, development and
+                  innovation in the different renewable technologies it works
+                  in, with the aim of providing energy solutions that are ever
+                  more efficient and competitive.
+                </dd>
+              </dl>
+              <dl class="row-fluid">
+                <dt class="span4">URL:</dt>
+                <dd class="span8">
+                  <a tal:attributes="href context/campaign_url" tal:content="context/campaign_url">
+                    http://www.acciona-energia.com/sustainability/quality-prevention.aspx
+                  </a>
+                </dd>
+              </dl>
+              <dl class="row-fluid">
+                <dt class="span4">Our Campaign Pledge:</dt>
+                <dd class="span8" tal:content="structure context/campaign_pledge/output">
+                  Acciona Energía is absolutelly committed with the promotion
+                  of Health & Safety in any business that we operate in. Social
+                  Responsibility and Sustainability are part of our company's
+                  DNA. We are convinced that working in businesses free of
+                  risks for our employees, suppliers and partners is a benefit
+                  for all stakeholders.
+                </dd>
+              </dl>
+              <dl class="row-fluid">
+                <dt class="span4 partnerlogo">
+                  <img src="#" tal:replace="structure logo/tag" />
+                </dt>
+                <dd class="span8">
+                  <p tal:content="structure view/w/title/render">Acciona Energía</p>
+                  <p tal:content="structure view/w/street/render">Avenida Ciudad de la Innovacion, 5</p>
+                  <p tal:condition="view/w/address_extra/render"
+                     tal:content="structure view/w/address_extra/render">Address extra</p>
+                  <p>
+                    <span tal:content="structure view/w/zip_code/render">31621</span>
+                    <span tal:content="structure view/w/city/render">Sarriguren</span>
+                  </p>
+                  <p tal:content="structure view/w/country/render">Spain</p>
+                  <p tal:content="structure view/w/email/render">comunicacion@acciona.es</p>
+                  <p>
+                    <a tal:attributes="href view/w/url/render"
+                       tal:content="structure view/w/url/render">
+                      http://www.acciona-energia.com
+                    </a>
+                  </p>
+                  <p>Tel: <span tal:content="structure view/w/phone/render">+34948006000</span></p>
+                  <p>Fax: <span tal:content="structure view/w/fax/render">+34948006000</span></p>
+                  <p><strong>Contact Persons</strong></p>
+                  <p><strong>QSE Director</strong></p>
+                  <p tal:content="structure view/w/key_name/render">Mikel Gastón Lujambio</p>
+                  <p><strong>Health and Safety Representative</strong></p>
+                  <p tal:content="structure context/representative_name">Eloy Jáuregui Martín</p>
+                </dd>
+              </dl>
+            </div>
           </div>
 
           <div id="portlet portletContactsPortlet" class="portlet">

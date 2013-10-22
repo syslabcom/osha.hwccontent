@@ -1,12 +1,13 @@
 # _+- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from five import grok
+from plone.directives import dexterity
 from osha.hwccontent.organisation import IOrganisation
 
 grok.templatedir("templates")
 
 
-class View(grok.View):
+class View(dexterity.DisplayForm):
     grok.context(IOrganisation)
     grok.require('zope2.View')
     grok.template("organisation")

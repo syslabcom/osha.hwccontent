@@ -77,4 +77,7 @@ jQuery(document).ready(function() {
         show_hide_widget(widget_5, !(cb_5[0].checked), fade=false);
     }
 
+    // add placehoder text for autocomplete / content browse inputs
+    jQuery('.querySelectSearch input').attr('placeholder', "Enter text or click the browse button")
+
 });
