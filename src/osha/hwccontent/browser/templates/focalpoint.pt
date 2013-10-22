@@ -60,17 +60,6 @@
               </dd>
             </dl>
             <dl class="row-fluid">
-              <dt class="span4">Our Campaign Pledge:</dt>
-              <dd class="span8" tal:content="structure context/campaign_pledge/output|nothing">
-                Acciona Energía is absolutelly committed with the promotion
-                of Health & Safety in any business that we operate in. Social
-                Responsibility and Sustainability are part of our company's
-                DNA. We are convinced that working in businesses free of
-                risks for our employees, suppliers and partners is a benefit
-                for all stakeholders.
-              </dd>
-            </dl>
-            <dl class="row-fluid">
               <dt class="span4 partnerlogo">
                 <img src="#" tal:replace="structure logo/tag|nothing" />
               </dt>
