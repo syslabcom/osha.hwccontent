@@ -13,9 +13,9 @@
                              toLocalizedTime nocall:context/@@plone/toLocalizedTime;
                              folder python:here.aq_parent;">
       <tal:set define="dummy python:request.RESPONSE.setHeader('X-Deliverance-Page-Class', 'general partner-detail')" />
-      <tal:block define="images python: context.absolute_url() + '/@@images';
-                         ceo_img python: images + '/ceo_image/mini';
-                         logo python: images + '/logo/mini';
+      <tal:block define="images context/@@images;
+                         ceo_img python: images.scale('ceo_image', width=335, height=335);
+                         logo python: images.scale('logo', width=166, height=166);
                          ">
 
         <h1 id="title" class="documentFirstHeading">
@@ -24,140 +24,113 @@
 
         <div id="campaign-partner-details">
 
-
-          <div class="documentDescription">
-            <p id="CEO">
-              <img src="" tal:attributes="src ceo_img" /><br />
+          <div id="sectionImage" class="span4">
+            <img src="#" tal:replace="structure ceo_img/tag|nothing" />
+            <p class="quote">&quot;<span tal:replace="context/description">
+              "Our responsibility as leaders is to guide
+              Acciona Energia's management team on the
+              promotion of health and safety issues in all
+              our different activities, including internal and
+              external staff."</span>&quot;
             </p>
-            <p id="parent-fieldname-description"><span tal:content="context/description">quotes</span></p>
           </div>
 
-
-          <div id="content-core"
-               tal:define="url context/campaignurl|context/url">
-            <dl class="detailsListing grid" id="partner-profile">
-
-              <dt>Type of organisation:</dt>
-              <dd tal:content="context/organisation_type">org_type</dd>
-
-              <dt>Mission statement:</dt>
-              <dd tal:content="context/mission_statement">mission</dd>
-
-              <dt>URL:</dt>
-              <dd>
-                <a href="" tal:attributes="href url" tal:content="url">url</a>
+          <div id="content-core">
+            <dl class="row-fluid">
+              <dt class="span4">Type of organisation:</dt>
+              <dd class="span7" tal:content="structure view/w/organisation_type/render">Private company</dd>
+            </dl>
+            <dl class="row-fluid">
+              <dt class="span4">URL:</dt>
+              <dd class="span8">
+                <a tal:attributes="href context/campaign_url" tal:content="context/campaign_url">
+                  http://www.acciona-energia.com/sustainability/quality-prevention.aspx
+                </a>
               </dd>
+            </dl>
+            <dl class="row-fluid">
+              <dt class="span4">Mandate:</dt>
+              <dd class="span8" tal:content="context/mission_statement">
+                Acciona Energía's mission is to be pioneers in development
+                and sustainability. Acciona Energía takes on this strategic
+                premise and applies it to research, development and
+                innovation in the different renewable technologies it works
+                in, with the aim of providing energy solutions that are ever
+                more efficient and competitive.
+              </dd>
+            </dl>
+            <dl class="row-fluid">
+              <dt class="span4">Our Campaign Pledge:</dt>
+              <dd class="span8" tal:content="structure context/campaign_pledge/output|nothing">
+                Acciona Energía is absolutelly committed with the promotion
+                of Health & Safety in any business that we operate in. Social
+                Responsibility and Sustainability are part of our company's
+                DNA. We are convinced that working in businesses free of
+                risks for our employees, suppliers and partners is a benefit
+                for all stakeholders.
+              </dd>
+            </dl>
+            <dl class="row-fluid">
+              <dt class="span4 partnerlogo">
+                <img src="#" tal:replace="structure logo/tag|nothing" />
+              </dt>
+              <dd class="span8">
+                <p tal:content="context/title">Acciona Energía</p>
+                <p tal:content="context/street">Avenida Ciudad de la Innovacion, 5</p>
+                <p tal:condition="context/address_extra"
+                   tal:content="context/address_extra">Address extra</p>
+                <p>
+                  <span tal:content="context/zip_code">31621</span>
+                  <span tal:content="context/city">Sarriguren</span>
+                </p>
+                <p tal:content="context/country">Spain</p>
+                <p tal:content="context/email">comunicacion@acciona.es</p>
+                <p>
+                  <a tal:attributes="href context/url"
+                     tal:content="context/url">
+                    http://www.acciona-energia.com
+                  </a>
+                </p>
+                <p>Tel: <span tal:content="context/phone">+34948006000</span></p>
+                <p>Fax: <span tal:content="context/fax">+34948006000</span></p>
+                <p><strong>Contact Persons</strong></p>
+                <p><strong>QSE Director</strong></p>
+                <p tal:content="context/key_name">Mikel Gastón Lujambio</p>
+                <p><strong>Health and Safety Representative</strong></p>
+                <p tal:content="context/representative_name">Eloy Jáuregui Martín</p>
 
-              <dt>Our Campaign Pledge:</dt>
-              <dd tal:condition="context/campaign_pledge" tal:content="structure context/campaign_pledge/output">pledge</dd>
+                <br/>
+                <div tal:define="events view/get_events;"
+                     tal:condition="events">
+                  <h3>EVENTS</h3>
+                  <ul class="events">
+                    <li tal:repeat="item events">
+                      <span tal:content="python:toLocalizedTime(item.start)">May 25, 2012</span><br/>
+                      <a tal:attributes="href item/absolute_url" tal:content="item/Title">Risk prevention in Austria</a>
+                      <br/>
+                    </li>
+                  </ul>
+                  <a tal:condition="context/events|nothing" class="more" href="*" 
+                     tal:attributes="href context/events/absolute_url">More events</a><br/>
+                  <br/>
+                </div>
+                
+                <div tal:define="news view/get_news;"
+                     tal:condition="news">
+                  <h3>NEWS</h3>
+                  <ul class="events">
+                    <li tal:repeat="item news">
+                      <span tal:content="python:toLocalizedTime(item.effective())">May 25, 2012</span><br/>
+                      <a tal:attributes="href item/absolute_url" tal:content="item/Title">Austrian Kick-Off of the Campaign "Working together for risk prevention"</a>
+                    </li>
+                  </ul>
+                  <a tal:condition="context/news|nothing" class="more" href="*" 
+                     tal:attributes="href context/news/absolute_url">More news</a><br/>
+                </div>
+
+              </dd>
             </dl>
           </div>
-
-
-          <div id="portlet portletPartnerPortlet" class="portlet">
-
-
-            <img src="" tal:attributes="src logo" />
-
-            <dd class="portletItem odd">
-              <span tal:replace="context/title">org_name</span><br />
-              <span tal:replace="context/street">org_address</span><br />
-              <span tal:replace="context/zip_code">post code</span>
-              <span tal:replace="context/city">city</span><br />
-              <span tal:replace="context/country">country</span>
-            </dd>
-
-            <dd class="portletItem even">
-              <span tal:replace="context/email">email</span><br />
-              <a href="" tal:attributes="href context/url" tal:content="context/url">url</a>
-            </dd>
-
-            <dd class="portletItem odd">
-              Tel: <span tal:replace="context/phone">phone</span><br />
-              Fax: <span tal:replace="context/fax">fax</span>
-            </dd>
-
-
-          </div>
-
-          <div id="portlet portletContactsPortlet" class="portlet">
-
-            <h4>Contact Persons</h4>
-
-
-            <dd class="portletItem odd">
-              <span tal:replace="context/key_name">key name</span><br />
-            </dd>
-
-            <dd class="portletItem even">
-              <tal:c condition="context/representative_name">
-                <strong>Health and Safety Representative</strong><br />
-                <span tal:replace="context/representative_name">repr. name</span><br />
-              </tal:c>
-            </dd>
-
-          </div>
-
-          <!-- Events -->
-          <div class="expandable opened"
-               tal:define="events view/get_events;"
-               tal:condition="events">
-
-            <h2 class="expandableHeader" i18n:translate="">Events</h2>
-            <dl class="expandableContent" style="display: block" >
-              <tal:loop tal:repeat="item events">
-                <dt tal:content="python:toLocalizedTime(item.start)"></dt>
-                <dd>
-                  <h3 class="detailsHeadline">
-                    <a href="" class="summary url"
-                       tal:attributes="href item/absolute_url"
-                       tal:content="item/Title">
-                      Item Title
-                    </a>
-                  </h3>
-                </dd>
-                <dd class="visualClear"></dd>
-              </tal:loop>
-              <span class="more icon-16px sprite-icon-big-arrow-blue-right"
-                    tal:define="events_folder view/get_events_folder_url;">
-                <a href="/en/campaigns/hw2010/events" 
-                   tal:attributes="href events_folder;"
-                   tal:condition="events_folder"
-                   i18n:translate="">More events</a>
-              </span>
-            </dl>
-          </div>
-
-          <!-- News -->
-          <tal:news define="news view/get_news;">
-            <div class="expandable closed"
-                 tal:condition="python:news">
-
-              <h2 class="expandableHeader" i18n:translate="">News</h2>
-              <dl class="expandableContent" style="display: block" >
-                <tal:loop tal:repeat="item news">
-                  <dt tal:content="python:toLocalizedTime(item.Date())"></dt>
-                  <dd>
-                    <h3 class="detailsHeadline">
-                      <a href="" class="summary url"
-                         tal:attributes="href item/absolute_url"
-                         tal:content="item/Title">
-                        Item Title
-                      </a>
-                    </h3>
-                  </dd>
-                  <dd class="visualClear"></dd>
-                </tal:loop>
-                <span class="more icon-16px sprite-icon-big-arrow-blue-right"
-                      tal:define="news_folder view/get_news_folder_url;">
-                  <a href="/en/campaigns/hw2010/news" 
-                     tal:attributes="href news_folder"
-                     tal:condition="news_folder"
-                     i18n:translate="">More news</a>
-                </span>
-              </dl>
-            </div>
-          </tal:news>
         </div>
       </tal:block>
 
