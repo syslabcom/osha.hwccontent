@@ -10,4 +10,22 @@
       inline="False"
       />
 
+  <javascript
+      cacheable="True"
+      compression="safe"
+      cookable="False"
+      enabled="False"
+      id="popupforms.js"
+      inline="False"
+      />
+
+  <javascript
+      cacheable="True"
+      compression="safe"
+      cookable="False"
+      enabled="True"
+      id="++resource++osha.hwccontent/popupforms.js"
+      inline="False"
+      />
+
 </object>
