@@ -24,7 +24,6 @@
 
         <div id="campaign-partner-details">
 
-        <div class="row-fluid">
           <div id="sectionImage" class="span4">
             <img src="#" tal:replace="structure ceo_img/tag" />
             <P><strong tal:content="context/ceo_name">Rafael Mateo</strong></P>
@@ -38,74 +37,73 @@
           </div>
 
           <div id="content-core">
-              <dl class="row-fluid">
-                <dt class="span4">Type of organisation:</dt>
-                <dd class="span7" tal:content="structure view/w/organisation_type/render">Private company</dd>
-              </dl>
-              <dl class="row-fluid">
-                <dt class="span4">Business sector:</dt>
-                <dd class="span8" tal:content="structure view/w/business_sector/render">Renewable energy</dd>
-              </dl>
-              <dl class="row-fluid">
-                <dt class="span4">Mission statement:</dt>
-                <dd class="span8" tal:content="context/mission_statement">Acciona Energía's mission is to be pioneers in development
-                  and sustainability. Acciona Energía takes on this strategic
-                  premise and applies it to research, development and
-                  innovation in the different renewable technologies it works
-                  in, with the aim of providing energy solutions that are ever
-                  more efficient and competitive.
-                </dd>
-              </dl>
-              <dl class="row-fluid">
-                <dt class="span4">URL:</dt>
-                <dd class="span8">
-                  <a tal:attributes="href context/campaign_url" tal:content="context/campaign_url">
-                    http://www.acciona-energia.com/sustainability/quality-prevention.aspx
+            <dl class="row-fluid">
+              <dt class="span4">Type of organisation:</dt>
+              <dd class="span7" tal:content="structure view/w/organisation_type/render">Private company</dd>
+            </dl>
+            <dl class="row-fluid">
+              <dt class="span4">Business sector:</dt>
+              <dd class="span8" tal:content="structure view/w/business_sector/render">Renewable energy</dd>
+            </dl>
+            <dl class="row-fluid">
+              <dt class="span4">Mission statement:</dt>
+              <dd class="span8" tal:content="context/mission_statement">Acciona Energía's mission is to be pioneers in development
+                and sustainability. Acciona Energía takes on this strategic
+                premise and applies it to research, development and
+                innovation in the different renewable technologies it works
+                in, with the aim of providing energy solutions that are ever
+                more efficient and competitive.
+              </dd>
+            </dl>
+            <dl class="row-fluid">
+              <dt class="span4">URL:</dt>
+              <dd class="span8">
+                <a tal:attributes="href context/campaign_url" tal:content="context/campaign_url">
+                  http://www.acciona-energia.com/sustainability/quality-prevention.aspx
+                </a>
+              </dd>
+            </dl>
+            <dl class="row-fluid">
+              <dt class="span4">Our Campaign Pledge:</dt>
+              <dd class="span8" tal:content="structure context/campaign_pledge/output">
+                Acciona Energía is absolutelly committed with the promotion
+                of Health & Safety in any business that we operate in. Social
+                Responsibility and Sustainability are part of our company's
+                DNA. We are convinced that working in businesses free of
+                risks for our employees, suppliers and partners is a benefit
+                for all stakeholders.
+              </dd>
+            </dl>
+            <dl class="row-fluid">
+              <dt class="span4 partnerlogo">
+                <img src="#" tal:replace="structure logo/tag" />
+              </dt>
+              <dd class="span8">
+                <p tal:content="structure view/w/title/render">Acciona Energía</p>
+                <p tal:content="structure view/w/street/render">Avenida Ciudad de la Innovacion, 5</p>
+                <p tal:condition="view/w/address_extra/render"
+                   tal:content="structure view/w/address_extra/render">Address extra</p>
+                <p>
+                  <span tal:content="structure view/w/zip_code/render">31621</span>
+                  <span tal:content="structure view/w/city/render">Sarriguren</span>
+                </p>
+                <p tal:content="structure view/w/country/render">Spain</p>
+                <p tal:content="structure view/w/email/render">comunicacion@acciona.es</p>
+                <p>
+                  <a tal:attributes="href view/w/url/render"
+                     tal:content="structure view/w/url/render">
+                    http://www.acciona-energia.com
                   </a>
-                </dd>
-              </dl>
-              <dl class="row-fluid">
-                <dt class="span4">Our Campaign Pledge:</dt>
-                <dd class="span8" tal:content="structure context/campaign_pledge/output">
-                  Acciona Energía is absolutelly committed with the promotion
-                  of Health & Safety in any business that we operate in. Social
-                  Responsibility and Sustainability are part of our company's
-                  DNA. We are convinced that working in businesses free of
-                  risks for our employees, suppliers and partners is a benefit
-                  for all stakeholders.
-                </dd>
-              </dl>
-              <dl class="row-fluid">
-                <dt class="span4 partnerlogo">
-                  <img src="#" tal:replace="structure logo/tag" />
-                </dt>
-                <dd class="span8">
-                  <p tal:content="structure view/w/title/render">Acciona Energía</p>
-                  <p tal:content="structure view/w/street/render">Avenida Ciudad de la Innovacion, 5</p>
-                  <p tal:condition="view/w/address_extra/render"
-                     tal:content="structure view/w/address_extra/render">Address extra</p>
-                  <p>
-                    <span tal:content="structure view/w/zip_code/render">31621</span>
-                    <span tal:content="structure view/w/city/render">Sarriguren</span>
-                  </p>
-                  <p tal:content="structure view/w/country/render">Spain</p>
-                  <p tal:content="structure view/w/email/render">comunicacion@acciona.es</p>
-                  <p>
-                    <a tal:attributes="href view/w/url/render"
-                       tal:content="structure view/w/url/render">
-                      http://www.acciona-energia.com
-                    </a>
-                  </p>
-                  <p>Tel: <span tal:content="structure view/w/phone/render">+34948006000</span></p>
-                  <p>Fax: <span tal:content="structure view/w/fax/render">+34948006000</span></p>
-                  <p><strong>Contact Persons</strong></p>
-                  <p><strong>QSE Director</strong></p>
-                  <p tal:content="structure view/w/key_name/render">Mikel Gastón Lujambio</p>
-                  <p><strong>Health and Safety Representative</strong></p>
-                  <p tal:content="structure context/representative_name">Eloy Jáuregui Martín</p>
-                </dd>
-              </dl>
-            </div>
+                </p>
+                <p>Tel: <span tal:content="structure view/w/phone/render">+34948006000</span></p>
+                <p>Fax: <span tal:content="structure view/w/fax/render">+34948006000</span></p>
+                <p><strong>Contact Persons</strong></p>
+                <p><strong>QSE Director</strong></p>
+                <p tal:content="structure view/w/key_name/render">Mikel Gastón Lujambio</p>
+                <p><strong>Health and Safety Representative</strong></p>
+                <p tal:content="structure context/representative_name">Eloy Jáuregui Martín</p>
+              </dd>
+            </dl>
           </div>
 
           <div id="portlet portletContactsPortlet" class="portlet">
