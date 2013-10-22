@@ -28,12 +28,12 @@
           <div id="sectionImage" class="span4">
             <img src="#" tal:replace="structure ceo_img/tag" />
             <p><strong tal:content="context/ceo_name">Rafael Mateo</strong></p>
-            <p class="quote" tal:content="context/description">
+            <p class="quote">&quot;<span tal:replace="context/description">
               "Our responsibility as leaders is to guide
               Acciona Energia's management team on the
               promotion of health and safety issues in all
               our different activities, including internal and
-              external staff."
+              external staff."</span>&quot;
             </p>
           </div>
 
