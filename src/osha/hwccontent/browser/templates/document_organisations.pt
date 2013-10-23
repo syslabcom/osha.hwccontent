@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+  <body>
+
+    <metal:content-core fill-slot="content-core" tal:define="portal_url context/@@plone_portal_state/portal_url">
+
+      <metal:content-core define-macro="content-core">
+	<div id="parent-fieldname-text"
+	      tal:condition="context/text"
+	      tal:content="structure context/text/output" />
+      </metal:content-core>
+
+      
+      <metal:block define-macro="partnerstab">
+      <div class="row-fluid partners" id="frontpage-partners" tal:define="partners view/partners">
+        <h2 i18n:translate="Partners">Partners</h2>
+        <div class="partners-menu tabbable">
+            <ul class="nav nav-tabs nav-justified row-fluid">
+                <span tal:repeat="category partners/keys" tal:omit-tag="">
+                  <li class="span2" tal:define="active repeat/category/start" tal:attributes="class python:active and 'span2 active' or 'span2'"><a href="#tab" tal:attributes="href string:#tab${repeat/category/number}" data-toggle="tab" tal:content="category" i18n:translate="">category</a></li>
+                </span>
+
+            </ul>
+
+            <div class="partners-logos tab-content" id="partners-logos">
+              <span tal:repeat="category partners/keys" tal:omit-tag="">
+                <div id="tab1" class="tab-pane active" tal:define="active repeat/category/start"
+                  tal:attributes="class python:active and 'tab-pane active' or 'tab-pane';
+                    id string:tab${repeat/category/number}">
+                  <div class="row-fluid" tal:repeat="row python:partners[category]">
+                      <div class="span2"
+						   tal:attributes="cls python:view.css_by_orientation(partner)"
+						   tal:repeat="partner row"><a tal:attributes="href partner/absolute_url"><img
+                        tal:define="scales partner/@@images" tal:replace="structure python: scales.tag('logo', scale='logo_preview')" /></a></div>
+                  </div>
+                </div>
+              </span>
+            </div>
+
+        </div>
+      </div>
+      </metal:block>
+
+
+    </metal:content-core>
+
+  </body>
+</html>
+

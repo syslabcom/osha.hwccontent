@@ -75,6 +75,7 @@
 
       </div>
 
+      <metal:block define-macro="partnerstab">
       <div class="row-fluid partners" id="frontpage-partners" tal:define="partners view/partners">
         <h2 i18n:translate="Partners">Partners</h2>
         <div class="partners-menu tabbable">
@@ -102,6 +103,7 @@
 
         </div>
       </div>
+      </metal:block>
 
 
     </metal:content-core>
