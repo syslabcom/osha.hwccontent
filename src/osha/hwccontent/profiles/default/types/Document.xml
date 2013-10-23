@@ -5,6 +5,8 @@
  <property name="view_methods" purge="False">
   <element value="document_view"/>
   <element value="document_files_view"/>
+  <element value="document_organisations_view"/>
+  <element value="document_focalpoints_view"/>
  </property>
 
     <property name="behaviors" purge="false">

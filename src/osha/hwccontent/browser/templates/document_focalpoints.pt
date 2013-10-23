@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  lang="en"
+  metal:use-macro="context/main_template/macros/master"
+  i18n:domain="plone">
+<body>
+
+  <metal:content-core fill-slot="content-core" tal:define="portal_url context/@@plone_portal_state/portal_url">
+
+  <metal:content-core define-macro="content-core">
+    <div id="parent-fieldname-text"
+         tal:condition="context/text"
+        tal:content="structure context/text/output" />
+  </metal:content-core>
+
+  <div class="row-fluid focalpoints" id="frontpage-focalpoints" 
+       tal:define="focalpoints view/focalpoints;
+                   tabs python:sorted(focalpoints);">
+
+
+    <h2>Map of the focal points</h2>
+    <div class="focalpoints-menu">
+      <div class="row-fluid">
+        <ul>
+          <li tal:repeat="tab tabs">
+            <a href="#tab1" 
+               tal:attributes="href string:#tab-${tab}"
+               tal:content="tab">a</a>
+               -
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="focalpoints-logos tab-content" id="partners-logos">
+
+      <tal:block repeat="tab tabs">
+        <div id="tab1" class="row-fluid" tal:attributes="id string:tab-${tab}">
+          <div class="span2 letter" tal:content="tab">A</div>
+          <div class="span8">
+            <div class="country span2" tal:repeat="fop python:focalpoints[tab]">
+              <img tal:attributes="src python:focalpoints[tab][fop] + '/@@images/logo'" />
+              <a tal:attributes="href python:focalpoints[tab][fop]" tal:content="fop">Austria</a>
+            </div> 
+            <a class="flagsup" href="#frontpage-focalpoints">Up</a>						
+          </div>
+        </div>
+      </tal:block>
+
+    </div>
+
+  </div>
+
+  </metal:content-core>
+
+  </body>
+</html>
+

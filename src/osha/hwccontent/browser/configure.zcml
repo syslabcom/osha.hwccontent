@@ -33,6 +33,17 @@
     menu="plone_displayviews"
     title="Organisations Listing"
     />
+
+  <browser:page
+    name="document_focalpoints_view"
+    class=".document.FocalPointsView"
+    for="plone.app.contenttypes.interfaces.IDocument"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    template="templates/document_focalpoints.pt"
+    permission="zope2.View"
+    menu="plone_displayviews"
+    title="Focalpoints Listing"
+    />
     
   <browser:page
     name="hw2014_front_page"
