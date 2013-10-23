@@ -17,18 +17,16 @@ class View(dexterity.DisplayForm):
         return getToolByName(self.context, 'portal_catalog')
 
     def get_events(self):
-        return [
-            x for x in self.context.objectValues()
-            if x.portal_type == 'plone.app.event.dx.event']
-        # return self.portal_catalog(
-        #     portal_type='Event', path=self.context.getPhysicalPath())
+        results = self.portal_catalog(
+            portal_type='plone.app.event.dx.event',
+            path='/'.join(self.context.getPhysicalPath()))
+        return [x.getObject() for x in results]
 
     def get_news(self):
-        return [
-            x for x in self.context.objectValues()
-            if x.portal_type == 'News Item']
-        # return self.portal_catalog(
-        #     portal_type='News Item', path=self.context.getPhysicalPath())
+        results = self.portal_catalog(
+            portal_type='News Item',
+            path='/'.join(self.context.getPhysicalPath()))
+        return [x.getObject() for x in results]
 
     def get_news_folder_url(self):
         try:

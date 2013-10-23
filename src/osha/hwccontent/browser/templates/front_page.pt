@@ -64,9 +64,9 @@
 		          <p class="year"
                      tal:content="python:event.start.strftime('%Y')">2013</p>
 		        </div>
-		        <p tal:condition="event_location"><strong>LOCATION:</strong> <tal:location content="event_location">FINLAND</tal:location></p>
-		        <p tal:condition="event/organizer"><strong>ORGANIZER:</strong> <tal:organizer content="event/organizer"> Niva - The Nordic Institute for Advanced Training in occupational health .</tal:organizer></p>
-            <p tal:content="event/description">event description</p>
+		        <p><strong>LOCATION:</strong> <tal:location content="event_location">FINLAND</tal:location></p>
+		        <p><strong>ORGANIZER:</strong><br /><tal:organizer content="event/organizer"> Niva - The Nordic Institute for Advanced Training in occupational health .</tal:organizer></p>
+
 		      </div>
 		    </div>
           </tal:news>

@@ -3,12 +3,15 @@
 from Acquisition import aq_parent
 from Products.Five.browser import BrowserView
 from osha.hwccontent.browser.utils import get_partners, css_by_orientation
+from osha.hwccontent.interfaces import IFullWidth
 from plone import api
+from zope.interface import implements
 
 try:
     from collections import OrderedDict
 except ImportError:
     from ordereddict import OrderedDict
+
 
 class FilesView(BrowserView):
 
@@ -18,12 +21,14 @@ class FilesView(BrowserView):
             if x.portal_type == 'File']
         return files
 
-    
+
 class OrganisationsView(BrowserView):
-    
+    implements(IFullWidth)
+
+
     def partners(self):
         return get_partners()
-    
+
     def css_by_orientation(self, partner):
         """ This is a helper to determine logo orientation for a partner.
         """
@@ -31,15 +36,16 @@ class OrganisationsView(BrowserView):
 
 
 class FocalPointsView(BrowserView):
-    
+    implements(IFullWidth)
+
     def focalpoints(self):
         catalog = api.portal.get_tool(name='portal_catalog')
         results = catalog(
             portal_type="osha.hwccontent.focalpoint",
             review_state='published')
-        
+
         letters = {}
-        
+
         for result in results:
             try:
                 fop = result.getObject()
@@ -51,5 +57,3 @@ class FocalPointsView(BrowserView):
                 letters[letter] = {}
             letters[letter][country] = fop.absolute_url()
         return letters
-    
-        
