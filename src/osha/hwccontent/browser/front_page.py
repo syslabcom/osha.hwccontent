@@ -3,6 +3,7 @@
 from Products.Five.browser import BrowserView
 from osha.hwccontent import vocabularies
 from plone import api
+from plone.app.event.dx.behaviors import IEventLocation
 
 try:
     from collections import OrderedDict
@@ -26,12 +27,23 @@ class FrontPageView(BrowserView):
     def events(self):
         catalog = api.portal.get_tool(name='portal_catalog')
         num_results = 2
-        return catalog.searchResults(
+        results = catalog.searchResults(
             portal_type="plone.app.event.dx.event",
             sort_limit=num_results,
             sort_on="start",
             sort_order="descending",
         )[:num_results]
+        return [x.getObject() for x in results]
+
+    def get_event_location(self, event):
+        """For some reason, this behavior-induced field is not accessible
+            directly on the event.
+        """
+        try:
+            event = IEventLocation(event)
+            return event.location
+        except TypeError:
+            return None
 
     def partners(self):
         catalog = api.portal.get_tool(name='portal_catalog')

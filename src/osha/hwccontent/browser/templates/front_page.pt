@@ -50,11 +50,12 @@
           <h2 i18n:translate="">Events</h2>
           <tal:news repeat="event events">
 		    <div class="event item"
+                 tal:define="event_location python:view.get_event_location(event)"
                  tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['event'].start else '')">
 		      <div class="row-fluid">
 		        <h3><a href="#"
                        tal:content="event/Title"
-                       tal:attributes="href event/getURL">Positive psychology at work - towards flourishing workplaces</a></h3>
+                       tal:attributes="href event/absolute_url">Positive psychology at work - towards flourishing workplaces</a></h3>
                 <div class="databox pull-left">
 		          <p class="day"
                      tal:content="python:event.start.strftime('%d')">17</p>
@@ -63,8 +64,9 @@
 		          <p class="year"
                      tal:content="python:event.start.strftime('%Y')">2013</p>
 		        </div>
-		        <p tal:condition="event/location"><strong>LOCATION:</strong> <tal:location content="event/location">FINLAND</tal:location></p>
-		        <p tal:condition="event/Description"><strong>ORGANIZER:</strong> <br/><tal:description content="event/Description"> Niva - The Nordic Institute for Advanced Training in occupational health . Niva - The Nordic Institute for Advanced Training in occupational health</tal:description></p>
+		        <p tal:condition="event_location"><strong>LOCATION:</strong> <tal:location content="event_location">FINLAND</tal:location></p>
+		        <p tal:condition="event/organizer"><strong>ORGANIZER:</strong> <tal:organizer content="event/organizer"> Niva - The Nordic Institute for Advanced Training in occupational health .</tal:organizer></p>
+            <p tal:content="event/description">event description</p>
 		      </div>
 		    </div>
           </tal:news>
