@@ -62,14 +62,12 @@ class FrontPageView(BrowserView):
 
     def css_by_orientation(self, partner):
         """ This is a helper to determine logo orientation for a partner.
-            Requested by maite through erral, so that we can set a special class
         """
         try:
             dim = partner.logo.getImageSize()
         except:
             return 'span2'
-        if dim and dim[0]<dim[1]:
-            # portrait, see https://github.com/syslabcom/hw2014theme/commit/1de7b5863c7770964a7f22689b9041fb0726f1d4#diff-50e2b6e3fa87897791e8aad1cbcf9893L282
+        if dim and dim[0] < dim[1]:
             return "span2 logovertical"
 
         return 'span2'
