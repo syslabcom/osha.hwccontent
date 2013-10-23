@@ -21,7 +21,8 @@
 
       <div class="news-events"
            tal:define="news view/news;
-                       events view/events">
+                       events view/events;
+                        plone context/@@plone">
         <div class="span6">
 		  <h2 i18n:translate="">News</h2>
           <tal:news repeat="news_item news">
@@ -37,7 +38,7 @@
                   <img tal:condition="not:has_image" class="pull-left" src="++theme++osha.hwctheme/HWManageStress_files/images/newsdefault.jpg" />
                   </a>
             <p class="data"
-                tal:content="python:news_item.effective().strftime('%d/%m/%y')">17/5/13</p>
+                tal:content="python:plone.toLocalizedTime(news_item.effective(), long_format=False)">17/5/13</p>
 		        <p tal:content="news_item/Description">EU-OSHA’s Healthy Workplaces Campaigns are its principal tools for raising awareness on occupational safety and health. The Campaigns, each of which runs for two years, involve hundreds of organisations from all of the EU Member States ...</p>
 		      </div>
 		    </div>
