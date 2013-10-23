@@ -32,4 +32,7 @@
   <interface interface=".interfaces.ITwoImages" />
   <interface interface=".interfaces.ISectionIntro" />
 
+  <!-- indexers -->
+  <adapter name="location" factory=".indexers.location" />
+
 </configure>
