@@ -15,12 +15,13 @@ class FrontPageView(BrowserView):
     def news(self):
         catalog = api.portal.get_tool(name='portal_catalog')
         num_results = 2
-        return catalog.searchResults(
+        results = catalog.searchResults(
             portal_type="News Item",
             sort_limit=num_results,
             sort_on="effective",
             sort_order="descending",
         )[:num_results]
+        return [x.getObject() for x in results]
 
     def events(self):
         catalog = api.portal.get_tool(name='portal_catalog')
@@ -58,9 +59,9 @@ class FrontPageView(BrowserView):
                 row = partners[ot][-1]
             row.append(partner)
         return partners
-        
+
     def css_by_orientation(self, partner):
-        """ This is a helper to determine logo orientation for a partner. 
+        """ This is a helper to determine logo orientation for a partner.
             Requested by maite through erral, so that we can set a special class
         """
         try:
@@ -70,5 +71,5 @@ class FrontPageView(BrowserView):
         if dim and dim[0]<dim[1]:
             # portrait, see https://github.com/syslabcom/hw2014theme/commit/1de7b5863c7770964a7f22689b9041fb0726f1d4#diff-50e2b6e3fa87897791e8aad1cbcf9893L282
             return "span2 logovertical"
-            
+
         return 'span2'
