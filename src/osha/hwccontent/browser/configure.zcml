@@ -24,6 +24,17 @@
     />
 
   <browser:page
+    name="document_organisations_view"
+    class=".document.OrganisationsView"
+    for="plone.app.contenttypes.interfaces.IDocument"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    template="templates/document_organisations.pt"
+    permission="zope2.View"
+    menu="plone_displayviews"
+    title="Organisations Listing"
+    />
+    
+  <browser:page
     name="hw2014_front_page"
     class=".front_page.FrontPageView"
     for="plone.app.layout.navigation.interfaces.INavigationRoot"

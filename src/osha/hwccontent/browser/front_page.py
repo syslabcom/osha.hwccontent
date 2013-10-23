@@ -4,6 +4,7 @@ from Products.Five.browser import BrowserView
 from osha.hwccontent import vocabularies
 from plone import api
 from plone.app.event.dx.behaviors import IEventLocation
+from osha.hwccontent.browser.utils import get_partners, css_by_orientation
 
 try:
     from collections import OrderedDict
@@ -46,40 +47,11 @@ class FrontPageView(BrowserView):
             return None
 
     def partners(self):
-        catalog = api.portal.get_tool(name='portal_catalog')
-        results = catalog(
-            portal_type="osha.hwccontent.organisation",
-            review_state='published')
-        partners = OrderedDict()
-        for term in vocabularies.organisation_types:
-            partners[term.token] = [[]]
+        return get_partners()
 
-        for result in results:
-            try:
-                partner = result.getObject()
-            except:
-                continue
-            ot = partner.organisation_type
-            if ot not in partners:
-                # XXX we should probably log this...
-                continue
-            # get the last row
-            row = partners[ot][-1]
-            if len(row) and len(row) % 6 == 0:
-                # if the row is "full", create a new one
-                partners[ot].append([])
-                row = partners[ot][-1]
-            row.append(partner)
-        return partners
 
     def css_by_orientation(self, partner):
         """ This is a helper to determine logo orientation for a partner.
         """
-        try:
-            dim = partner.logo.getImageSize()
-        except:
-            return 'span2'
-        if dim and dim[0] < dim[1]:
-            return "span2 logovertical"
-
-        return 'span2'
+        return css_by_orientation(partner)
+    
