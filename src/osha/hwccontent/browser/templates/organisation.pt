@@ -18,9 +18,13 @@
                          logo python: images.scale('logo', width=166, height=166);
                          ">
 
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
         <h1 id="title" class="documentFirstHeading">
           <span id="parent-fieldname-title" tal:content="context/title">title</span>
         </h1>
+
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
 
         <div id="campaign-partner-details">
 
@@ -115,11 +119,11 @@
                       <br/>
                     </li>
                   </ul>
-                  <a tal:condition="context/events|nothing" class="more" href="*" 
+                  <a tal:condition="context/events|nothing" class="more" href="*"
                      tal:attributes="href context/events/absolute_url">More events</a><br/>
                   <br/>
                 </div>
-                
+
                 <div tal:define="news view/get_news;"
                      tal:condition="news">
                   <h3>NEWS</h3>
@@ -129,7 +133,7 @@
                       <a tal:attributes="href item/absolute_url" tal:content="item/Title">Austrian Kick-Off of the Campaign "Working together for risk prevention"</a>
                     </li>
                   </ul>
-                  <a tal:condition="context/news|nothing" class="more" href="*" 
+                  <a tal:condition="context/news|nothing" class="more" href="*"
                      tal:attributes="href context/news/absolute_url">More news</a><br/>
                 </div>
 
