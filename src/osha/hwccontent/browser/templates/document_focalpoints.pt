@@ -7,7 +7,7 @@
   i18n:domain="plone">
 <body>
 
-  <metal:content-core fill-slot="content-core" 
+  <metal:content-core fill-slot="content-core"
     tal:define="portal_url context/@@plone_portal_state/portal_url;
                 context_url context/absolute_url;">
 
@@ -17,7 +17,7 @@
          tal:content="structure context/text/output" />
   </metal:content-core>
 
-  <div class="row-fluid focalpoints" id="frontpage-focalpoints" 
+  <div class="row-fluid focalpoints" id="frontpage-focalpoints"
        tal:define="focalpoints view/focalpoints;
                    tabs python:sorted(focalpoints);">
 
@@ -27,7 +27,7 @@
       <div class="row-fluid">
         <ul>
           <li tal:repeat="tab tabs">
-            <a href="#tab1" 
+            <a href="#tab1"
                tal:attributes="href string:${context_url}#tab-${tab}"
                tal:content="tab">a</a>
                <tal:block condition="not:repeat/tab/end">-</tal:block>
@@ -42,9 +42,9 @@
           <div class="span2 letter" tal:content="tab">A</div>
           <div class="span8">
             <div class="country span2" tal:repeat="fop python:focalpoints[tab]">
-              <img tal:attributes="src python:focalpoints[tab][fop] + '/@@images/logo'" />
+              <a tal:attributes="href python:focalpoints[tab][fop]"><img tal:attributes="src python:focalpoints[tab][fop] + '/@@images/logo'" /></a>
               <a tal:attributes="href python:focalpoints[tab][fop]" tal:content="fop">Austria</a>
-            </div> 
+            </div>
             <a class="flagsup" href="#frontpage-focalpoints" tal:attributes="href string:${context_url}#frontpage-focalpoints">Up</a>
           </div>
         </div>

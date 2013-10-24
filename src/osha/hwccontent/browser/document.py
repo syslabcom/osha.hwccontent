@@ -25,7 +25,6 @@ class FilesView(BrowserView):
 class OrganisationsView(BrowserView):
     implements(IFullWidth)
 
-
     def partners(self):
         return get_partners()
 
