@@ -57,7 +57,7 @@ I register an Organisation
     Open Add New Menu
     Click link  css=#osha-hwccontent-organisation
     Page Should Contain  Organisation
-    Input Text           form.widgets.IBasic.title       The Organisations Title
+    Input Text           form.widgets.IDublinCore.title  The Organisations Title
     Input Text           form.widgets.street             O Street
     Input Text           form.widgets.city               Osterburg
     Input Text           form.widgets.zip_code           12345
