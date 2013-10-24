@@ -4,7 +4,7 @@
 
  <!-- Basic metadata -->
  <property name="title" i18n:translate="">Organisation</property>
- <property name="description" i18n:translate="">A partner organisation</property>
+ <property name="description" i18n:translate=""></property>
  <property name="content_icon">++resource++osha.hwccontent/organisation_icon.png</property>
  <property name="allow_discussion">True</property>
  <property name="immediate_view">postaddview</property>

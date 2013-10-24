@@ -243,7 +243,7 @@ class IOrganisationBase(model.Schema):
 class IOrganisationExtra(model.Schema):
 
     phase_1_intro = RichText(
-        title=_("Introduction"),
+        title=_(""),
         required=False,
     )
     formdirectives.omitted('phase_1_intro')
@@ -398,7 +398,7 @@ class IOrganisationExtra(model.Schema):
     directives.languageindependent('otheractivities_description')
 
     phase_2_intro = RichText(
-        title=_("Introduction"),
+        title=_(""),
         required=False,
     )
     formdirectives.omitted('phase_2_intro')
@@ -508,6 +508,12 @@ class AddForm(dexterity.AddForm):
     grok.context(IOrganisation)
     grok.require("osha.hwccontent.AddOrganisation")
 
+    default_fieldset_label = u'Introduction'
+
+    @property
+    def label(self):
+        return u"Apply to become an official partner"
+
     fields = field.Fields(IOrganisation).select(
         'phase_1_intro')
 
@@ -521,6 +527,12 @@ class AddForm(dexterity.AddForm):
 class EditForm(dexterity.EditForm):
     grok.context(IOrganisation)
     grok.require("osha.hwccontent.AddOrganisation")
+
+    default_fieldset_label = u'Introduction'
+
+    @property
+    def label(self):
+        return u"Update your profile"
 
     def updateWidgets(self):
         # XXX: Here, determine if we are still in phase 2, i.e. if the user
