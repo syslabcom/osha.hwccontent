@@ -6,6 +6,7 @@ from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.app.testing import helpers, SITE_OWNER_NAME
 
+from osha.hwccontent import events
 from osha.hwccontent.testing import \
     OSHA_HWCCONTENT_INTEGRATION_TESTING
 
@@ -21,12 +22,15 @@ class TestWorkflow(unittest.TestCase):
         self.app = self.layer['app']
         self.portal = self.layer['portal']
         self.portal.email_from_address = 'hwc@hwc.org'
+        props = self.portal.portal_properties.site_properties
 
         self.organisations = self.portal.get('organisations')
         self.wftool = getToolByName(self.portal, 'portal_workflow')
         self.wftool.setChainForPortalTypes(
             ['osha.hwccontent.organisation'],
             'organisation_workflow')
+
+        events._send_emails = False
         self.org = api.content.create(
             self.organisations,
             type='osha.hwccontent.organisation',
@@ -34,18 +38,20 @@ class TestWorkflow(unittest.TestCase):
             id='test-organisation',
             key_email=u'harold@testorganisation.com',
             key_name=u'Harold van Testinger')
+        if props.getProperty('use_email_as_login'):
+            self.creator_id = 'harold@testorganisation.com'
+        else:
+            self.creator_id = 'harold'
 
         self.sent_mails = []
+        events._send_emails = True
         self.portal.MailHost.send = self._mock_send
 
     def tearDown(self):
         helpers.login(self.app, SITE_OWNER_NAME)
         if 'test-organisation' in self.organisations.objectIds():
             api.content.delete(self.org)
-        res = self.portal.portal_membership.searchForMembers(
-            email='harold@testorganisation.com')
-        if res:
-            api.user.delete(res[0])
+        api.user.delete(self.creator_id)
 
     def test_organisation_created(self):
         new_org = api.content.create(
@@ -65,17 +71,18 @@ class TestWorkflow(unittest.TestCase):
 
     def test_reviewer_approves_organisation(self):
         helpers.login(self.portal, 'Site Administrator')
+        self.assertFalse(api.user.get(self.creator_id))
         self.wftool.doActionFor(self.org, 'approve_phase_1')
         self.assertEqual(
             self.wftool.getInfoFor(self.org, 'review_state'),
             'approved_phase_1')
-        res = self.portal.portal_membership.searchForMembers(
-            email='harold@testorganisation.com')
-        self.assertEqual(len(res), 1)
-        user = res[0]
+        user = api.user.get(self.creator_id)
         self.assertEqual(
             user.getProperty('fullname'),
             'Harold van Testinger')
+        self.assertEqual(
+            user.getProperty('email'),
+            'harold@testorganisation.com')
         self.assertEqual(
             set(self.org.get_local_roles_for_userid(user.getId())),
             set(('Reader', 'Contributor', 'Editor')))
@@ -85,12 +92,25 @@ class TestWorkflow(unittest.TestCase):
                 if p['selected']])
         self.assertEqual(len(self.sent_mails), 1, msg='Mail not sent')
         self.assertIn('harold@testorganisation.com', self.sent_mails[0])
-        self.sent_mails = []
 
-        helpers.login(self.portal, user.getId())
+    def test_creator_cannot_submit_incomplete_organisation(self):
+        events._send_emails = False
+        helpers.login(self.portal, 'Site Administrator')
+        self.wftool.doActionFor(self.org, 'approve_phase_1')
+        events._send_emails = True
+
+        helpers.login(self.portal, self.creator_id)
         self.assertNotIn(
             'submit',
             [a['id'] for a in self.wftool.listActions(object=self.org)])
+
+    def test_creator_submits_organisation(self):
+        events._send_emails = False
+        helpers.login(self.portal, 'Site Administrator')
+        self.wftool.doActionFor(self.org, 'approve_phase_1')
+        events._send_emails = True
+
+        helpers.login(self.portal, self.creator_id)
         self.org.mission_statement = u'We Care Because We Can'
         self.assertIn(
             'submit',
@@ -106,7 +126,14 @@ class TestWorkflow(unittest.TestCase):
                       '\n'.join(self.sent_mails))
         self.assertIn(self.org.absolute_url(),
                       '\n'.join(self.sent_mails))
-        self.sent_mails = []
+
+    def test_reviewer_publishes_organisation(self):
+        events._send_emails = False
+        helpers.login(self.portal, 'Site Administrator')
+        self.wftool.doActionFor(self.org, 'approve_phase_1')
+        self.org.mission_statement = u'We Care Because We Can'
+        self.wftool.doActionFor(self.org, 'submit')
+        events._send_emails = True
 
         helpers.login(self.portal, 'Site Administrator')
         self.wftool.doActionFor(self.org, 'publish')
