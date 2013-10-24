@@ -1,6 +1,6 @@
 From: <tal:from tal:replace="view/from_addr">us@site.org</tal:from>
 To: <tal:recipient tal:replace="view/creator_email">user@organisation.org</tal:recipient>
-Subject: <tal:subject tal:replace="view/subject">Profile created</tal:subject>
+Subject: <tal:subject tal:replace="view/subject">Healthy Workplaces partnership application</tal:subject>
 
 Dear <tal:creator_name tal:replace="view/creator_name">User</tal:creator_name>,
 
@@ -8,4 +8,4 @@ Thank you! Your application has been submitted.
 
 Best regards,
 
-The Site Administration
+The EU-OSHA Healthy Workplaces Campaign web team
