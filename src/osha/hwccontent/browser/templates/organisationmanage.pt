@@ -1,0 +1,41 @@
+<div id="manage_organisation"
+     tal:condition="view/available"
+     tal:define="here_url here/absolute_url">
+     <span tal:condition="view/reviewer" tal:omit-tag="">
+        <p id="plone-contentmenu-workflow">The current workflow state is: <em tal:attributes="class string:state-${view/wfstate}" tal:content="view/wfstate">state</em><br/>
+            Available actions for the reviewer:</p>
+        <ul>
+            <li><a tal:attributes="href string:${here_url}/edit">Click here to update the partner's profile.</a></li>
+            <span tal:repeat="wfaction view/wfactions" tal:omit-tag="" tal:condition="python:view.wfstate!='published'">
+                <li tal:condition="python:wfaction['id']!='submit'">
+                    <a tal:attributes="href wfaction/url" tal:content="wfaction/name">action</a>
+                </li>
+            </span>
+        </ul>
+     </span>
+     <span tal:condition="python:view.editor and not view.reviewer and view.wfstate=='published'">
+        Your profile has been completed. You can continue to update your profile or add news and events:
+        <ul>
+            <li><a tal:attributes="href string:${here_url}/edit">Click here to update your profile.</a></li>
+            <li><a tal:attributes="href string:${here_url}/++add++News%20Item">Add news item</a></li>
+            <li><a tal:attributes="href string:${here_url}/++add++plone.app.event.dx.event">Add event</a></li>
+        <ul>
+     </span>
+
+     <span tal:condition="python:not view.reviewer and view.submiturl" tal:omit-tag="">
+        <p class="callout">
+            Your profile has been completed.
+            <a tal:attributes="href view/submiturl">Please click here to submit your profile for final review.</a>
+        <p>
+        <p>Optionally, you can <a tal:attributes="href string:${here_url}/edit">continue to update your profile.</a></p>
+    </span>
+    <p tal:condition="python:view.editor and not view.reviewer and view.wfstate=='approved_phase_1' and not here.mission_statement" class="callout">
+        Thank you for your application. Before your profile can be made public, please fill in some additional information
+        <a tal:attributes="href string:${here_url}/edit">by clicking this link.</a><br />
+    </p>
+    <p tal:condition="python:view.owner and view.wfstate=='pending_phase_2'">
+        Thank you. Your profile will be reviewd for the final time by EU-OSHA.
+    </p>
+
+</div>
+

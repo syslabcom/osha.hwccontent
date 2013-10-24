@@ -44,7 +44,7 @@
     menu="plone_displayviews"
     title="Focalpoints Listing"
     />
-    
+
   <browser:page
     name="hw2014_front_page"
     class=".front_page.FrontPageView"
@@ -82,6 +82,16 @@
     for="osha.hwccontent.interfaces.ISectionIntro"
     template="templates/section_view.pt"
     layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    />
+
+  <!-- viewlet for editing and workflow on Organisation -->
+  <browser:viewlet
+    name="organisationmanage"
+    for="osha.hwccontent.organisation.IOrganisation"
+    class=".organisation.OrganisationManage"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+    template="templates/organisationmanage.pt"
+    permission="zope2.View"
     />
 
 </configure>
