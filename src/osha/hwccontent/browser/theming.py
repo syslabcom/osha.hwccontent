@@ -28,7 +28,14 @@ class LayoutPolicy(layout.LayoutPolicy):
 
         body_class = super(LayoutPolicy, self).bodyClass(template, view)
 
+        # is_special is set to True if we do not want the default subsection
+        # view. This is the case when a different layout has been explicitly
+        # set, or we are viewing certain content types.
+        specials = ["template-newsitem_view", "template-event_view"]
         is_special = False
+        for special in specials:
+            if special in body_class:
+                is_special = True
 
         # is there a marker interface for 2 images on the context or view?
         if ITwoImages.providedBy(self.context) or ITwoImages.providedBy(view):
