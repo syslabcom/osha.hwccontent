@@ -4,13 +4,13 @@
     i18n_domain="osha.hwccontent">
 
 
-   <browser:page
-       for="*"
-       name="hw_view"
-       class=".helper.HelperView"
-       permission="zope.Public"
-       allowed_interface="osha.hwccontent.browser.helper.IHelperView"
-       />
+  <browser:page
+    for="*"
+    name="hw_view"
+    class=".helper.HelperView"
+    permission="zope.Public"
+    allowed_interface="osha.hwccontent.browser.helper.IHelperView"
+    />
 
   <browser:page
     name="document_files_view"
@@ -54,15 +54,14 @@
     permission="zope2.View"
     />
 
-    <browser:page
-        name="plone_layout"
-        for="*"
-        permission="zope.Public"
-        class=".theming.LayoutPolicy"
-        allowed_interface="plone.app.layout.globals.interfaces.ILayoutPolicy"
-        layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
-        />
-
+  <browser:page
+    name="plone_layout"
+    for="*"
+    permission="zope.Public"
+    class=".theming.LayoutPolicy"
+    allowed_interface="plone.app.layout.globals.interfaces.ILayoutPolicy"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    />
 
   <!-- Override folder_listing (default view for folder) for ISectionIntro -->
   <browser:page
@@ -74,7 +73,7 @@
     layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
     />
 
-<!-- Override document_view (default view for document) for ISectionIntro -->
+  <!-- Override document_view (default view for document) for ISectionIntro -->
   <browser:page
     name="document_view"
     permission="zope2.View"
