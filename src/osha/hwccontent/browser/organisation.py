@@ -57,11 +57,17 @@ class OrganisationManage(ViewletBase):
 
     def update(self):
         # get user etc
-        user = api.user.get_current()
-        self.reviewer = user.checkPermission(
-            'Review portal content', self.context)
-        self.editor = user.checkPermission(
-            'Modify portal content', self.context)
+        if api.user.is_anonymous():
+            self.reviewer = False
+            self.editor = False
+            user_id = None
+        else:
+            user = api.user.get_current()
+            user_id = getattr(user, 'id', '---')
+            self.reviewer = user.checkPermission(
+                'Review portal content', self.context)
+            self.editor = user.checkPermission(
+                'Modify portal content', self.context)
         workflow = api.portal.get_tool('portal_workflow')
         self.wfactions = workflow.listActions(object=self.context)
         self.submiturl = None
@@ -69,7 +75,7 @@ class OrganisationManage(ViewletBase):
             if wfaction['id'] == 'submit':
                 self.submiturl = wfaction['url']
         self.wfstate = workflow.getInfoFor(self.context, 'review_state')
-        self.owner = self.context.email == getattr(user, 'id', '---')
+        self.owner = self.context.email == user_id
 
         self.available = True if (self.reviewer or self.editor or self.owner) \
             else False
