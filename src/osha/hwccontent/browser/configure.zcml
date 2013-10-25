@@ -46,6 +46,17 @@
     />
 
   <browser:page
+    name="document_pressrelease_view"
+    class=".document.PressReleaseView"
+    for="plone.app.contenttypes.interfaces.IDocument"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    template="templates/document_pressrelease.pt"
+    permission="zope2.View"
+    menu="plone_displayviews"
+    title="Press release Listing"
+    />
+
+  <browser:page
     name="hw2014_front_page"
     class=".front_page.FrontPageView"
     for="plone.app.layout.navigation.interfaces.INavigationRoot"
