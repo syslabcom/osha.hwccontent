@@ -4,6 +4,7 @@ from plone import api
 from plone.app.layout.viewlets import ViewletBase
 from osha.hwccontent.behaviors.moreabout import (
     IRelatedSites, ISeeAlso, ISectionImage)
+from osha.hwccontent.interfaces import IOrganisationFolder
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.multilingual.interfaces import (
     ITranslatable, ITranslationManager)
@@ -60,7 +61,8 @@ class SectionImageViewlet(ViewletBase):
     def get_datacontext(self, obj):
         if ISectionImage.providedBy(obj):
             return ISectionImage(obj)
-        if not INavigationRoot.providedBy(obj):
+        if not IOrganisationFolder.providedBy(obj) \
+                and not INavigationRoot.providedBy(obj):
             return self.get_datacontext(aq_parent(obj))
         return None
 

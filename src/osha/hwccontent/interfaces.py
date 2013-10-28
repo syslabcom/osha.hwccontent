@@ -1,6 +1,12 @@
 # _+- coding: utf-8 -*-
-from plone.app.contenttypes.interfaces import IPloneAppContenttypesLayer
+from plone.app.contenttypes.interfaces import (
+    IPloneAppContenttypesLayer, IFolder)
 from plone.dexterity.interfaces import IDexterityContent
+
+
+class IOrganisationFolder(IFolder):
+    """ Marker interface for Organisation IOrganisationFolder
+    """
 
 
 class IOSHAHWCContentLayer(IPloneAppContenttypesLayer):
