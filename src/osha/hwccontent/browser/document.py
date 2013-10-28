@@ -66,8 +66,12 @@ class FocalPointsView(BrowserView):
 class PressReleaseView(BrowserView):
     implements(IFullWidth)
 
+    def remote_url(self):
+        properties = api.portal.get_tool('portal_properties')
+        return getattr(properties.site_properties, 'osha_json_url', 'https://osha.europa.eu/en/')
+        
     def pressreleases(self):
-        remote_url = 'http://localhost:8080/osha/portal'
+        remote_url = self.remote_url()
         qurl = urlopen(remote_url + '/jsonfeed?portal_type=PressRelease&path=/de/press/press-releases&subject=stress&language=de')
         for item in load(qurl):
             yield {
@@ -75,8 +79,6 @@ class PressReleaseView(BrowserView):
                 'releaseDate': datetime.strptime(item['releaseDate'].split('+')[0], '%Y-%m-%dT%H:%M:%S'),
                 'url': urljoin(remote_url, item['_path']),
             }
-        
-        
         
         
     #[u'relatedLinks', u'referenced_content', u'subhead', u'contributors',

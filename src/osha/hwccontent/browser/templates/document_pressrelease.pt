@@ -27,14 +27,21 @@
              tal:content="structure context/text/output" />
       </metal:content-core>
       
-      <ul>
-        <li tal:repeat="pressrelease view/pressreleases">
+      <tal:newsitems repeat="pressrelease view/pressreleases">
+        <div tal:define="first repeat/pressrelease/start;
+                         first python: ' first' if first else '';
+                         last repeat/pressrelease/end;
+                         last python: ' last' if last else '';"
+             tal:attributes="class python:('newsItem' + first + last)">
+          <p class="metadata">
+            <em tal:content="python: toLocalizedTime(pressrelease['releaseDate'])">2012-01-01</em>
+          </p>
           <a tal:attributes="href pressrelease/url">
-            <strong tal:content="pressrelease/title">Foo</strong><br/>
+            <h4 tal:content="pressrelease/title">Foo</h4>
           </a>
-          <em tal:content="python: toLocalizedTime(pressrelease['releaseDate'])">2012-01-01</em>
-        </li>
-      </ul>
+          
+        </div>
+      </tal:newsitems>
 
     </metal:block>
 
