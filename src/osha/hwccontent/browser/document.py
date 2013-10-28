@@ -9,6 +9,8 @@ from plone import api
 from zope.interface import implements
 from Acquisition import aq_parent
 from Products.Five.browser import BrowserView
+from plone.app.textfield.interfaces import ITransformer
+from plone.app.textfield.value import RichTextValue
 
 from osha.hwccontent.browser.utils import get_partners, css_by_orientation
 from osha.hwccontent.interfaces import IFullWidth
@@ -68,30 +70,37 @@ class PressReleaseView(BrowserView):
 
     def remote_url(self):
         properties = api.portal.get_tool('portal_properties')
-        return getattr(properties.site_properties, 'osha_json_url', 'https://osha.europa.eu/en/')
+        return getattr(properties.site_properties, 'osha_json_url', 'https://osha.europa.eu/')
+        
+    def make_intro(self, item):        
+        text = item.get('text')
+        if not text:
+            return ''
+
+        transformer = ITransformer(self.context)
+        value = RichTextValue(text, mimeType=item.get('_text_mime_type', 'text/html'))
+        transformedValue = transformer(value, 'text/plain')
+        
+        if len(transformedValue) < 200:
+            return transformedValue
+        
+        text = transformedValue[:200].rsplit(None, 1)[0]
+        return text + u'...'
         
     def pressreleases(self):
         remote_url = self.remote_url()
-        qurl = urlopen(remote_url + '/jsonfeed?portal_type=PressRelease&path=/de/press/press-releases&subject=stress&language=de')
-        for item in load(qurl):
+        lang_tool = api.portal.get_tool("portal_languages")
+        lang = lang_tool.getPreferredLanguage()
+        subject = self.context.Subject
+        qurl = remote_url + '/jsonfeed?portal_type=PressRelease&path=/%s/press/press-releases&Subject=%s&Language=%s' % (lang, ','.join(subject()), lang)
+
+        for item in load(urlopen(qurl)):
             yield {
                 'title': item['title'],
                 'releaseDate': datetime.strptime(item['releaseDate'].split('+')[0], '%Y-%m-%dT%H:%M:%S'),
-                'url': urljoin(remote_url, item['_path']),
+                'url': item['_url'],
+                'text': self.make_intro(item)
             }
         
-        
-    #[u'relatedLinks', u'referenced_content', u'subhead', u'contributors',
-     #u'text', u'image', u'creation_date', u'releaseDate', u'imageCaption',
-     #u'expirationDate', u'reindexTranslations', u'_image_filename',
-     #u'notesToEditors', u'id', u'subject', u'_image_content_type',
-     #u'effectiveDate', u'title', u'_text_content_type', u'relatedItems',
-     #u'location', u'releaseTiming', u'_seoDescription_content_type',
-     #u'excludeFromNav', u'showinsearch', u'_type', u'description',
-     #u'searchwords', u'showContacts', u'_searchwords_content_type',
-     #u'osha_metadata', u'_rights_content_type', u'_description_content_type',
-     #u'modification_date', u'language', u'releaseContacts', u'country',
-     #u'rights', u'isNews', u'allowDiscussion', u'seoDescription', u'creators',
-     #u'pdfShowTitle', u'_path']
-
+    
     
