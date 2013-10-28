@@ -53,7 +53,18 @@
     template="templates/document_pressrelease.pt"
     permission="zope2.View"
     menu="plone_displayviews"
-    title="Press release Listing"
+    title="Press Release Listing"
+    />
+
+  <browser:page
+    name="newsitem_listing"
+    class=".newsitem.NewsItemListing"
+    for="plone.app.contenttypes.interfaces.IFolder"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    template="templates/newsitem_listing.pt"
+    permission="zope2.View"
+    menu="plone_displayviews"
+    title="News Item Listing"
     />
 
   <browser:page

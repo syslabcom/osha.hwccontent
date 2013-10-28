@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <body>
+    <metal:block fill-slot="main"
+                 tal:define="id request/id|nothing;
+                             toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                             folder python:here.aq_parent;">
+
+      <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+      <h1 id="title" class="documentFirstHeading">
+        <span id="parent-fieldname-title" tal:content="context/title">title</span>
+      </h1>
+
+      <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+      <tal:newsitems repeat="item view/news_items">
+        <div tal:define="first repeat/item/start;
+                         first python: ' first' if first else '';
+                         last repeat/item/end;
+                         last python: ' last' if last else '';"
+             tal:attributes="class python:('newsItem' + first + last)">
+          <p class="metadata">
+            <em tal:define="date item/Date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
+          </p>
+          <a tal:attributes="href item/getURL">
+            <h4 tal:content="item/Title">Foo</h4>
+            <p tal:content="item/Description"/>
+          </a>
+        </div>
+      </tal:newsitems>
+    </metal:block>
+  </body>
+</html>
