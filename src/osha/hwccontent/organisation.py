@@ -526,7 +526,7 @@ class AddForm(dexterity.AddForm):
 
 class EditForm(dexterity.EditForm):
     grok.context(IOrganisation)
-    grok.require("osha.hwccontent.AddOrganisation")
+    grok.require("cmf.ModifyPortalContent")
 
     default_fieldset_label = u'Introduction'
 
