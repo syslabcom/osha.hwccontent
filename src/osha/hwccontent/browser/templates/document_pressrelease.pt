@@ -38,6 +38,7 @@
           </p>
           <a tal:attributes="href pressrelease/url">
             <h4 tal:content="pressrelease/title">Foo</h4>
+            <p tal:content="pressrelease/text" />
           </a>
           
         </div>
