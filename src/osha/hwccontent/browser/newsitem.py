@@ -1,9 +1,11 @@
+from Products.CMFPlone.PloneBatch import Batch
 from Products.Five.browser import BrowserView
 from osha.hwccontent.interfaces import IFullWidth
 from plone import api
 from plone.app.contenttypes.interfaces import ICollection
 from plone.app.querystring.querybuilder import QueryBuilder
 from zope.interface import implements
+
 
 class NewsItemListing(BrowserView):
     implements(IFullWidth)
@@ -33,8 +35,9 @@ class NewsItemListing(BrowserView):
             sort_on=sort_on, sort_order=sort_order,
             limit=limit, brains=brains
         )
-        
-    def news_items(self):
+
+    def get_all_news_items(self):
+        # TODO: this needs to be cached.
         lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
         qurl = self.remote_url() + \
             '/jsonfeed?portal_type=NewsItem&path=/%s&Subject=%s&Language=%s' \
@@ -60,3 +63,9 @@ class NewsItemListing(BrowserView):
         #             'Description': getattr(item, 'text', '')
         #         })
         return sorted(items, key=lambda item: getattr(item, 'Date'))
+
+    def get_batched_news_items(self):
+        b_size = int(self.request.get('b_size', 20))
+        b_start = int(self.request.get('b_start', 0))
+        return Batch(self.get_all_news_items(), b_size, b_start, orphan=1)
+
