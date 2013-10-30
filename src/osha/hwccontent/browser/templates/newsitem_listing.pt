@@ -11,7 +11,7 @@
 
     <div tal:replace="structure provider:plone.abovecontenttitle" />
     <h1 id="title" class="documentFirstHeading">
-        <span id="parent-fieldname-title" tal:content="context/title">title</span>
+        <span id="parent-fieldname-title" tal:content="context/Title">title</span>
     </h1>
     <div tal:replace="structure provider:plone.belowcontenttitle" />
 
@@ -25,23 +25,38 @@
                 tal:attributes="class python:('newsItem' + first + last)">
 
                 <a href="#"
-                    tal:condition="item/image|nothing"
-                    tal:attributes="href item/url">
+                    tal:condition="item/image|item/image_base64|nothing"
+                    tal:attributes="href item/getURL">
                     <div class="tileImage">
-                        <img src="" alt=""
-                            tal:define="scales item/obj/@@images;
-                                        scale python:scales.scale('image', 'thumb')"
-                            tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
+                        <tal:if_blob tal:condition="item/image|nothing">
+                            <img src="" alt=""
+                                tal:define="scales item/obj/@@images;
+                                            scale python:scales.scale('image', 'thumb')"
+                                tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
+                        </tal:if_blob>
+
+                        <tal:if_base64 tal:condition="item/image_base64|nothing">
+                            <img src="" alt="" class="tileImage" 
+                                tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
+                        </tal:if_base64>
                     </div>
                 </a>
 
                 <h2 class="tileHeadline">
-                    <a tal:attributes="href item/url" tal:content="item/title">Foo</a>
+                    <a tal:attributes="href item/getURL" tal:content="item/Title">Foo</a>
                 </h2>
                 <p class="metadata">
-                    <em tal:define="date item/date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
+                    <em tal:define="date item/Date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
                 </p>
-                <p><a tal:attributes="href item/url" tal:content="item/desc"></a></p>
+                <a tal:attributes="href item/getURL">
+                    <tal:if_remote condition="item/remote_item|nothing">
+                        <p tal:replace="structure item/Description"/>
+                    </tal:if_remote>
+
+                    <tal:if_local condition="not:item/remote_item|nothing">
+                        <p tal:content="item/Description|nothing"/>
+                    </tal:if_local>
+                </a>
             </tal:item>
         </div>
         <div metal:use-macro="context/batch_macros/macros/navigation" />
