@@ -1,10 +1,12 @@
 from Products.CMFPlone.PloneBatch import Batch
 from Products.Five.browser import BrowserView
+from Products.ZCatalog.interfaces import ICatalogBrain
 from osha.hwccontent.interfaces import IFullWidth
 from plone import api
 from plone.app.contenttypes.interfaces import ICollection
 from plone.app.querystring.querybuilder import QueryBuilder
 from zope.interface import implements
+from DateTime import DateTime
 
 
 class NewsItemListing(BrowserView):
@@ -62,10 +64,27 @@ class NewsItemListing(BrowserView):
         #             'getURL': item['_url'],
         #             'Description': getattr(item, 'text', '')
         #         })
-        return sorted(items, key=lambda item: getattr(item, 'Date'))
+        return sorted(
+            items,
+            key=lambda item: getattr(item, 'Date'),
+            reverse=True)
 
     def get_batched_news_items(self):
         b_size = int(self.request.get('b_size', 20))
         b_start = int(self.request.get('b_start', 0))
-        return Batch(self.get_all_news_items(), b_size, b_start, orphan=1)
-
+        items = self.get_all_news_items()
+        for i in range(b_start, b_size):
+            if i > len(items):
+                break
+            if ICatalogBrain.providedBy(items[i]):
+                item = items[i]
+                obj = item.getObject()
+                items[i] = {
+                    'title': item.Title,
+                    'date': DateTime(item.Date).utcdatetime(),
+                    'url': item.getPath(),
+                    'desc': item.Description,
+                    'image': obj.image,
+                    'obj': obj
+                }
+        return Batch(items, b_size, b_start, orphan=1)

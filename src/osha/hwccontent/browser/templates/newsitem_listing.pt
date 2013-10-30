@@ -17,22 +17,32 @@
 
     <tal:batch define="batch view/get_batched_news_items">
         <tal:newsitems repeat="item batch">
-        <div tal:define="
-                    first repeat/item/start;
-                    first python: ' first' if first else '';
-                    last repeat/item/end;
-                    last python: ' last' if last else '';"
-                tal:attributes="class python:('newsItem' + first + last)">
-                <a tal:attributes="href item/getURL">
-                    <h4 tal:content="item/Title">Foo</h4>
-                </a>
-                <p class="metadata">
-                    <em tal:define="date item/Date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
-                </p>
-                <a tal:attributes="href item/getURL">
-                    <p tal:content="item/Description"/>
-                </a>
-            </div>
+        <tal:repeat define="
+                first repeat/item/start;
+                first python: ' first' if first else '';
+                last repeat/item/end;
+                last python: ' last' if last else '';"
+            tal:attributes="class python:('newsItem' + first + last)">
+
+            <a href="#"
+                tal:condition="item/image|nothing"
+                tal:attributes="href item/url">
+                <div class="tileImage">
+                    <img src="" alt=""
+                        tal:define="scales item/obj/@@images;
+                                    scale python:scales.scale('image', 'thumb')"
+                        tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
+                </div>
+            </a>
+
+            <h2 class="tileHeadline">
+                <a tal:attributes="href item/url" tal:content="item/title">Foo</a>
+            </h2>
+            <p class="metadata">
+                <em tal:define="date item/date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
+            </p>
+            <p><a tal:attributes="href item/url" tal:content="item/desc"></a></p>
+        </tal:repeat>
         </tal:newsitems>
         <div metal:use-macro="context/batch_macros/macros/navigation" />
     </tal:batch>
