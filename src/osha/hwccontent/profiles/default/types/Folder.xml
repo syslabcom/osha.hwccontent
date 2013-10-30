@@ -6,6 +6,7 @@
 
     <property name="view_methods" purge="False">
         <element value="hw2014_front_page" />
+        <element value="folder_materials_view"/>
     </property>
 
     <property name="behaviors" purge="false">
