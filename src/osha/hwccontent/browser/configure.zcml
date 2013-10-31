@@ -127,4 +127,12 @@
     permission="zope2.View"
     />
 
+  <browser:page
+    name="batch_macros"
+    for="*"
+    template="templates/batch_macros.pt"
+    permission="zope2.View"
+    layer="..interfaces.IOSHAHWCContentLayer"
+    />
+
 </configure>
