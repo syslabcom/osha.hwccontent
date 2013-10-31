@@ -7,6 +7,8 @@ from osha.hwccontent.interfaces import IFullWidth
 from plone import api
 from plone.app.contenttypes.interfaces import ICollection
 from plone.app.querystring.querybuilder import QueryBuilder
+from plone.memoize import ram
+from time import time
 from urllib import urlopen
 from zope.interface import implements
 import base64
@@ -41,6 +43,7 @@ class NewsItemListing(BrowserView):
             limit=limit, brains=brains
         )
     
+    @ram.cache(lambda *args: time() // (60*10))  # Cache for ten minutes
     def get_remote_news_items(self):
         """ Queries the OSHA corporate site for news items.
             Items returned in JSON format.
@@ -54,7 +57,6 @@ class NewsItemListing(BrowserView):
                 '/osha/portal/en',
                 lang
             )
-
         result = urlopen(qurl)
         if result.code == 200:
             for item in load(result):
@@ -69,6 +71,7 @@ class NewsItemListing(BrowserView):
                 })
         return items
 
+    @ram.cache(lambda *args: time() // (60))  # Cache for one minute
     def get_local_news_items(self):
         """ Looks in the current folder for Collection objects and then queries
             them for items.
