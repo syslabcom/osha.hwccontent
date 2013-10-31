@@ -7,13 +7,7 @@
       i18n:domain="plone">
 
 <body>
-<metal:block fill-slot="main" tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
-
-    <div tal:replace="structure provider:plone.abovecontenttitle" />
-    <h1 id="title" class="documentFirstHeading">
-        <span id="parent-fieldname-title" tal:content="context/Title">title</span>
-    </h1>
-    <div tal:replace="structure provider:plone.belowcontenttitle" />
+<metal:block fill-slot="content-core" tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
 
     <tal:batch define="batch view/get_batched_news_items">
         <div class="tileItem row-fluid visualIEFloatFix" tal:repeat="item batch">
