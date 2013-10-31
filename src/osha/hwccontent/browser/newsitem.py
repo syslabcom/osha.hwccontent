@@ -101,7 +101,7 @@ class NewsItemListing(BrowserView):
         b_start = int(self.request.get('b_start', 0))
         items = self.get_all_news_items()
         for i in range(b_start, b_size):
-            if i > len(items):
+            if i >= len(items):
                 break
             if ICatalogBrain.providedBy(items[i]):
                 item = items[i]
