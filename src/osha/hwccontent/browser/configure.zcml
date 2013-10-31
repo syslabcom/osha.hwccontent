@@ -69,6 +69,17 @@
     />
 
   <browser:page
+    name="hwc_event_listing"
+    class=".event.EventListing"
+    for="plone.app.contenttypes.interfaces.IFolder"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    template="templates/event_listing.pt"
+    permission="zope2.View"
+    menu="plone_displayviews"
+    title="Event Listing"
+    />
+
+  <browser:page
     name="publication_listing"
     class=".publication.PublicationListing"
     for="plone.app.contenttypes.interfaces.IFolder"

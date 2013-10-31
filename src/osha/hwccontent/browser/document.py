@@ -12,7 +12,7 @@ from Products.Five.browser import BrowserView
 from plone.app.textfield.interfaces import ITransformer
 from plone.app.textfield.value import RichTextValue
 
-from osha.hwccontent.browser.utils import get_partners, css_by_orientation
+from osha.hwccontent.browser.utils import get_partners, css_by_orientation, isotime2dt
 from osha.hwccontent.interfaces import IFullWidth
 
 try:
@@ -97,7 +97,7 @@ class PressReleaseView(BrowserView):
         for item in load(urlopen(qurl)):
             yield {
                 'title': item['title'],
-                'releaseDate': datetime.strptime(item['releaseDate'].split('+')[0], '%Y-%m-%dT%H:%M:%S'),
+                'releaseDate': isotime2dt(item['releaseDate']),
                 'url': item['_url'],
                 'text': self.make_intro(item)
             }
