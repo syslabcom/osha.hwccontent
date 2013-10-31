@@ -1,20 +1,19 @@
 from DateTime import DateTime
 from Products.CMFPlone.PloneBatch import Batch
-from Products.Five.browser import BrowserView
 from Products.ZCatalog.interfaces import ICatalogBrain
 from json import load
+from osha.hwccontent.browser.mixin import ListingView
 from osha.hwccontent.interfaces import IFullWidth
 from plone import api
 from plone.app.contenttypes.interfaces import ICollection
 from plone.app.querystring.querybuilder import QueryBuilder
 from plone.memoize import ram
-from time import time
 from urllib import urlopen
 from zope.interface import implements
 import base64
 
 
-class NewsItemListing(BrowserView):
+class NewsItemListing(ListingView):
     implements(IFullWidth)
 
 
@@ -51,20 +50,16 @@ class NewsItemListing(BrowserView):
             limit=limit, brains=brains
         )
     
-    @ram.cache(lambda *args: time() // (60*10))  # Cache for ten minutes
+    @ram.cache(ListingView.cache_for_minutes(10))
     def get_remote_news_items(self):
         """ Queries the OSHA corporate site for news items.
             Items returned in JSON format.
         """
         items = []
         lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
-        qurl = '%s/%s/jsonfeed?portal_type=News%%20Item&Subject=%s&path=%s&Language=%s' \
-            % ( self.osha_json_url,
-                lang,
-                self.remote_news_query_tags,
-                '/osha/portal/en',
-                lang
-            )
+        qurl = '%s/%s/jsonfeed?portal_type=News%%20Item&Subject=%s&path=/osha/portal/%s&Language=%s' \
+            % (self.osha_json_url, lang, self.remote_news_query_tags, lang, lang)
+
         result = urlopen(qurl)
         if result.code == 200:
             for item in load(result):
@@ -79,7 +74,7 @@ class NewsItemListing(BrowserView):
                 })
         return items
 
-    @ram.cache(lambda *args: time() // (60))  # Cache for one minute
+    @ram.cache(ListingView.cache_for_minutes(1))
     def get_local_news_items(self):
         """ Looks in the current folder for Collection objects and then queries
             them for items.
@@ -95,7 +90,6 @@ class NewsItemListing(BrowserView):
         return items
 
     def get_all_news_items(self):
-        # TODO: this needs to be cached.
         items = self.get_remote_news_items() + \
             list(self.get_local_news_items())
         return sorted(

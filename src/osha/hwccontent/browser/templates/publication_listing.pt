@@ -1,0 +1,60 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+<metal:block fill-slot="content-core" tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
+
+    <tal:batch define="batch view/get_batched_publications">
+        <div class="tileItem row-fluid visualIEFloatFix" tal:repeat="item batch">
+            <tal:item define="
+                    first repeat/item/start;
+                    first python: ' first' if first else '';
+                    last repeat/item/end;
+                    last python: ' last' if last else '';"
+                tal:attributes="class python:('newsItem' + first + last)">
+
+                <a href="#"
+                    tal:condition="item/image|item/image_base64|nothing"
+                    tal:attributes="href item/getURL">
+                    <div class="tileImage">
+                        <tal:if_blob tal:condition="item/image|nothing">
+                            <img src="" alt=""
+                                tal:define="scales item/obj/@@images;
+                                            scale python:scales.scale('image', 'thumb')"
+                                tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
+                        </tal:if_blob>
+
+                        <tal:if_base64 tal:condition="item/image_base64|nothing">
+                            <img src="" alt="" class="tileImage" 
+                                tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
+                        </tal:if_base64>
+                    </div>
+                </a>
+
+                <h2 class="tileHeadline">
+                    <a tal:attributes="href item/getURL" tal:content="item/Title">Foo</a>
+                </h2>
+                <p class="metadata">
+                    <em tal:define="date item/Date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
+                </p>
+                <a tal:attributes="href item/getURL">
+                    <tal:if_remote condition="item/remote_item|nothing">
+                        <p tal:replace="structure item/Description"/>
+                    </tal:if_remote>
+
+                    <tal:if_local condition="not:item/remote_item|nothing">
+                        <p tal:content="item/Description|nothing"/>
+                    </tal:if_local>
+                </a>
+            </tal:item>
+        </div>
+        <div metal:use-macro="context/batch_macros/macros/navigation" />
+    </tal:batch>
+</metal:block>
+</body>
+</html>

@@ -69,6 +69,17 @@
     />
 
   <browser:page
+    name="publication_listing"
+    class=".publication.PublicationListing"
+    for="plone.app.contenttypes.interfaces.IFolder"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    template="templates/publication_listing.pt"
+    permission="zope2.View"
+    menu="plone_displayviews"
+    title="Publication Listing"
+    />
+
+  <browser:page
     name="hw2014_front_page"
     class=".front_page.FrontPageView"
     for="plone.app.layout.navigation.interfaces.INavigationRoot"
