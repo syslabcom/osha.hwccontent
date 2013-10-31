@@ -17,12 +17,20 @@ import base64
 class NewsItemListing(BrowserView):
     implements(IFullWidth)
 
-    def remote_url(self):
+
+    def __init__(self, context, request):
+        super(NewsItemListing, self).__init__(context, request)
         properties = api.portal.get_tool('portal_properties')
-        return getattr(
+        self.osha_json_url = getattr(
             properties.site_properties,
             'osha_json_url',
-            'https://osha.europa.eu/')
+            'https://osha.europa.eu/'
+        )
+        self.remote_news_query_tags = getattr(
+            properties.site_properties,
+            'remote_news_query_tags',
+            'stress,hw2014'
+        )
 
     def results(self, collection, batch=True, b_start=0, b_size=None,
                 sort_on=None, limit=None, brains=False):
@@ -51,9 +59,9 @@ class NewsItemListing(BrowserView):
         items = []
         lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
         qurl = '%s/%s/jsonfeed?portal_type=News%%20Item&Subject=%s&path=%s&Language=%s' \
-            % ( self.remote_url(),
+            % ( self.osha_json_url,
                 lang,
-                'stress,hw2014',
+                self.remote_news_query_tags,
                 '/osha/portal/en',
                 lang
             )
