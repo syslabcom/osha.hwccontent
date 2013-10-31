@@ -82,17 +82,6 @@ jQuery(function($){
         }
     );
 
-    // contact form
-    $('#siteaction-contact a').prepOverlay(
-        {
-            subtype: 'ajax',
-            filter: common_content_filter,
-            cssclass: 'overlay-contact',
-            formselector: 'form[name="feedback_form"]',
-            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'close');}
-        }
-    );
-
     // display: select content item / change content item
     $('#contextSetDefaultPage, #folderChangeDefaultPage').prepOverlay(
         {
