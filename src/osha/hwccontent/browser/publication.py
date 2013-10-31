@@ -4,7 +4,6 @@ from json import load
 from osha.hwccontent.interfaces import IFullWidth
 from osha.hwccontent.browser.mixin import ListingView 
 from plone.memoize import ram
-from time import time
 from urllib import urlopen
 from zope.interface import implements
 from plone import api 
@@ -30,10 +29,11 @@ class PublicationListing(ListingView):
             Items returned in JSON format.
         """
         items = []
-        qurl = '%s/%s/jsonfeed?portal_type=Publication&Subject=%s&path=/osha/portal/%s&Language=%s' \
+        qurl = '%s/%s/jsonfeed?portal_type=File&Subject=%s&path=/osha/portal/' \
+               '%s&Language=%s&object_provides=slc.publications.interfaces.IPublicationEnhanced' \
             % ( self.osha_json_url,
                 self.lang,
-                self.remote_news_query_tags,
+                self.remote_publication_query_tags,
                 self.lang,
                 self.lang
             )
