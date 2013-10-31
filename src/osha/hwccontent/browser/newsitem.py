@@ -53,7 +53,7 @@ class NewsItemListing(BrowserView):
         qurl = '%s/%s/jsonfeed?portal_type=News%%20Item&Subject=%s&path=%s&Language=%s' \
             % ( self.remote_url(),
                 lang,
-                'stress,green_jobs',
+                'stress,hw2014',
                 '/osha/portal/en',
                 lang
             )
