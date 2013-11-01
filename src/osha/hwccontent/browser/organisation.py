@@ -5,6 +5,9 @@ from plone import api
 from plone.app.layout.viewlets import ViewletBase
 from plone.directives import dexterity
 from osha.hwccontent.organisation import IOrganisation
+import logging
+
+log = logging.getLogger(__name__)
 
 grok.templatedir("templates")
 
@@ -47,8 +50,22 @@ class PostAddView(grok.View):
     grok.context(IOrganisation)
 
     def render(self):
-        url = self.context.__parent__.absolute_url()
-        # Add portal message
+        properties = api.portal.get_tool('portal_properties')
+        fallback = self.context.__parent__.absolute_url()
+        url = getattr(
+            properties.site_properties,
+            'organisation_added_page',
+            fallback
+        )
+        if not url.startswith('http'):
+            try:
+                obj = self.context.restrictedTraverse(url)
+                url = obj.absolute_url()
+            except:
+                log.warn('Could not get feedback page: {0}'.format(url))
+                url = fallback
+        api.portal.show_message('Profile has been created',
+                                request=self.request)
         self.redirect(url)
 
 
