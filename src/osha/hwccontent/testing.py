@@ -87,11 +87,11 @@ class OSHAHWContentLayer(PloneSandboxLayer):
         )
 
         # Install products that use an old-style initialize() function
-        #z2.installProduct(app, 'Products.PloneFormGen')
+        z2.installProduct(app, 'Products.DateRecurringIndex')
 
-#    def tearDownZope(self, app):
-#        # Uninstall products installed above
-#        z2.uninstallProduct(app, 'Products.PloneFormGen')
+    def tearDownZope(self, app):
+        # Uninstall products installed above
+        z2.uninstallProduct(app, 'Products.DateRecurringIndex')
 
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'osha.hwccontent:default')
