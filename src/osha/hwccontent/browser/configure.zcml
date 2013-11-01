@@ -47,11 +47,11 @@
     />
 
   <browser:page
-    name="document_pressrelease_view"
-    class=".document.PressReleaseView"
-    for="plone.app.contenttypes.interfaces.IDocument"
+    name="pressrelease_listing"
+    class=".pressrelease.PressReleaseListing"
+    for="plone.app.contenttypes.interfaces.IFolder"
     layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
-    template="templates/document_pressrelease.pt"
+    template="templates/pressrelease_listing.pt"
     permission="zope2.View"
     menu="plone_displayviews"
     title="Press Release Listing"

@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+<metal:block fill-slot="content-core" tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
+
+    <tal:batch define="batch view/get_batched_press_releases">
+        <div class="tileItem row-fluid visualIEFloatFix" tal:repeat="item batch">
+            <tal:item define="
+                    first repeat/item/start;
+                    first python: ' first' if first else '';
+                    last repeat/item/end;
+                    last python: ' last' if last else '';"
+                tal:attributes="class python:('newsItem' + first + last)">
+
+                <p class="metadata">
+                  <em tal:content="python: toLocalizedTime(item['Date'])">2012-01-01</em>
+                </p>
+                <a tal:attributes="href item/getURL">
+                  <h4 tal:content="item/Title">Foo</h4>
+                  <p tal:content="item/text" />
+                </a>
+                
+            </tal:item>
+        </div>
+        <div metal:use-macro="context/batch_macros/macros/navigation" />
+    </tal:batch>
+</metal:block>
+</body>
+</html>
+
