@@ -61,7 +61,7 @@ class HelperView(BrowserView):
             profile_info.append({
                 'Title': obj.Title(),
                 'url': obj.absolute_url(),
-                'needs_completion': wfstate == 'approved_phase_1',
+                'review_state': wfstate,
             })
         return profile_info
 
