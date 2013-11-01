@@ -31,25 +31,6 @@ class NewsItemListing(ListingView):
             'stress,hw2014'
         )
 
-    def results(self, collection, batch=True, b_start=0, b_size=None,
-                sort_on=None, limit=None, brains=False):
-        # XXX This code is from plone.app.contenttypes.content.py, we need this
-        # here until my pull request is merged.
-        # https://github.com/plone/plone.app.contenttypes/pull/87
-        querybuilder = QueryBuilder(collection, self.request)
-        sort_order = 'reverse' if collection.sort_reversed else 'ascending'
-        if not b_size:
-            b_size = collection.item_count
-        if not sort_on:
-            sort_on = collection.sort_on
-        if not limit:
-            limit = collection.limit
-        return querybuilder(
-            query=collection.query, batch=batch, b_start=b_start, b_size=b_size,
-            sort_on=sort_on, sort_order=sort_order,
-            limit=limit, brains=brains
-        )
-    
     @ram.cache(ListingView.cache_for_minutes(10))
     def get_remote_news_items(self):
         """ Queries the OSHA corporate site for news items.
@@ -82,11 +63,10 @@ class NewsItemListing(ListingView):
         items = []
         for child in self.context.values():
             if ICollection.providedBy(child):
-                items = self.results(
-                    child,
+                items.extend(child.results(
                     batch=False,
                     sort_on='Date',
-                    brains=True)
+                    brains=True))
         return items
 
     def get_all_news_items(self):
