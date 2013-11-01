@@ -256,7 +256,7 @@
   </guard>
  </transition>
 
- <worklist worklist_id="reviewer_queue" title="">
+ <worklist worklist_id="reviewer_queue_phase_1" title="">
   <description>Reviewer tasks</description>
   <action url="%(portal_url)s/search?review_state=pending" category="global" icon="">Pending (%(count)d)</action>
   <guard>
@@ -264,6 +264,15 @@
   </guard>
   <match name="review_state" values="pending"/>
  </worklist>
+ <worklist worklist_id="reviewer_queue_phase_2" title="">
+  <description>Reviewer tasks</description>
+  <action url="%(portal_url)s/search?review_state=pending_phase_2" category="global" icon="">Pending (phase 2) (%(count)d)</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+  <match name="review_state" values="pending_phase_2"/>
+ </worklist>
+
  <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>
