@@ -1,15 +1,9 @@
 # _+- coding: utf-8 -*-
 
 from Products.Five.browser import BrowserView
-from osha.hwccontent import vocabularies
 from plone import api
 from plone.app.event.dx.behaviors import IEventLocation
 from osha.hwccontent.browser.utils import get_partners, css_by_orientation
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from ordereddict import OrderedDict
 
 
 class FrontPageView(BrowserView):

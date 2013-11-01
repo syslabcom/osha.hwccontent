@@ -1,5 +1,4 @@
 # _+- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
 from five import grok
 from osha.hwccontent.focalpoint import IFocalPoint
 from osha.hwccontent.browser.organisation import View as OrganisationView

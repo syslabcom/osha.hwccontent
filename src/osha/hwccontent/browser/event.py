@@ -3,7 +3,6 @@ from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCatalog.interfaces import ICatalogBrain
 from json import load
 from osha.hwccontent.browser.mixin import ListingView
-from osha.hwccontent.browser.utils import isotime2dt
 from osha.hwccontent.interfaces import IFullWidth
 from plone import api
 from plone.app.contenttypes.interfaces import ICollection
@@ -14,8 +13,6 @@ from urllib import urlopen
 from zope.component import getMultiAdapter
 from zope.contentprovider.interfaces import IContentProvider
 from zope.interface import implements
-
-import base64
 
 
 class EventListing(ListingView):

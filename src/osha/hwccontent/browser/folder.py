@@ -15,7 +15,7 @@ class MaterialsView(grok.View):
 
     def get_icon_path(self, obj):
         if obj is None:
-            log.warn('Could not get object: {0}'.format(item.getPath()))
+            log.warn('Could not get object: {0}'.format(obj.getPath()))
             return 'unknown.png'
         mtr = api.portal.get_tool(name='mimetypes_registry')
         for mime in mtr.lookup(obj.file.contentType):

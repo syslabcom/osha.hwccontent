@@ -6,7 +6,6 @@ from osha.hwccontent.browser.mixin import ListingView
 from osha.hwccontent.interfaces import IFullWidth
 from plone import api
 from plone.app.contenttypes.interfaces import ICollection
-from plone.app.querystring.querybuilder import QueryBuilder
 from plone.memoize import ram
 from urllib import urlopen
 from zope.interface import implements

@@ -3,7 +3,6 @@ from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCatalog.interfaces import ICatalogBrain
 from json import load
 from osha.hwccontent.browser.mixin import ListingView
-from osha.hwccontent.browser.utils import isotime2dt
 from osha.hwccontent.interfaces import IFullWidth
 from plone import api
 from plone.app.contenttypes.interfaces import ICollection
@@ -12,8 +11,6 @@ from plone.app.textfield.interfaces import ITransformer
 from plone.app.textfield.value import RichTextValue
 from plone.memoize import ram
 from urllib import urlopen
-from zope.component import getMultiAdapter
-from zope.contentprovider.interfaces import IContentProvider
 from zope.interface import implements
 
 import base64
@@ -55,7 +52,7 @@ class PressReleaseListing(ListingView):
             limit=limit, brains=brains
         )
     
-    #@ram.cache(ListingView.cache_for_minutes(10))
+    @ram.cache(ListingView.cache_for_minutes(10))
     def get_remote_press_releases(self):
         """ Queries the OSHA corporate site for press releases.
             Items returned in JSON format.
@@ -81,7 +78,7 @@ class PressReleaseListing(ListingView):
                 })
         return items
 
-    #@ram.cache(ListingView.cache_for_minutes(1))
+    @ram.cache(ListingView.cache_for_minutes(1))
     def get_local_press_releases(self):
         """ Looks in the current folder for Collection objects and then queries
             them for items.

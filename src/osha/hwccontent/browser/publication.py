@@ -43,7 +43,7 @@ class PublicationListing(ListingView):
                 items.append({
                     'remote_item': True,
                     'Title': item['title'],
-                    'Date': DateTime(items[i]['Date']).utcdatetime(),
+                    'Date': DateTime(item['Date']).utcdatetime(),
                     'getURL': item['_url'],
                     'Description': item.get('description', ''),
                     'image_base64': item.get('image'),

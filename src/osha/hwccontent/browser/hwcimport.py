@@ -112,7 +112,7 @@ class HWCImportForm(form.SchemaForm):
                 for transition in type_info['wf_actions']:
                     try:
                         content.transition(new_obj, transition)
-                    except Exception, e:
+                    except Exception:
                         logger.exception('Could not execute %s transition for %s' % (transition, '/'.join(new_obj.getPhysicalPath())))
                         
                 logger.info('Imported %s' % new_obj.getId())
