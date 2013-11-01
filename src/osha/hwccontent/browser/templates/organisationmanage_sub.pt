@@ -1,0 +1,12 @@
+<div id="manage_organisation"
+     tal:condition="view/available"
+     tal:define="here_url here/absolute_url">
+
+     <div tal:condition="python:view.editor or view.reviewer or view.owner" id="plone-contentmenu-workflow">
+        The current workflow state is: <em tal:attributes="class string:state-${view/wfstate}" tal:content="view/wfstatetitle">state</em><br/>
+         <p tal:condition="python:view.editor and not view.reviewer and view.wfstate=='private'" class="callout">
+             <a tal:attributes="href view/submiturl" i18n:translate="">Submit this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype> for publication</a><br />
+         </p>
+     </div>
+
+</div>

@@ -137,6 +137,14 @@
     template="templates/organisationmanage.pt"
     permission="zope2.View"
     />
+  <browser:viewlet
+    name="organisationmanage"
+    for="plone.app.event.dx.interfaces.IDXEvent"
+    class=".organisation.OrganisationManage"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+    template="templates/organisationmanage_sub.pt"
+    permission="zope2.View"
+    />
 
   <browser:page
     name="batch_macros"

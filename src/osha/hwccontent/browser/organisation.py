@@ -85,6 +85,7 @@ class OrganisationManage(ViewletBase):
                 'Review portal content', self.context)
             self.editor = user.checkPermission(
                 'Modify portal content', self.context)
+        self.contenttype = self.context.Type()
         workflow = api.portal.get_tool('portal_workflow')
         self.wfactions = workflow.listActions(object=self.context)
         self.submiturl = None
