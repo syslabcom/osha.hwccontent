@@ -110,6 +110,13 @@ class OSHAHWContentLayer(PloneSandboxLayer):
         
         organisations = api.content.create(portal, type='osha.hwccontent.organisationfolder', title='Organisations')
         api.content.transition(organisations, 'publish')
+        page = api.content.create(
+            organisations,
+            type='Document',
+            title='Official campaign partners',
+        )
+        organisations.setDefaultPage(page.getId())
+        page.setLayout('document_organisations_view')
 
 
 class Debugging:

@@ -70,9 +70,15 @@ class HelperView(BrowserView):
         org_folders = cat(portal_type="osha.hwccontent.organisationfolder",
                           sort_on='modified',
                           sort_order='descending')
-        if len(org_folders) > 0:
-            if len(org_folders) > 1:
-                log.warn('Multiple organisation folders: {0}'.format(
-                    ', '.join([f.getPath() for f in org_folders])))
-            obj = org_folders[0].getObject()
+        if len(org_folders) > 2:
+            log.warn('Multiple organisation folders: {0}'.format(
+                ', '.join([f.getPath() for f in org_folders])))
+        for folder in org_folders:
+            obj = folder.getObject()
+            # We want the partners folder, not the focal points folder. Is
+            # checking the default page the best way to tell them apart?
+            page = obj.restrictedTraverse(obj.getDefaultPage())
+            if not page.getLayout() == 'document_organisations_view':
+                continue
             return obj.absolute_url()
+        return None
