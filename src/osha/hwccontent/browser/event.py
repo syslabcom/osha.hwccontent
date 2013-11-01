@@ -68,8 +68,8 @@ class EventListing(ListingView):
         result = urlopen(qurl)
         if result.code == 200:
             for item in load(result):
-                item['start'] = isotime2dt(item['startDate'])
-                item['end'] = isotime2dt(item['endDate'])
+                item['start'] = DateTime(item['startDate'])
+                item['end'] = DateTime(item['endDate'])
                 
                 items.append(item)
         return items
@@ -85,7 +85,7 @@ class EventListing(ListingView):
                 items = self.results(
                     child,
                     batch=False,
-                    sort_on='startDate',
+                    sort_on='start',
                     brains=True)
         return items
 
@@ -108,14 +108,12 @@ class EventListing(ListingView):
             if ICatalogBrain.providedBy(items[i]):
                 item = items[i]
                 obj = item.getObject()
-                blob = getattr(obj.image, '_blob', None)
-                import pdb;pdb.set_trace()
                 items[i] = {
-                    'Title': item.Title,
-                    'start': DateTime(item.startDate),
-                    'getURL': item.getPath(),
-                    'Description': item.Description,
-                    'image': blob and base64.encodestring(blob.open().read()) or None,
+                    'title': item.Title,
+                    'start': item.start,
+                    'end': item.end,
+                    '_url': item.getURL(),
+                    'description': item.Description,
                     'obj': obj
                 }
         return Batch(items, b_size, b_start, orphan=1)

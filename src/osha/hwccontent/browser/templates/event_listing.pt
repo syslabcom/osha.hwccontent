@@ -13,11 +13,12 @@
     
     <tal:items repeat="data batch">
       <article itemscope itemtype="http://data-vocabulary.org/Event" class="vevent"
-          tal:define="startf python:view.date_speller(data['start'])">
+          tal:define="startf python:view.date_speller(data['start']);
+                      absolute_url data/_url|data/absolute_url;">
 
         <ul class="hCalendar-hidden">
-          <li itemprop="startDate" class="dtstart" tal:content="data/start/isoformat">end</li>
-          <li itemprop="endDate" class="dtend" tal:content="data/end/isoformat">end</li>
+          <li itemprop="startDate" class="dtstart" tal:content="python:data['start'].strftime('%Y')">end</li>
+          <li itemprop="endDate" class="dtend" tal:content="python:data['end'].strftime('%Y')">end</li>
         </ul>
 
         <div class="cal_date">
@@ -27,13 +28,13 @@
         </div>
 
         <div class="cal_info">
-          <h2><a href="" itemprop="url" class="url" tal:attributes="href data/_url">
+          <h2><a href="" itemprop="url" class="url" tal:attributes="href absolute_url">
             <span itemprop="summary" class="summary" tal:content="data/title">Title</span>
           </a></h2>
           <div class="documentByLine">
             <tal:date tal:replace="python:toLocalizedTime(data['start'])"/>
             <div itemprop="location" class="location"
-                tal:define="location data/location"
+                tal:define="location data/location|nothing"
                 tal:condition="location"
                 tal:content="structure location">location</div>
           </div>
@@ -42,7 +43,7 @@
 
           <ul class="horizontal metadata">
 
-            <li tal:condition="data/subject" itemprop="eventType" class="category">
+            <li tal:condition="data/subject|nothing" itemprop="eventType" class="category">
               <span tal:repeat="data data/subject" tal:content="data" />
             </li>
 
@@ -79,7 +80,7 @@
             <li>
               <a class="event_ical"
                   tal:define="portal_url context/@@plone_portal_state/portal_url;"
-                  tal:attributes="href string:${data/_url}/ics_view"
+                  tal:attributes="href string:${absolute_url}/ics_view"
                   title="Download this event in iCal format"
                   i18n:attributes="title title_add_to_ical;">
                 <img src="" alt=""
