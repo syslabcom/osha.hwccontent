@@ -60,10 +60,10 @@ class OrganisationManage(ViewletBase):
         if api.user.is_anonymous():
             self.reviewer = False
             self.editor = False
-            user_id = None
+            user_email = None
         else:
             user = api.user.get_current()
-            user_id = getattr(user, 'id', '---')
+            user_email = user.getProperty('email')
             self.reviewer = user.checkPermission(
                 'Review portal content', self.context)
             self.editor = user.checkPermission(
@@ -75,7 +75,9 @@ class OrganisationManage(ViewletBase):
             if wfaction['id'] == 'submit':
                 self.submiturl = wfaction['url']
         self.wfstate = workflow.getInfoFor(self.context, 'review_state')
-        self.owner = self.context.email == user_id
+        self.wfstatetitle = workflow.getTitleForStateOnType(
+            self.wfstate, self.context.portal_type)
+        self.owner = self.context.key_email == user_email
 
         self.available = True if (self.reviewer or self.editor or self.owner) \
             else False

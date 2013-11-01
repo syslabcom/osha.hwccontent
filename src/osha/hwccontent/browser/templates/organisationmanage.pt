@@ -2,7 +2,7 @@
      tal:condition="view/available"
      tal:define="here_url here/absolute_url">
      <span tal:condition="view/reviewer" tal:omit-tag="">
-        <p id="plone-contentmenu-workflow">The current workflow state is: <em tal:attributes="class string:state-${view/wfstate}" tal:content="view/wfstate">state</em><br/>
+        <p id="plone-contentmenu-workflow">The current workflow state is: <em tal:attributes="class string:state-${view/wfstate}" tal:content="view/wfstatetitle">state</em><br/>
             Available actions for the reviewer:</p>
         <ul>
             <li><a tal:attributes="href string:${here_url}/edit">Click here to update the partner's profile.</a></li>
@@ -13,6 +13,13 @@
             </span>
         </ul>
      </span>
+     <p tal:condition="python:view.owner and view.wfstate=='pending'">
+         Thank you for your application. You will be notified when it has been reviewed by EU-OSHA.
+     </p>
+     <p tal:condition="python:view.editor and not view.reviewer and view.wfstate=='approved_phase_1' and not here.mission_statement" class="callout">
+         Thank you for your application. Before your profile can be made public, please 
+         <a tal:attributes="href string:${here_url}/edit">fill in some additional information by clicking this link.</a><br />
+     </p>
      <span tal:condition="python:view.editor and not view.reviewer and view.wfstate=='published'">
         Your profile has been completed. You can continue to update your profile or add news and events:
         <ul>
@@ -28,14 +35,10 @@
             <a tal:attributes="href view/submiturl">Please click here to submit your profile for final review.</a>
         <p>
         <p>Optionally, you can <a tal:attributes="href string:${here_url}/edit">continue to update your profile.</a></p>
-    </span>
-    <p tal:condition="python:view.editor and not view.reviewer and view.wfstate=='approved_phase_1' and not here.mission_statement" class="callout">
-        Thank you for your application. Before your profile can be made public, please fill in some additional information
-        <a tal:attributes="href string:${here_url}/edit">by clicking this link.</a><br />
-    </p>
-    <p tal:condition="python:view.owner and view.wfstate=='pending_phase_2'">
-        Thank you. Your profile will be reviewd for the final time by EU-OSHA.
-    </p>
+     </span>
+     <p tal:condition="python:view.owner and view.wfstate=='pending_phase_2'">
+         Thank you. Your profile will be reviewed for the final time by EU-OSHA.
+     </p>
 
 </div>
 
