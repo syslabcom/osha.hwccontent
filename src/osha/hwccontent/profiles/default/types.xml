@@ -5,4 +5,5 @@
  <object name="plone.app.event.dx.event" meta_type="Dexterity FTI" />
  <object name="Document" meta_type="Dexterity FTI" />
  <object name="Folder" meta_type="Dexterity FTI" />
+ <object name="File" meta_type="Dexterity FTI" />
 </object>

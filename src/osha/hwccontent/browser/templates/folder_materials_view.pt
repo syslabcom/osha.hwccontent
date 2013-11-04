@@ -16,14 +16,18 @@
                          tal:define="item_url item/getPath;
                                      obj item/getObject;">
               <div class="material-item row-fluid">
-                <div class="span6">
-                  <img src="++theme++osha.hwctheme/HWManageStress_files/images/material01.jpg" alt="" title="">
+                <div class="span6" tal:define="scales obj/@@images; has_image python:getattr(obj, 'image', None)">
+                  <img src="++theme++osha.hwctheme/HWManageStress_files/images/material01.jpg" alt="" title=""
+                    tal:replace="structure python: scales.tag('image', scale='mini')"
+                    tal:condition="has_image">
+                  <img src="++theme++osha.hwctheme/HWManageStress_files/images/material01.jpg" alt="" title=""
+                    tal:condition="not:has_image">
                 </div>
 
                 <div class="span4">
                   <h2>
                       <a href="#" class="summary url" tal:content="item/Title"
-                         tal:attributes="href string:${item_url}/view">
+                         tal:attributes="href string:${item_url}/download">
                          Title or id
                        </a>
                   </h2>
