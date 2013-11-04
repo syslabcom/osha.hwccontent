@@ -1,6 +1,8 @@
 from Products.CMFCore.interfaces import IFolderish
+from osha.hwccontent.interfaces import IMaterialsView
 from five import grok
 from plone import api
+from zope import interface
 
 import logging
 
@@ -8,6 +10,7 @@ log = logging.getLogger(__name__)
 grok.templatedir('templates')
 
 
+@interface.implementer(IMaterialsView)
 class MaterialsView(grok.View):
     grok.name('folder_materials_view')
     grok.context(IFolderish)
