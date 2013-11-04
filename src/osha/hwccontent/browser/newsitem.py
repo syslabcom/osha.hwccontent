@@ -30,7 +30,6 @@ class NewsItemListing(ListingView):
             'stress,hw2014'
         )
 
-    @ram.cache(ListingView.cache_for_minutes(10))
     def get_remote_news_items(self):
         """ Queries the OSHA corporate site for news items.
             Items returned in JSON format.
@@ -54,7 +53,6 @@ class NewsItemListing(ListingView):
                 })
         return items
 
-    @ram.cache(ListingView.cache_for_minutes(1))
     def get_local_news_items(self):
         """ Looks in the current folder for Collection objects and then queries
             them for items.
@@ -68,22 +66,15 @@ class NewsItemListing(ListingView):
                     brains=True))
         return items
 
+    @ram.cache(ListingView.cache_for_minutes(10))
     def get_all_news_items(self):
-        items = self.get_remote_news_items() + \
-            list(self.get_local_news_items())
-        return sorted(
-            items,
+        items = sorted(
+            self.get_remote_news_items() + \
+                list(self.get_local_news_items()),
             key=lambda item: item.__getitem__('Date'),
             reverse=True
         )
-
-    def get_batched_news_items(self):
-        b_size = int(self.request.get('b_size', 20))
-        b_start = int(self.request.get('b_start', 0))
-        items = self.get_all_news_items()
-        for i in range(b_start, b_size):
-            if i >= len(items):
-                break
+        for i in range(0, len(items)):
             if ICatalogBrain.providedBy(items[i]):
                 item = items[i]
                 obj = item.getObject()
@@ -98,4 +89,9 @@ class NewsItemListing(ListingView):
                 }
             else: 
                 items[i]['Date'] = DateTime(items[i]['Date']).utcdatetime()
-        return Batch(items, b_size, b_start, orphan=1)
+        return items
+
+    def get_batched_news_items(self):
+        b_size = int(self.request.get('b_size', 20))
+        b_start = int(self.request.get('b_start', 0))
+        return Batch(self.get_all_news_items(), b_size, b_start, orphan=1)
