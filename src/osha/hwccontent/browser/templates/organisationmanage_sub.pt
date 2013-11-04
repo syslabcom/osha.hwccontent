@@ -7,6 +7,9 @@
          <p tal:condition="python:view.editor and not view.reviewer and view.wfstate=='private'" class="callout">
              <a tal:attributes="href view/submiturl" i18n:translate="">Submit this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype> for publication</a><br />
          </p>
+         <p tal:condition="python:view.editor and not view.reviewer and view.wfstate=='private'">
+            <a tal:attributes="href string:$here_url/edit" i18n:translate="">Edit this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype></a><br />
+        </p>
      </div>
 
 </div>
