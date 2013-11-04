@@ -1,21 +1,107 @@
-from DateTime import DateTime
 from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCatalog.interfaces import ICatalogBrain
+from datetime import datetime, timedelta
 from json import load
 from osha.hwccontent.browser.mixin import ListingView
 from osha.hwccontent.interfaces import IFullWidth
 from plone import api
 from plone.app.contenttypes.interfaces import ICollection
 from plone.app.event.base import date_speller
+from plone.app.event.browser.event_listing import EventListing
+from plone.app.event.dx.behaviors import EventAccessor
 from plone.app.querystring.querybuilder import QueryBuilder
+from plone.event.interfaces import IEventAccessor
 from plone.memoize import ram
+import pytz
 from urllib import urlopen
 from zope.component import getMultiAdapter
 from zope.contentprovider.interfaces import IContentProvider
 from zope.interface import implements
+from Acquisition import ImplicitAcquisitionWrapper
+
+def isotime2dt(isotime, tz):
+    separator = isotime[-6]
+    if separator in '+-':
+        # Take off the timezone
+        spec = isotime.rsplit(separator, 1)[0]
+    else:
+        spec = isotime
+    dt = datetime.strptime(spec, '%Y-%m-%dT%H:%M:%S')
+    return tz.localize(dt)
+    
+
+class JSONEventAccessor(object):
+    """Event type generic accessor adapter."""
+
+    implements(IEventAccessor)
+
+    def __init__(self, kw, context):
+        self.context = ImplicitAcquisitionWrapper(self, context)
+        self.created = kw['creation_date']
+        self.last_modified = kw['modification_date']
+        self.url = kw['_url']
+        self.title = kw['title']
+        self.description = kw['description']
+
+        tz = kw['startDate'][-6:]
+        # We try CET first, because it's most common, and if none works, we use CET anyway.
+        # So Brussels should be both first and last in this list:
+        for tzname in ['Europe/Brussels', 'Europe/London', 'Europe/Helsinki', 'Atlantic/Reykjavik']:#, 'Europe/Brussels']:
+            timezone = pytz.timezone(tzname)
+            if tz[0] not in '-+':
+                # Naive date time, just assume CET
+                break
+            
+            # Verify this:
+            minutes = tz[-2:]
+            hours = tz[-5:-3]
+            seconds = int(minutes)*60 + int(hours)*3600
+            if tz[0] == '-':
+                seconds = -seconds
+            offset = timedelta(seconds=seconds)
+            if isotime2dt(kw['startDate'], timezone).utcoffset() == offset:
+                break 
+        
+        if tzname == 'Atlantic/Reykjavik':
+            import pdb;pdb.set_trace()
+            
+        self.start = isotime2dt(kw['startDate'], timezone)
+        self.end = isotime2dt(kw['endDate'], timezone)
+                    
+        self.timezone = pytz
+        self.recurrence = ''
+        self.location = kw['location']
+        self.attendees = kw['attendees']
+        self.contact_name = kw['contactName']
+        self.contact_email = kw['contactEmail']
+        self.contact_phone = kw['contactPhone']
+        self.event_url = kw['eventUrl']
+        self.subjects = kw['subject']
+        self.text = kw['text']
+
+    # Unified create method via Accessor
+    @classmethod        
+    def create(self, **kw):
+        return JSONEventAccessor(kw)
+
+    @property
+    def uid(self):
+        return None
+    
+    @property
+    def whole_day(self):
+        return False
+
+    @property
+    def open_end(self):
+        return False
+                
+    @property
+    def duration(self):
+        return end - start
 
 
-class EventListing(ListingView):
+class EventListing(ListingView, EventListing):
     implements(IFullWidth)
 
 
@@ -33,92 +119,30 @@ class EventListing(ListingView):
             'stress'
         )
 
-    def results(self, collection, batch=True, b_start=0, b_size=None,
-                sort_on=None, limit=None, brains=False):
-        # XXX This code is from plone.app.contenttypes.content.py, we need this
-        # here until my pull request is merged.
-        # https://github.com/plone/plone.app.contenttypes/pull/87
-        querybuilder = QueryBuilder(collection, self.request)
-        sort_order = 'reverse' if collection.sort_reversed else 'ascending'
-        if not b_size:
-            b_size = collection.item_count
-        if not sort_on:
-            sort_on = collection.sort_on
-        if not limit:
-            limit = collection.limit
-        return querybuilder(
-            query=collection.query, batch=batch, b_start=b_start, b_size=b_size,
-            sort_on=sort_on, sort_order=sort_order,
-            limit=limit, brains=brains
-        )
-    
+    def events(self, ret_mode=3, batch=True):
+        local_events = self._get_events(3) # Only accessors works with remote events.
+        remote_events = self._remote_events()
+        all_events = sorted(local_events + remote_events, key=lambda x: x.start)
+        if batch:
+            b_start = self.b_start
+            b_size  = self.b_size
+            res = Batch(all_events, size=b_size, start=b_start, orphan=self.orphan)
+        return res
+
     @ram.cache(ListingView.cache_for_minutes(10))
-    def get_remote_events(self):
+    def _remote_events(self):
         """ Queries the OSHA corporate site for events.
             Items returned in JSON format.
         """
         items = []
         lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
+        start, end = self._start_end
+        #import pdb;pdb.set_trace()
         qurl = '%s/%s/jsonfeed?portal_type=Event&Subject=%s&path=/osha/portal/%s&Language=%s' \
             % (self.osha_json_url, lang, self.remote_event_query_tags, lang, lang)
 
         result = urlopen(qurl)
         if result.code == 200:
-            for item in load(result):
-                item['start'] = DateTime(item['startDate'])
-                item['end'] = DateTime(item['endDate'])
-                
-                items.append(item)
+            for item in load(result):                
+                items.append(JSONEventAccessor(item, self))
         return items
-
-    @ram.cache(ListingView.cache_for_minutes(1))
-    def get_local_events(self):
-        """ Looks in the current folder for Collection objects and then queries
-            them for items.
-        """
-        items = []
-        for child in self.context.values():
-            if ICollection.providedBy(child):
-                items = self.results(
-                    child,
-                    batch=False,
-                    sort_on='start',
-                    brains=True)
-        return items
-
-    def get_all_events(self):
-        items = self.get_remote_events() + \
-            list(self.get_local_events())
-        return sorted(
-            items,
-            key=lambda item: item.__getitem__('start'),
-            reverse=True
-        )
-
-    def get_batched_events(self):
-        b_size = int(self.request.get('b_size', 20))
-        b_start = int(self.request.get('b_start', 0))
-        items = self.get_all_events()
-        for i in range(b_start, b_size):
-            if i >= len(items):
-                break
-            if ICatalogBrain.providedBy(items[i]):
-                item = items[i]
-                obj = item.getObject()
-                items[i] = {
-                    'title': item.Title,
-                    'start': item.start,
-                    'end': item.end,
-                    '_url': item.getURL(),
-                    'description': item.Description,
-                    'obj': obj
-                }
-        return Batch(items, b_size, b_start, orphan=1)
-
-    def date_speller(self, date):
-        return date_speller(self.context, date)
-
-    def formatted_date(self, occ):
-        provider = getMultiAdapter((self.context, self.request, self),
-                IContentProvider, name='formatted_date')
-        return provider(occ.context)

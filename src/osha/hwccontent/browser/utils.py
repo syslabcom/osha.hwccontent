@@ -46,6 +46,3 @@ def css_by_orientation(partner):
         return "span2 logovertical"
 
     return 'span2'
-
-def isotime2dt(isotime):
-    return datetime.strptime(isotime.split('+')[0], '%Y-%m-%dT%H:%M:%S')
