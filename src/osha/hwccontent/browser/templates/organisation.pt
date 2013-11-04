@@ -133,7 +133,7 @@
                       <a tal:attributes="href item/absolute_url" tal:content="item/Title">Austrian Kick-Off of the Campaign "Working together for risk prevention"</a>
                     </li>
                   </ul>
-                  <a tal:condition="context/news|nothing" class="more" href="*"
+                  <a tal:condition="nocall:context/news|nothing" class="more" href="*"
                      tal:attributes="href context/news/absolute_url">More news</a><br/>
                 </div>
 
