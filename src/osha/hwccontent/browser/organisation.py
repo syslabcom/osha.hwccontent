@@ -81,21 +81,18 @@ class OrganisationManage(ViewletBase):
         else:
             user = api.user.get_current()
             user_email = user.getProperty('email')
-            self.reviewer = user.checkPermission(
-                'Review portal content', self.context)
-            self.editor = user.checkPermission(
-                'Modify portal content', self.context)
+            self.can_review = bool(user.checkPermission(
+                'Review portal content', self.context))
+            self.can_edit = bool(user.checkPermission(
+                'Modify portal content', self.context))
         self.contenttype = self.context.Type()
         workflow = api.portal.get_tool('portal_workflow')
-        self.wfactions = workflow.listActions(object=self.context)
-        self.submiturl = None
-        for wfaction in self.wfactions:
-            if wfaction['id'] == 'submit':
-                self.submiturl = wfaction['url']
+        self.wfactions = dict([
+            (action['id'], action) for action in
+            workflow.listActions(object=self.context)])
         self.wfstate = workflow.getInfoFor(self.context, 'review_state')
         self.wfstatetitle = workflow.getTitleForStateOnType(
             self.wfstate, self.context.portal_type)
         self.owner = getattr(self.context, 'key_email', None) == user_email
 
-        self.available = True if (self.reviewer or self.editor or self.owner) \
-            else False
+        self.available = self.can_review or self.can_edit or self.owner
