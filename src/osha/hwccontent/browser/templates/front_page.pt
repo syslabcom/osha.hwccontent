@@ -29,10 +29,9 @@
 		    <div class="news item"
                  tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['news_item'].start else '')">
 		      <div class="row-fluid" tal:define="has_image python:getattr(news_item, 'image', None)">
-		        <h3><a href="#"
-                       tal:content="news_item/title"
-                       tal:attributes="href news_item/absolute_url">Good health and safety is good for business</a></h3>
-                <a href="#" tal:attributes="href news_item/absolute_url; title news_item/Title">
+		        <h3><a href="news"
+                       tal:content="news_item/title">Good health and safety is good for business</a></h3>
+                <a href="news" tal:attributes="title news_item/Title">
                   <img tal:condition="has_image" src="/++theme++osha.hwctheme/HWManageStress_files/images/newsimage2.jpg" class="pull-left"
                       tal:attributes="src string:${news_item/absolute_url}/@@images/image/thumb" />
                   <img tal:condition="not:has_image" class="pull-left" src="++theme++osha.hwctheme/HWManageStress_files/images/newsdefault.jpg" />
@@ -53,9 +52,8 @@
                  tal:define="event_location python:view.get_event_location(event)"
                  tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['event'].start else '')">
 		      <div class="row-fluid">
-		        <h3><a href="#"
-                       tal:content="event/Title"
-                       tal:attributes="href event/absolute_url">Positive psychology at work - towards flourishing workplaces</a></h3>
+		        <h3><a href="events"
+                       tal:content="event/Title">Positive psychology at work - towards flourishing workplaces</a></h3>
                 <div class="databox pull-left">
 		          <p class="day"
                      tal:content="python:event.start.strftime('%d')">17</p>
