@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_parent
 from Products.CMFPlone.utils import getDefaultPage
-from osha.hwccontent.interfaces import ITwoImages, ISectionIntro, IFullWidth
+from osha.hwccontent.interfaces import (
+    ITwoImages, ISectionIntro, IFullWidth, IMaterialsView)
 from plone.app.layout.globals import layout
 from plone.app.layout.navigation.interfaces import INavigationRoot
 
@@ -51,6 +52,12 @@ class LayoutPolicy(layout.LayoutPolicy):
         # is there a marker interface for 2 full width?
         if IFullWidth.providedBy(self.context) or IFullWidth.providedBy(view):
             body_class += " full-width"
+            is_special = True
+
+        # is there a marker interface for materials view?
+        if IMaterialsView.providedBy(self.context) or \
+                IMaterialsView.providedBy(view):
+            body_class += "materials-view"
             is_special = True
 
         if not is_special and self.is_subsection(self.context, view):

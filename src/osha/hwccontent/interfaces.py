@@ -26,3 +26,7 @@ class ITwoImages(IDexterityContent):
 
 class ISectionIntro(IDexterityContent):
     """Marker Interface for section intro """
+
+
+class IMaterialsView(IDexterityContent):
+    """Marker interface for materials listing view"""
