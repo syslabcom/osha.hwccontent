@@ -30,27 +30,25 @@
                         </tal:if_blob>
 
                         <tal:if_base64 tal:condition="item/image_base64|nothing">
-                            <img src="" alt="" class="tileImage" 
+                            <img src="" alt="" class="tileImage"
                                 tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
                         </tal:if_base64>
                     </div>
                 </a>
 
-                <h2 class="tileHeadline">
-                    <a tal:attributes="href item/getURL" tal:content="item/Title">Foo</a>
-                </h2>
+                <h2 class="tileHeadline" tal:content="item/Title">Foo</h2>
                 <p class="metadata">
                     <em tal:define="date item/Date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
                 </p>
-                <a tal:attributes="href item/getURL">
-                    <tal:if_remote condition="item/remote_item|nothing">
-                        <p tal:replace="structure item/Description"/>
-                    </tal:if_remote>
+                <tal:if_remote condition="item/remote_item|nothing">
+                    <p class="description" tal:content="structure item/Description"></p>
+                </tal:if_remote>
 
-                    <tal:if_local condition="not:item/remote_item|nothing">
-                        <p tal:content="item/Description|nothing"/>
-                    </tal:if_local>
-                </a>
+                <tal:if_local condition="not:item/remote_item|nothing">
+                    <p class="description" tal:content="item/Description|nothing"></p>
+                </tal:if_local>
+                <p tal:content="structure item/text">Text</p>
+
             </tal:item>
         </div>
         <div metal:use-macro="context/batch_macros/macros/navigation" />

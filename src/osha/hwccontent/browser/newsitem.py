@@ -48,6 +48,7 @@ class NewsItemListing(ListingView):
                     'Date': item['effectiveDate'],
                     'getURL': item['_url'],
                     'Description': item.get('description', ''),
+                    'text': item.get('text', ''),
                     'image_base64': item.get('image'),
                     'image_content_type': item.get('image_type')
                 })
@@ -84,10 +85,11 @@ class NewsItemListing(ListingView):
                     'Date': DateTime(item.Date).utcdatetime(),
                     'getURL': item.getPath(),
                     'Description': item.Description,
+                    'text': obj.text.output,
                     'image': blob and base64.encodestring(blob.open().read()) or None,
                     'obj': obj
                 }
-            else: 
+            else:
                 items[i]['Date'] = DateTime(items[i]['Date']).utcdatetime()
         return items
 
