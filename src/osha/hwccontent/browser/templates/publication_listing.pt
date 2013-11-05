@@ -10,7 +10,7 @@
 <metal:block fill-slot="content-core" tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
 
     <tal:batch define="batch view/get_batched_publications">
-        <div class="tileItem row-fluid visualIEFloatFix" tal:repeat="item batch">
+        <div class="tileItem publication row-fluid visualIEFloatFix" tal:repeat="item batch">
             <tal:item define="
                     first repeat/item/start;
                     first python: ' first' if first else '';
@@ -18,7 +18,7 @@
                     last python: ' last' if last else '';"
                 tal:attributes="class python:('newsItem' + first + last)">
 
-                <a href="#"
+                <span tal:omit-tag=""
                     tal:condition="item/image|item/image_base64|nothing"
                     tal:attributes="href item/getURL">
                     <div class="tileImage">
@@ -34,23 +34,22 @@
                                 tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
                         </tal:if_base64>
                     </div>
-                </a>
+                </span>
 
                 <h2 class="tileHeadline">
-                    <a tal:attributes="href item/getURL" tal:content="item/Title">Foo</a>
+                    <span tal:replace="item/Title">Foo</span>
                 </h2>
                 <p class="metadata">
                     <em tal:define="date item/Date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
                 </p>
-                <a tal:attributes="href item/getURL">
-                    <tal:if_remote condition="item/remote_item|nothing">
-                        <p tal:replace="structure item/Description"/>
-                    </tal:if_remote>
+                <tal:if_remote condition="item/remote_item|nothing">
+                    <p tal:replace="structure item/Description"/>
+                </tal:if_remote>
 
-                    <tal:if_local condition="not:item/remote_item|nothing">
-                        <p tal:content="item/Description|nothing"/>
-                    </tal:if_local>
-                </a>
+                <tal:if_local condition="not:item/remote_item|nothing">
+                    <p tal:content="item/Description|nothing"/>
+                </tal:if_local>
+
             </tal:item>
         </div>
         <div metal:use-macro="context/batch_macros/macros/navigation" />
