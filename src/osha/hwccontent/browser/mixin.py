@@ -1,6 +1,7 @@
 from plone import api
 from Products.Five.browser import BrowserView
 from plone.dexterity.interfaces import IDexterityContent
+from osha.hwccontent.browser.helper import get_path_to_icon
 from time import time
 
 
@@ -24,6 +25,9 @@ class ListingView(BrowserView):
         """ helper view to determine if the user can edit the current object"""
         return IDexterityContent.providedBy(obj) and self.user.checkPermission(
             'Modify portal content', obj)
+
+    def get_icon_path(self, obj=None, content_type=None):
+        return get_path_to_icon(obj, content_type)
 
     @staticmethod
     def cache_for_minutes(minutes):

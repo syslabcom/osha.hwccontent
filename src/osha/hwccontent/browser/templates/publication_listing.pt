@@ -50,6 +50,19 @@
                     <p tal:content="item/Description|nothing"/>
                 </tal:if_local>
 
+                <p tal:define="size item/file_size; kb python:size/1024;">
+                  <span tal:replace="string:${item/filename} - ${kb}kb">en_hwc2012-13_leaflet.pdf - 189kb</span>
+                </p>
+
+                <div class="span1" tal:define="icon_path python:view.get_icon_path(content_type=item['file_content_type'])" tal:condition="icon_path">
+                  <p class="">
+                    <a tal:attributes="href string:${item/getURL}/download">
+                      <img height="50" width="50px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-pdf.gif"
+                           tal:attributes="src icon_path" alt="" title="" />
+                    </a>
+                  </p>
+                </div>
+
             </tal:item>
         </div>
         <div metal:use-macro="context/batch_macros/macros/navigation" />

@@ -1,5 +1,6 @@
 from Products.Five import BrowserView
 from plone import api
+from plone.app.contenttypes.interfaces import IImage
 from zope.interface import implements
 from zope.interface import Interface
 import logging
@@ -7,9 +8,27 @@ import logging
 log = logging.getLogger(__name__)
 
 
+def get_path_to_icon(obj=None, content_type=None):
+    if IImage.providedBy(obj):
+        return None
+    if obj is None and content_type is None:
+        log.warn('Could not get object: {0}'.format(obj.getPath()))
+        return 'unknown.png'
+    mtr = api.portal.get_tool(name='mimetypes_registry')
+    if obj is not None and content_type is None:
+        for mime in mtr.lookup(obj.file.contentType):
+            if mime.icon_path:
+                return mime.icon_path
+    elif content_type is not None:
+        for mime in mtr.lookup(content_type):
+            if mime.icon_path:
+                return mime.icon_path
+    return 'application.png'
+
+
 class IHelperView(Interface):
     """ """
-    
+
     def break_in_lines():
         """ sets the views on all folders """
 

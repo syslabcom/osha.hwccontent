@@ -1,8 +1,7 @@
 from Products.CMFCore.interfaces import IFolderish
 from osha.hwccontent.interfaces import IMaterialsView
+from osha.hwccontent.browser.helper import get_path_to_icon
 from five import grok
-from plone import api
-from plone.app.contenttypes.interfaces import IImage
 from zope import interface
 
 import logging
@@ -17,14 +16,5 @@ class MaterialsView(grok.View):
     grok.context(IFolderish)
     grok.template('folder_materials_view')
 
-    def get_icon_path(self, obj):
-        if IImage.providedBy(obj):
-            return None
-        if obj is None:
-            log.warn('Could not get object: {0}'.format(obj.getPath()))
-            return 'unknown.png'
-        mtr = api.portal.get_tool(name='mimetypes_registry')
-        for mime in mtr.lookup(obj.file.contentType):
-            if mime.icon_path:
-                return mime.icon_path
-        return 'application.png'
+    def get_icon_path(self, obj, content_type=None):
+        return get_path_to_icon(obj, content_type)

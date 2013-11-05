@@ -46,7 +46,11 @@ class PublicationListing(ListingView):
                     'getURL': item['_url'],
                     'Description': item.get('description', ''),
                     'image_base64': item.get('cover_image'),
-                    'image_content_type': item.get('_cover_image_content_type')
+                    'image_content_type': item.get(
+                        '_cover_image_content_type'),
+                    'filename': item.get('_file_filename'),
+                    'file_size': item.get('_file_file_size'),
+                    'file_content_type': item.get('_file_content_type'),
                 })
         return items
 
