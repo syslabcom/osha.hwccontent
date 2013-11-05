@@ -1,5 +1,6 @@
 from plone import api
 from Products.Five.browser import BrowserView
+from plone.dexterity.interfaces import IDexterityContent
 from time import time
 
 
@@ -15,13 +16,14 @@ class ListingView(BrowserView):
             'osha_json_url',
             'https://osha.europa.eu/'
         )
-        self.lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
+        self.lang = api.portal.get_tool(
+            "portal_languages").getPreferredLanguage()
         self.user = api.user.get_current()
 
     def can_edit(self, obj):
         """ helper view to determine if the user can edit the current object"""
-        return bool(self.user.checkPermission(
-            'Modify portal content', obj))
+        return IDexterityContent.providedBy(obj) and self.user.checkPermission(
+            'Modify portal content', obj)
 
     @staticmethod
     def cache_for_minutes(minutes):
@@ -30,6 +32,6 @@ class ListingView(BrowserView):
         """
 
         def _cachekey(method, self):
-            return time() // (60*minutes), self.lang
+            return time() // (60 * minutes), self.lang
 
         return _cachekey
