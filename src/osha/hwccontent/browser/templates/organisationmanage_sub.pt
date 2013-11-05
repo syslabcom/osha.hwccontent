@@ -13,6 +13,9 @@
         <p tal:condition="python:view.can_edit">
             <a tal:attributes="href string:$here_url/edit" i18n:translate="">Click here to update this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype></a><br />
         </p>
+        <p tal:condition="python:view.can_delete">
+            <a tal:attributes="href string:$here_url/delete_confirmation"><img src="delete_icon.png" /></a>&nbsp;<a tal:attributes="href string:$here_url/delete_confirmation" i18n:translate="">Click here to delete this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype></a><br />
+        </p>
 
         <ul tal:condition="python:view.owner or view.can_review">
             <li tal:repeat="wfaction view/wfactions/values">
