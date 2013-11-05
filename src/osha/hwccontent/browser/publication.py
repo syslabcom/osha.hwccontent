@@ -12,7 +12,6 @@ from plone import api
 class PublicationListing(ListingView):
     implements(IFullWidth)
 
-
     def __init__(self, context, request):
         super(PublicationListing, self).__init__(context, request)
         properties = api.portal.get_tool('portal_properties')
@@ -22,21 +21,21 @@ class PublicationListing(ListingView):
             'stress,hw2014'
         )
 
-
     @ram.cache(ListingView.cache_for_minutes(10))
     def get_remote_publications(self):
         """ Queries the OSHA corporate site for news items.
             Items returned in JSON format.
         """
         items = []
-        qurl = '%s/%s/jsonfeed?portal_type=File&Subject=%s&path=/osha/portal/' \
-               '%s&Language=%s&object_provides=slc.publications.interfaces.IPublicationEnhanced' \
-            % ( self.osha_json_url,
-                self.lang,
-                self.remote_publication_query_tags,
-                self.lang,
-                self.lang
-            )
+        qurl = '%s/%s/jsonfeed?portal_type=File&Subject=%s&path=/osha/portal' \
+                '/%s&Language=%s&object_provides=slc.publications.interfaces' \
+                '.IPublicationEnhanced' % (
+                    self.osha_json_url,
+                    self.lang,
+                    self.remote_publication_query_tags,
+                    self.lang,
+                    self.lang,
+                )
         result = urlopen(qurl)
         if result.code == 200:
             for item in load(result):
