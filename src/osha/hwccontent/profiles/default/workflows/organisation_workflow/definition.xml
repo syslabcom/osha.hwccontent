@@ -133,7 +133,6 @@
 
  <state state_id="published" title="Published">
   <description i18n:translate="">Visible to everyone, not editable by the owner.</description>
-  <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Add portal content" acquired="False">
    <permission-role>Manager</permission-role>
@@ -165,7 +164,7 @@
              before_script=""
              after_script="">
   <description>
-         Phase 1 approval creates a user account and enables the new user to enter information required for the next approval phase
+         Phase 1 approval creates a user account and enables the new user to enter information required for the next approval phase.
   </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=approve_phase_1"
           category="workflow" icon="">Approve Profile (Phase 1)</action>
@@ -181,7 +180,7 @@
              before_script=""
              after_script="">
   <description>
-      Revokes phase 1 approval
+      If approval has been given by mistake, you can revoke it and return the item to the review list.
   </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=revoke_phase_1"
           category="workflow" icon="">Revoke Approval (Phase 1)</action>
@@ -197,7 +196,7 @@
              before_script=""
              after_script="">
   <description>
-     Submits for publication on the site
+     Submits the item for review. The reviewers will decide whether it can be made publicly visible.
   </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=submit"
           category="workflow" icon="">Submit for publication</action>

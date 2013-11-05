@@ -2,6 +2,7 @@ from Products.CMFCore.interfaces import IFolderish
 from osha.hwccontent.interfaces import IMaterialsView
 from five import grok
 from plone import api
+from plone.app.contenttypes.interfaces import IImage
 from zope import interface
 
 import logging
@@ -17,6 +18,8 @@ class MaterialsView(grok.View):
     grok.template('folder_materials_view')
 
     def get_icon_path(self, obj):
+        if IImage.providedBy(obj):
+            return None
         if obj is None:
             log.warn('Could not get object: {0}'.format(obj.getPath()))
             return 'unknown.png'

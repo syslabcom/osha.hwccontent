@@ -1,4 +1,5 @@
 # _+- coding: utf-8 -*-
+from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from five import grok
 from plone import api
@@ -75,8 +76,9 @@ class OrganisationManage(ViewletBase):
     def update(self):
         # get user etc
         if api.user.is_anonymous():
-            self.reviewer = False
-            self.editor = False
+            self.can_review = False
+            self.can_edit = False
+            self.can_delete = False
             user_email = None
         else:
             user = api.user.get_current()
@@ -85,11 +87,15 @@ class OrganisationManage(ViewletBase):
                 'Review portal content', self.context))
             self.can_edit = bool(user.checkPermission(
                 'Modify portal content', self.context))
+            self.can_delete = bool(user.checkPermission(
+                'Delete objects', aq_parent(self.context)))
         self.contenttype = self.context.Type()
         workflow = api.portal.get_tool('portal_workflow')
-        self.wfactions = dict([
-            (action['id'], action) for action in
-            workflow.listActions(object=self.context)])
+        self.wfactions = dict()
+        for action in workflow.listActions(object=self.context):
+            action['name'] = action['name'].format(
+                contenttype=self.contenttype)
+            self.wfactions[action['id']] = action
         self.wfstate = workflow.getInfoFor(self.context, 'review_state')
         self.wfstatetitle = workflow.getTitleForStateOnType(
             self.wfstate, self.context.portal_type)
