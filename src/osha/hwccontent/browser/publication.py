@@ -2,11 +2,11 @@ from DateTime import DateTime
 from Products.CMFPlone.PloneBatch import Batch
 from json import load
 from osha.hwccontent.interfaces import IFullWidth
-from osha.hwccontent.browser.mixin import ListingView 
+from osha.hwccontent.browser.mixin import ListingView
 from plone.memoize import ram
 from urllib import urlopen
 from zope.interface import implements
-from plone import api 
+from plone import api
 
 
 class PublicationListing(ListingView):
@@ -46,8 +46,8 @@ class PublicationListing(ListingView):
                     'Date': DateTime(item['effectiveDate']).utcdatetime(),
                     'getURL': item['_url'],
                     'Description': item.get('description', ''),
-                    'image_base64': item.get('image'),
-                    'image_content_type': item.get('image_type')
+                    'image_base64': item.get('cover_image'),
+                    'image_content_type': item.get('_cover_image_content_type')
                 })
         return items
 

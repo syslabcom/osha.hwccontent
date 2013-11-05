@@ -30,7 +30,7 @@
                         </tal:if_blob>
 
                         <tal:if_base64 tal:condition="item/image_base64|nothing">
-                            <img src="" alt="" class="tileImage" 
+                            <img src="" alt="" class="tileImage"
                                 tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
                         </tal:if_base64>
                     </div>
