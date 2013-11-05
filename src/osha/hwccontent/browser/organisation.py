@@ -75,8 +75,8 @@ class OrganisationManage(ViewletBase):
     def update(self):
         # get user etc
         if api.user.is_anonymous():
-            self.reviewer = False
-            self.editor = False
+            self.can_review = False
+            self.can_edit = False
             user_email = None
         else:
             user = api.user.get_current()
@@ -87,9 +87,11 @@ class OrganisationManage(ViewletBase):
                 'Modify portal content', self.context))
         self.contenttype = self.context.Type()
         workflow = api.portal.get_tool('portal_workflow')
-        self.wfactions = dict([
-            (action['id'], action) for action in
-            workflow.listActions(object=self.context)])
+        self.wfactions = dict()
+        for action in workflow.listActions(object=self.context):
+            action['name'] = action['name'].format(
+                contenttype=self.contenttype)
+            self.wfactions[action['id']] = action
         self.wfstate = workflow.getInfoFor(self.context, 'review_state')
         self.wfstatetitle = workflow.getTitleForStateOnType(
             self.wfstate, self.context.portal_type)

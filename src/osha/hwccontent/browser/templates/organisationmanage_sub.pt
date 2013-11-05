@@ -4,19 +4,19 @@
 
     <div tal:condition="python:view.can_edit or view.can_review or view.owner" id="plone-contentmenu-workflow">
         The current workflow state is: <em tal:attributes="class string:state-${view/wfstate}" tal:content="view/wfstatetitle">state</em><br/>
-        <p tal:condition="python:view.can_edit and not view.can_review and view.wfstate=='private'" class="callout">
+        <!--p tal:condition="python:view.can_edit and not view.can_review and view.wfstate=='private'" class="callout">
              <a tal:attributes="href view/wfactions/submit/url" i18n:translate="">Submit this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype> for publication</a><br />
+        </p-->
+        <p tal:condition="python:not view.can_edit and view.owner" i18n:translate="">
+            You can not edit this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype> in the current workflow state.
         </p>
-        <p tal:condition="python:view.can_edit and not view.can_review and view.wfstate=='private'">
-            <a tal:attributes="href string:$here_url/edit" i18n:translate="">Edit this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype></a><br />
-        </p>
-        <p tal:condition="python:view.owner and view.wfstate=='pending'" i18n:translate="">
-            You can currently not edit this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype>. If you need to amend it, <a tal:attributes="href view/wfactions/retract/url">click here to cancel its submission and make it private again.</a><br />
+        <p tal:condition="python:view.can_edit">
+            <a tal:attributes="href string:$here_url/edit" i18n:translate="">Click here to update this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype></a><br />
         </p>
 
-        <ul tal:condition="python:not view.owner and view.can_review">
+        <ul tal:condition="python:view.owner or view.can_review">
             <li tal:repeat="wfaction view/wfactions/values">
-            <a tal:attributes="href wfaction/url"><tal:action i18n:translate="" tal:content="python:wfaction['name'].format(contenttype=view.contenttype)">Reject</tal:action></a>. <tal:desc tal:content="wfaction/transition/description" i18n:translate="" /><br />
+            <a tal:attributes="href wfaction/url"><tal:action i18n:translate="" tal:content="wfaction/name">Reject</tal:action></a>. <tal:desc tal:content="wfaction/transition/description" i18n:translate="" /><br />
             </li>
         </ul>
     </div>
