@@ -1,5 +1,5 @@
 <metal:macro define-macro="navigation">
-        <div class="pagination  pagination-centered"
+        <div class="pagination  pagination-centered listingBar"
              tal:condition="batch/multiple_pages"
              tal:define="batchnavigation nocall:here/@@batchnavigation;
                          dummy python:batchnavigation(batch)">
