@@ -97,6 +97,7 @@
             <span itemprop="summary" class="summary" tal:content="data/title">Title</span>
           </h2>
           <div class="documentByLine">
+            <span tal:condition="python:view.can_edit(data.context)">[<a tal:attributes="href data/url">Edit</a>]</span>
             <tal:date tal:replace="structure python:view.formatted_date(data)"/>
             <div itemprop="location" class="location"
                 tal:define="location python:view.get_location(data)"
