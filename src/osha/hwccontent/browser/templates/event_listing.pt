@@ -39,7 +39,7 @@
             <a class="mode_day"   href="" tal:attributes="href view/mode_day_url"   i18n:translate="mode_day_link">Day</a> <input id="event_listing_calendar" type="hidden" />
           </li>
           </tal:cond>
-          <li>
+<!--           <li>
             <a class="mode_ical"  href="" tal:attributes="href view/ical_url"
                title="Download this event in iCal format"
                i18n:attributes="title title_add_to_ical;">
@@ -47,7 +47,7 @@
                     tal:attributes="src string:${portal_url}/++resource++plone.app.event/icon_export_ical.png"/>
                 <span i18n:translate="label_add_to_ical">iCal</span></a>
 
-          </li>
+          </li> -->
         </ul>
         <tal:cond condition="show_filter">
         <tal:month condition="python:mode=='month'">
