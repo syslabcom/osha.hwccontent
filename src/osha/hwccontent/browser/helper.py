@@ -32,6 +32,9 @@ class IHelperView(Interface):
     def break_in_lines():
         """ sets the views on all folders """
 
+    def my_profile_url():
+        """ return url to user's profile """
+
 
 class HelperView(BrowserView):
     """ Helper View to manage the campaign site setup """
@@ -83,6 +86,14 @@ class HelperView(BrowserView):
                 'review_state': wfstate,
             })
         return profile_info
+
+    def my_profile_url(self):
+        profiles = self.get_my_profiles()
+        if len(profiles) > 0:
+            print "profile url: %s" % profiles[0]['url']
+            return profiles[0]['url']
+        print "NO profile url"
+        return ''
 
     def get_organisations_folder_url(self):
         cat = api.portal.get_tool(name='portal_catalog')

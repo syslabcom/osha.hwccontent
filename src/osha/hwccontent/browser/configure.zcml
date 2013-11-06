@@ -14,6 +14,15 @@
     />
 
   <browser:page
+    for="*"
+    name="hw_profile_url"
+    class=".helper.HelperView"
+    attribute="my_profile_url"
+    permission="zope.Public"
+    allowed_interface="osha.hwccontent.browser.helper.IHelperView"
+    />
+
+  <browser:page
     name="document_files_view"
     class=".document.FilesView"
     for="plone.app.contenttypes.interfaces.IDocument"
