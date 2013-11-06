@@ -117,7 +117,7 @@
               <a class="event_url" title=""
                   tal:attributes="href data/event_url"
                   i18n:attributes="title external_website"
-                  i18n:translate="label_web">Web</a>
+                  tal:content="data/event_url">URL</a>
             </li>
 
             <li tal:define="contact_email data/contact_email|nothing;
