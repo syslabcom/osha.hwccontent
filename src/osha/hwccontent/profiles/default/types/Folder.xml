@@ -10,7 +10,7 @@
         <element value="hwc_event_listing"/>
         <element value="newsitem_listing"/>
         <element value="publication_listing"/>
-        <element value="press_release_listing"/>
+        <element value="pressrelease_listing"/>
     </property>
 
     <property name="behaviors" purge="false">
