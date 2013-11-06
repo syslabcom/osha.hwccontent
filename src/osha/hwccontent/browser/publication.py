@@ -1,7 +1,7 @@
 from DateTime import DateTime
 from Products.CMFPlone.PloneBatch import Batch
 from json import load
-from osha.hwccontent.interfaces import IFullWidth
+from osha.hwccontent.interfaces import IMaterialsView
 from osha.hwccontent.browser.mixin import ListingView
 from plone.memoize import ram
 from urllib import urlopen
@@ -10,7 +10,7 @@ from plone import api
 
 
 class PublicationListing(ListingView):
-    implements(IFullWidth)
+    implements(IMaterialsView)
 
     def __init__(self, context, request):
         super(PublicationListing, self).__init__(context, request)

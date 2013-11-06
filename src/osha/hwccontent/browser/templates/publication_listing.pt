@@ -9,8 +9,8 @@
 <body>
 <metal:block fill-slot="content-core" tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
 
-    <tal:batch define="batch view/get_batched_publications">
-        <div class="tileItem publication row-fluid visualIEFloatFix" tal:repeat="item batch">
+    <div id="material" tal:define="batch view/get_batched_publications">
+        <div class="material-item row-fluid publication" tal:repeat="item batch">
             <tal:item define="
                     first repeat/item/start;
                     first python: ' first' if first else '';
@@ -21,44 +21,46 @@
                 <span tal:omit-tag=""
                     tal:condition="item/image|item/image_base64|nothing"
                     tal:attributes="href item/getURL">
-                    <div class="tileImage">
+                    <div class="span4">
                         <tal:if_blob tal:condition="item/image|nothing">
                             <img src="" alt=""
                                 tal:define="scales item/obj/@@images;
                                             scale python:scales.scale('image', 'thumb')"
-                                tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
+                                tal:replace="structure python:scale and scale.tag() or None" />
                         </tal:if_blob>
 
                         <tal:if_base64 tal:condition="item/image_base64|nothing">
-                            <img src="" alt="" class="tileImage"
+                            <img src="" alt=""
                                 tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
                         </tal:if_base64>
                     </div>
                 </span>
 
-                <h2 class="tileHeadline">
-                    <span tal:replace="item/Title">Foo</span>
-                </h2>
-                <p class="metadata">
-                    <em tal:define="date item/Date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
-                </p>
-                <tal:if_remote condition="item/remote_item|nothing">
-                    <p tal:replace="structure item/Description"/>
-                </tal:if_remote>
+                <div class="span6">
+                    <h2 class="tileHeadline">
+                        <span tal:replace="item/Title">Foo</span>
+                    </h2>
+                    <p class="metadata">
+                        <em tal:define="date item/Date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
+                    </p>
+                    <tal:if_remote condition="item/remote_item|nothing">
+                        <p tal:content="structure item/Description"/>
+                    </tal:if_remote>
 
-                <tal:if_local condition="not:item/remote_item|nothing">
-                    <p tal:content="item/Description|nothing"/>
-                </tal:if_local>
+                    <tal:if_local condition="not:item/remote_item|nothing">
+                        <p tal:content="item/Description|nothing"/>
+                    </tal:if_local>
 
-                <p tal:define="size item/file_size; kb python:size/1024;">
-                  <span tal:replace="string:${item/filename} - ${kb}kb">en_hwc2012-13_leaflet.pdf - 189kb</span>
-                </p>
+                    <p class="material-info" tal:define="size item/file_size; kb python:size/1024;">
+                      <span tal:replace="string:${item/filename} - ${kb}kb">en_hwc2012-13_leaflet.pdf - 189kb</span>
+                    </p>
+                </div>
 
                 <div class="span1" tal:define="icon_path python:view.get_icon_path(content_type=item['file_content_type'])" tal:condition="icon_path">
-                  <p class="">
+                  <p class="material-icon">
                     <a tal:attributes="href string:${item/getURL}/download">
                       <img height="50" width="50px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-pdf.gif"
-                           tal:attributes="src icon_path" alt="" title="" />
+                           tal:attributes="src icon_path; alt item/file_content_type; title string:Download ${item/filename}" alt="" title="" />
                     </a>
                   </p>
                 </div>
@@ -66,7 +68,7 @@
             </tal:item>
         </div>
         <div metal:use-macro="context/batch_macros/macros/navigation" />
-    </tal:batch>
+    </div>
 </metal:block>
 </body>
 </html>
