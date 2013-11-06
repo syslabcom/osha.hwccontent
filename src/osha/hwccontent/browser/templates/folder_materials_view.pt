@@ -50,7 +50,7 @@
                   <p class="material-icon">
                     <a tal:attributes="href string:${item_url}/download">
                       <img height="50" width="50px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-pdf.gif"
-                           tal:attributes="src icon_path" alt="" title="" />
+                           tal:attributes="src icon_path; title string:Download ${obj/file/filename}"  alt="file type icon" title="" />
                     </a>
                   </p>
                 </div>
