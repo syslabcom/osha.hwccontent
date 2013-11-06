@@ -57,7 +57,7 @@ class LayoutPolicy(layout.LayoutPolicy):
         # is there a marker interface for materials view?
         if IMaterialsView.providedBy(self.context) or \
                 IMaterialsView.providedBy(view):
-            body_class += "materials-view"
+            body_class += " materials-view"
             is_special = True
 
         if not is_special and self.is_subsection(self.context, view):
