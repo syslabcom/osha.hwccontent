@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-        
+
 from Products.CMFCore.interfaces import ISiteRoot
 from five import grok
 from osha.hwccontent.focalpoint import IFocalPoint
@@ -47,10 +47,10 @@ class HWCImportForm(form.SchemaForm):
         if errors:
             self.status = self.formErrorsMessage
             return
-                
+
         events._send_emails = False
         try:
-            
+
             en_folder = self.context.restrictedTraverse('en')
             if 'organisations' in en_folder:
                 org_folder = en_folder.restrictedTraverse('organisations')
@@ -64,7 +64,7 @@ class HWCImportForm(form.SchemaForm):
                 fop_folder = content.create(en_folder,
                                             type='osha.hwccontent.organisationfolder',
                                             title='Focalpoints')
-        
+
             type_mapping = {
                 u'Organisation': {
                     'type': 'osha.hwccontent.organisation',
@@ -72,7 +72,7 @@ class HWCImportForm(form.SchemaForm):
                     'folder': org_folder,
                     'wf_actions': ('approve_phase_1',),
                 },
-                    
+
                 u'Focalpoint': {
                     'type': 'osha.hwccontent.focalpoint',
                     'schema': dict(getFieldsInOrder(IFocalPoint)),
@@ -80,18 +80,18 @@ class HWCImportForm(form.SchemaForm):
                     'wf_actions': ('publish',),
                 }
             }
-    
+
             count = 0
             for data in json.loads(data['json']):
-                
+
                 # Only keep the data that's in the main schema:
                 type_info = type_mapping[data['_type']]
                 schema = type_info['schema']
                 fields = {}
-                
+
                 if data['title'].startswith('MC-'):
                     continue
-                
+
                 for name, field in schema.items():
                     if name in data:
                         value = data[name]
@@ -102,11 +102,13 @@ class HWCImportForm(form.SchemaForm):
                         elif value and IRichText.providedBy(field):
                             content_type = data.get('_%s_content_type', None)
                             value = RichTextValue(value, mimeType=content_type)
-    
+                        elif name.find("email") >= 0:
+                            value = value.strip()
+
                         fields[name] = value
-    
+
                 new_obj = content.create(container=type_info['folder'],
-                                         type= type_info['type'], 
+                                         type= type_info['type'],
                                          id=data['id'],
                                          **fields)
                 for transition in type_info['wf_actions']:
@@ -114,10 +116,10 @@ class HWCImportForm(form.SchemaForm):
                         content.transition(new_obj, transition)
                     except Exception:
                         logger.exception('Could not execute %s transition for %s' % (transition, '/'.join(new_obj.getPhysicalPath())))
-                        
+
                 logger.info('Imported %s' % new_obj.getId())
                 count += 1
-    
+
             # Set status on this form page
             self.status = "%s partners imported" % count
         except Exception:
@@ -130,4 +132,3 @@ class HWCImportForm(form.SchemaForm):
         """User cancelled. Redirect back to the front page.
         """
 
-        
