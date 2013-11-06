@@ -13,6 +13,7 @@
         <div id="material">
           <metal:block use-macro="context/folder_listing/macros/entries">
             <metal:entry fill-slot="entry"
+                         tal:condition="python: obj.portal_type in ('File', 'Image')"
                          tal:define="item_url item/getPath;
                                      obj item/getObject;">
               <div class="material-item row-fluid">
@@ -59,6 +60,10 @@
 
             </metal:entry>
           </metal:block>
+        <div id="disclaimer" tal:define="disclaimer view/disclaimer" tal:condition="disclaimer">
+          <span tal:replace="structure disclaimer" />
+        </div>
+
         </div>
       </metal:entries>
     </metal:block>
