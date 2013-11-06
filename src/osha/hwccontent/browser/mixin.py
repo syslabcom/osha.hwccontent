@@ -23,8 +23,9 @@ class ListingView(BrowserView):
 
     def can_edit(self, obj):
         """ helper view to determine if the user can edit the current object"""
-        return IDexterityContent.providedBy(obj) and self.user.checkPermission(
-            'Modify portal content', obj)
+        return not api.user.is_anonymous() and \
+            IDexterityContent.providedBy(obj) and self.user.checkPermission(
+                'Modify portal content', obj)
 
     def get_icon_path(self, obj=None, content_type=None):
         return get_path_to_icon(obj, content_type)
