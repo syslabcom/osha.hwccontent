@@ -21,11 +21,11 @@
                 <p class="metadata">
                   <em tal:content="python: toLocalizedTime(item['Date'])">2012-01-01</em>
                 </p>
-                <a tal:attributes="href item/getURL">
                   <h4 tal:content="item/Title">Foo</h4>
-                  <p tal:content="item/text" />
-                </a>
-                
+                  <span class="description"><p tal:replace="structure item/Description">Description</p></span>
+                  <p tal:content="structure item/text">Text</p>
+                  <a href="" tal:attributes="href item/getURL">Read more</a>
+
             </tal:item>
         </div>
         <div metal:use-macro="context/batch_macros/macros/navigation" />
