@@ -24,7 +24,7 @@
                   <h4 tal:content="item/Title">Foo</h4>
                   <span class="description"><p tal:replace="structure item/Description">Description</p></span>
                   <p tal:content="structure item/text">Text</p>
-                  <a href="" tal:attributes="href item/getURL">Read more</a>
+                  <a href="" tal:attributes="href item/getURL" i18n:translate="read_more">Read more</a>
 
             </tal:item>
         </div>
