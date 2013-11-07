@@ -16,22 +16,22 @@ import xml.sax.saxutils as saxutils
 
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
 
-def generatePDF(self, 
-        company="European Agency for Safety and Health at Work", 
-        language='en', 
-        firstname='', 
-        lastname='', 
-        checkboxes={}, 
+def generatePDF(self,
+        company="European Agency for Safety and Health at Work",
+        language='en',
+        firstname='',
+        lastname='',
+        checkboxes={},
         usePDFTK=0):
-        
+
     language = language.lower()
-    
+
     if language not in [
-                'bg', 'cs', 'da', 'de', 
-                'el', 'en', 'es', 'et', 
-                'fi', 'fr', 'hu', 'it', 
-                'lt', 'lv', 'mt', 'nl', 
-                'pl', 'ro', 'pt', 'sk', 
+                'bg', 'cs', 'da', 'de',
+                'el', 'en', 'es', 'et',
+                'fi', 'fr', 'hu', 'it',
+                'lt', 'lv', 'mt', 'nl',
+                'pl', 'ro', 'pt', 'sk',
                 'sl', 'sv']:
         language = "en"
 
@@ -71,9 +71,9 @@ def generatePDF(self,
 
     msg_id = 'campaign_name_'+year
     u_campaign_name = translate(
-                                domain=ptt_domain, 
-                                msgid=msg_id, 
-                                target_language=language, 
+                                domain=ptt_domain,
+                                msgid=msg_id,
+                                target_language=language,
                                 context=self
                                 )
     x = 10.4 * cm
@@ -85,9 +85,9 @@ def generatePDF(self,
 
     msg_id = 'campaign_slogan_'+year
     u_campaign_slogan = translate(
-                                domain=ptt_domain, 
-                                msgid=msg_id, 
-                                target_language=language, 
+                                domain=ptt_domain,
+                                msgid=msg_id,
+                                target_language=language,
                                 context=self
                                 )
     x = 10.5 * cm
@@ -97,19 +97,19 @@ def generatePDF(self,
     my_canvas.drawCentredString(x, y, u_campaign_slogan.upper())
     print " +- set slogan"
     mapping = {'campaign_slogan':u_campaign_slogan, 'year':year}
-        
+
     # print first subline
-    certificate_for = translate(domain=ptt_domain, 
-                                    msgid='certificate_for_'+year, 
-                                    mapping=mapping, 
+    certificate_for = translate(domain=ptt_domain,
+                                    msgid='certificate_for_'+year,
+                                    mapping=mapping,
                                     target_language=language,
                                     context=self)
 
 
     certificate_title = translate(
-                                domain=ptt_domain, 
-                                msgid='certificate_title_'+year, 
-                                target_language=language, 
+                                domain=ptt_domain,
+                                msgid='certificate_title_'+year,
+                                target_language=language,
                                 context=self
                                 )
     x = 10.4 * cm
@@ -119,11 +119,11 @@ def generatePDF(self,
     my_canvas.drawCentredString(x, y, certificate_title.upper())
     print " +- set Headline"#, certificate_title
     mapping = {'campaign_slogan':u_campaign_slogan, 'year':year}
-        
+
     # print first subline
-    certificate_for = translate(domain=ptt_domain, 
-                                    msgid='certificate_for_'+year, 
-                                    mapping=mapping, 
+    certificate_for = translate(domain=ptt_domain,
+                                    msgid='certificate_for_'+year,
+                                    mapping=mapping,
                                     target_language=language,
                                     context=self)
     certificate_for = certificate_for.encode('utf-8')
@@ -141,10 +141,10 @@ def generatePDF(self,
     height = 10 * cm
 
     style = ParagraphStyle(
-            name='companyName', 
-            fontName='Arial', 
-            fontSize=32, 
-            leading=34, 
+            name='companyName',
+            fontName='Arial',
+            fontSize=32,
+            leading=34,
             alignment=TA_CENTER)
 
     company = saxutils.escape(company)
@@ -163,9 +163,9 @@ def generatePDF(self,
         )
 
     lines = []
-    contribution_headline = translate(domain=ptt_domain, 
-                                          msgid='contribution_headline_'+year, 
-                                          mapping=mapping, 
+    contribution_headline = translate(domain=ptt_domain,
+                                          msgid='contribution_headline_'+year,
+                                          mapping=mapping,
                                           target_language=language,
                                           context=self)
 
@@ -173,17 +173,17 @@ def generatePDF(self,
     lines.append( Paragraph(contribution_headline, style) )
     cFrame = Frame(3*cm, 10*cm, 15*cm, 3*cm)
     cFrame.addFromList(lines, my_canvas)
-    
+
     # Director's signature
     director_name = "Jukka Takala,"
     director_name = director_name.encode('utf-8')
-    director_indentifier = translate(domain=ptt_domain, 
-                                           msgid='director_'+year, 
-                                           mapping=mapping, 
+    director_indentifier = translate(domain=ptt_domain,
+                                           msgid='director_'+year,
+                                           mapping=mapping,
                                            target_language=language,
                                            context=self)
     director_indentifier = director_indentifier.encode('utf-8')
-    
+
     style = ParagraphStyle(
             name='ContributionHeadline',
             fontName='Arial',
@@ -204,13 +204,13 @@ def generatePDF(self,
     lines.append(Paragraph(director_indentifier, style))
     dFrame = Frame(0.8*cm, 5*cm, 20*cm, 3*cm)
     dFrame.addFromList(lines, my_canvas)
-    
-    
+
+
     # ***** FALLBACK-SOLUTION UNTIL PDFTK IS AVAILABLE *******
     if usePDFTK == 0:
         print "Set Charter-Image as second page w/o PDFTK"
         # set the webcharter-image as second page
-        chartername = "charter_hw2010_%s.jpg" 
+        chartername = "charter_hw2010_%s.jpg"
         charterfile = getattr(self.charter_img, chartername % language, None)
         # Fallback to English
         if not charterfile:
@@ -227,7 +227,7 @@ def generatePDF(self,
     if usePDFTK == 1:
         print "Start merging with PDFTK"
         # merge the webcharter and the acknowledge PDFs
-        chartername = "charter_hw2010_%s.jpg" 
+        chartername = "charter_hw2010_%s.jpg"
         charterfile = getattr(self.charter_img, chartername % language, None)
         # Fallback to English
         if not charterfile:
