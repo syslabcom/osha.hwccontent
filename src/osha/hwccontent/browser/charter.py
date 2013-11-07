@@ -1,19 +1,8 @@
-from Acquisition import aq_inner, aq_parent
 from DateTime import DateTime
-from OFS.Image import File
-from Products.Archetypes import PloneMessageFactory as _
-from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFDefault.utils import checkEmailAddress
-from Products.Five import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
-from zope.component import getUtility
-from zope.i18n import translate
-from zope.interface import implements
 
-from osha.hw.interfaces import IHelperView
-from slc.subsite.root import getSubsiteRoot
-from osha.policy.utils import logit
 from osha.hw.browser.sync_receiver import BaseDBView
 from osha.hw.browser.forms import NationalPartnerForm
 from osha.hw.queries import insert_hw2012_charter, create_hw2012_charter
@@ -31,6 +20,18 @@ email_template = """<p>Thank you for signing the European Week Charter.</p>
 
 
 """
+
+
+def logit(*kwargs):
+    " log something from the web "
+    try:
+        mesg = ''
+        for kwarg in kwargs:
+            mesg += str(kwarg) + ' '
+        print mesg
+    except:
+        print [kwargs]
+
 
 class CharterView(BaseDBView, NationalPartnerForm):
 
