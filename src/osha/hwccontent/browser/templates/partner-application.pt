@@ -1,0 +1,197 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="osha.hw2010">
+  <body>
+    <div id="content" metal:fill-slot="main">
+      <tal:main-macro metal:define-macro="main">
+        <tal:set define="dummy python:request.RESPONSE.setHeader('X-Deliverance-Page-Class', 'general form')" />
+        <h1 class="documentFirstHeading"> 
+          <span id="parent-fieldname-title"
+                i18n:translate="partner_form_title">
+            National campaign partner, application form
+          </span>
+        </h1>
+
+        <div id="parent-fieldname-text">
+          <h3 i18n:translate="certificate_of_participation">
+            Certificate of Participation - Online Application Form
+          </h3> 
+          <p i18n:translate="partner_form_instructions">
+            It’s easy! Just fill in the electronic form and the Agency will send you by email a 
+            <strong>personalised certificate of participation</strong>
+            in recognition of your commitment to the Healthy Workplaces Campaign.
+          </p> 
+          <p i18n:translate="partner_form_instructions_official_partner">
+            If you want to get involved in the Campaign more substantially and become an 
+            <strong>official national Campaign partner</strong>, get in touch with your corresponding 
+            <a href="/en/campaigns/hw2010/partners/focal-points">national focal point</a>.
+          </p> 
+          <form id="national-partner-application-form" 
+                class="concise" 
+                action="@@charter2012" 
+                method="post" 
+                tal:define="form view/form" > 
+
+            <p class="discrete" i18n:translate="partner_form_required_fields_are_marked">Required fields are marked *)</p> 
+            <fieldset> 
+              <label>
+                <span tal:omit-tag="" i18n:translate="field_company">Company/Organisation</span>
+                <sup class="required">*)</sup> 
+                <input type="text" name="organisation" tal:attributes="value form/organisation | "/>
+              </label> 
+              <label>
+                <span tal:omit-tag="" i18n:translate="field_address">Address</span>
+                <sup class="required">*)</sup> 
+                <input type="text" name="address" 
+                       tal:attributes="value form/address | "/>
+              </label> 
+              <label>
+                <span tal:omit-tag="" i18n:translate="field_postalcode">Postal code</span>
+                <sup class="required">*)</sup> 
+                <input type="text" class="span-2" name="postal_code" 
+                       tal:attributes="value form/postal_code | "/>
+              </label> 
+              <label>
+                <span tal:omit-tag="" i18n:translate="field_city">City</span>
+                <sup class="required">*)</sup> 
+                <input type="text" class="span-6" name="city" 
+                       tal:attributes="value form/city | "/>
+              </label> 
+              <label>
+                <span tal:omit-tag="" i18n:translate="field_country">Country</span>
+                <sup class="required">*)</sup> 
+                <input type="text" class="span-6" name="country" 
+                       tal:attributes="value form/country | "/>
+              </label> 
+              <label>
+                <span tal:omit-tag="" i18n:translate="field_firstname">First name of contact person </span>
+                <sup class="required">*)</sup> 
+                <input type="text" name="firstname" 
+                       tal:attributes="value form/firstname | "/>
+              </label> 
+              <label>
+                <span tal:omit-tag="" i18n:translate="field_lastname">Last name</span>
+                <sup class="required">*)</sup> 
+                <input type="text" name="lastname" 
+                       tal:attributes="value form/lastname | "/>
+              </label> 
+              <label>
+                <span tal:omit-tag="" i18n:translate="field_sector">Business/sector </span>
+                <sup class="required">*)</sup> 
+                <input type="text" name="sector"
+                       tal:attributes="value form/sector | "/>
+              </label> 
+              <label>
+                <span tal:omit-tag="" i18n:translate="field_email">E-mail address </span>
+                <sup class="required">*)</sup> 
+                <input type="text" name="email" 
+                       tal:attributes="value form/email | "/>
+              </label> 
+              <label>
+                <span tal:omit-tag="" i18n:translate="field_telephone">Telephone number </span>
+                <sup class="required">*)</sup> 
+                <input type="text" name="telephone" 
+                       tal:attributes="value form/telephone | "/>
+              </label> 
+              <fieldset class="comprehensive checkList"
+                        tal:define="checkboxlist python:form and form.get('checkboxlist', []) or []"> 
+                <legend i18n:translate="field_comprehensive_checklist">
+                  I/we participated in the Healthy Workplace Campaign and organised the following activities
+                </legend> 
+                <label>
+                  <input type="checkbox" id="checkboxlist1" name="checkboxlist:list" value="0_seminars"
+                         tal:attributes="checked python:'checked' if '0_seminars' in checkboxlist else ''"/> 
+
+                  <span tal:omit-tag="" i18n:translate="checkboxlist1">
+                    Training events, seminars and workshops Safety demonstrations, displays and exhibitions
+                  </span>
+                </label> 
+                <label>
+                  <input type="checkbox" id="checkboxlist2"  name="checkboxlist:list" value="1_competitions"
+                         tal:attributes="checked python:'checked' if '1_competitions' in checkboxlist else ''"/> 
+                  <span tal:omit-tag="" i18n:translate="checkboxlist2">
+                    Poster competitions and quizzes
+                  </span>
+                </label>
+                <label>
+                  <input type="checkbox" id="checkboxlist3"  name="checkboxlist:list" value="2_audiovisual"
+                         tal:attributes="checked python:'checked' if '2_audiovisual' in checkboxlist else ''"/> 
+ 
+                  <span tal:omit-tag="" i18n:translate="checkboxlist3">
+                    Film, video and multimedia
+                  </span>
+                </label> 
+                <label>
+                  <input type="checkbox" id="checkboxlist4"  name="checkboxlist:list" value="3_advertising" 
+                         tal:attributes="checked python:'checked' if '3_advertising' in checkboxlist else ''"/> 
+                  <span i18n:translate="checkboxlist4">
+                    Advertising and promotion campaigns
+                  </span>
+                </label> 
+                <label>
+                  <input type="checkbox" id="checkboxlist5"  name="checkboxlist:list" value="4_partnerships" 
+                         tal:attributes="checked python:'checked' if '4_partnerships' in checkboxlist else ''"/> 
+
+                  <span tal:omit-tag="" i18n:translate="checkboxlist5">
+                    Partnerships between enterprises and schools/colleges/training centres
+                  </span>
+                </label> 
+                <label>
+                  <input type="checkbox" id="checkboxlist6"  name="checkboxlist:list" value="5_good_neighbour" 
+                         tal:attributes="checked python:'checked' if '5_good_neighbour' in checkboxlist else ''"/> 
+                  <span tal:omit-tag="" i18n:translate="checkboxlist6">
+                    "Good neighbour schemes" between large and small enterprises
+                  </span>
+                </label> 
+                <label>
+                  <input type="checkbox" id="checkboxlist7"  name="checkboxlist:list" value="6_hazard_spotting"
+                         tal:attributes="checked python:'checked' if '6_hazard_spotting' in checkboxlist else ''"/> 
+                  <span tal:omit-tag="" i18n:translate="checkboxlist7">
+                    Hazard spotting
+                  </span>
+                </label> 
+                <label>
+                  <input type="checkbox" id="checkboxlist8"  name="checkboxlist:list" value="7_inspections"
+                         tal:attributes="checked python:'checked' if '7_inspections' in checkboxlist else ''"/> 
+
+                  <span tal:omit-tag="" i18n:translate="checkboxlist8">
+                    Inspection days
+                  </span>
+                </label> 
+                <label>
+                  <input type="checkbox" id="checkboxlist9"  name="checkboxlist:list" value="8_initiatives" 
+                         tal:attributes="checked python:'checked' if '8_initiatives' in checkboxlist else ''"/> 
+
+                  <span tal:omit-tag="" i18n:translate="checkboxlist9">
+                    New policy or prevention initiatives
+                  </span>
+                </label> 
+                <label>
+                  <input type="checkbox" id="checkboxlist10" name="checkboxlist:list" value="9_other"           
+                         tal:attributes="checked python:'checked' if '9_other' in checkboxlist else ''"/> 
+
+                  <span tal:omit-tag="" i18n:translate="other">
+                    Other
+                    </span> <input type="text" name="other" tal:attributes="value form/other | "/>
+                </label>   
+              </fieldset> 
+            </fieldset> 
+            <fieldset class="buttonBar"> 
+              <button type="submit" i18n:domain="plone" i18n:translate="submit">Submit</button> 
+            </fieldset>
+            <input type="hidden" name="set_language" value="en"
+                   tal:attributes="value here/portal_languages/getPreferredLanguage" />
+          </form> 
+          <p i18n:translate="partner_form_description_email_certificate">
+            We will issue a personalised email certificate based on the information that you provided us with, 
+            in the language in which you completed the application form.
+          </p> 
+          <p i18n:translate="partner_form_description_contacted">
+            Please note that you may be contacted by the Agency to provide more details on your Campaign activities.
+          </p> 
+        </div>
+      </tal:main-macro>
+    </div>
+  </body>
+</html>

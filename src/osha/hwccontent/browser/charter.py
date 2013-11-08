@@ -1,12 +1,15 @@
-from DateTime import DateTime
+from Acquisition import aq_inner, aq_parent
+from Products.Archetypes import PloneMessageFactory as _
 from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFDefault.utils import checkEmailAddress
+from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
-
-from osha.hw.browser.sync_receiver import BaseDBView
-from osha.hw.browser.forms import NationalPartnerForm
-from osha.hw.queries import insert_hw2012_charter, create_hw2012_charter
-from osha.hw.util import generatePDF, send_charter_email
+from email import Encoders
+from email.MIMEBase import MIMEBase
+from email.MIMEMultipart import MIMEMultipart
+from email.Utils import formatdate
+from zope.i18n import translate
+from generate_pdf import generatePDF
 
 from logging import getLogger
 log = getLogger('osha.hw helper')
@@ -33,9 +36,81 @@ def logit(*kwargs):
         print [kwargs]
 
 
-class CharterView(BaseDBView, NationalPartnerForm):
+def send_charter_email(context, pdf, to, sender, body, language):
+    """ sending the charter by mail """
+    mailhost = context.MailHost
+    msg = MIMEMultipart()
 
-    def __call__(self):
+    msg['Subject'] = "The Healthy Workplaces 2012 Campaign Charter"
+    msg['From'] = sender
+    msg['To'] = to
+    msg['Date'] = formatdate(localtime=True)
+    msg.preamble = 'You will not see this in a MIME-aware mail reader.\n'
+
+    part = MIMEBase('text', 'html')
+    part.set_payload(body)
+    msg.attach(part)
+
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(pdf)
+    Encoders.encode_base64(part)
+    part.add_header('Content-Disposition', 'attachment; filename="hw2012-campaign-charter.pdf"')
+    msg.attach(part)
+
+    mailhost._send(sender, to, msg.as_string())
+
+
+class CharterView(BrowserView):
+
+    # def __call__(self, form=None):
+    #     self.form = form
+    #     return super(
+    #         CharterView, self).__call__(self.context, self.request)
+
+    def get_validation_messages(self):
+        """ """
+        data = self.get_translated_validation_messages()
+        return json.dumps(data)
+
+    def get_translated_validation_messages(self):
+        context = aq_inner(self.context)
+        request = context.REQUEST
+        fieldnames = {
+            'organisation': translate(_('Company/Organisation')),
+            'address': translate(_('Address')),
+            'postal_code': translate(_('Postal Code')),
+            'city': translate(_('City')),
+            'country': translate(_('Country')),
+            'firstname': translate(_('Firstname')),
+            'lastname': translate(_('Lastname')),
+            'sector': translate(_('Sector')),
+            'email': translate(_('Email')),
+            'telephone': translate(_('Telephone')),
+            }
+        lang = context.portal_languages.getPreferredLanguage()
+        messages = {}
+
+        for field_id in fieldnames:
+            fieldname = fieldnames[field_id]
+            err_msgs = {
+                'required': translate(
+                            _(u'error_required',
+                            default=u'${name} is required, please correct.',
+                            mapping={'name': fieldname}),
+                            context=request,
+                            ),
+
+                'email': translate(
+                            _(u"You entered an invalid email address."),
+                            context=request,
+                            ),
+                }
+
+            messages[field_id] = err_msgs
+
+        return {'messages': messages}
+
+    def __call__(self, form=None):
 
         request = self.context.REQUEST
         language = self.context.portal_languages.getPreferredLanguage()
@@ -86,14 +161,14 @@ class CharterView(BaseDBView, NationalPartnerForm):
                 messages.add(
                     error_messages[required_field]["required"],
                     type=u"error")
-        if has_errors:
-            form_path = (
-                "%s/@@national-campaign-partner-application-form-2012"
-                % "/".join(self.context.getPhysicalPath()))
-            request.RESPONSE.setHeader(
-                'X-Deliverance-Page-Class', 'general form')
-            return self.context.restrictedTraverse(
-                form_path)(form = request.form)
+        #if has_errors:
+            # form_path = (
+            #     "%s/@@national-campaign-partner-application-form-2012"
+            #     % "/".join(self.context.getPhysicalPath()))
+            # request.RESPONSE.setHeader(
+            #     'X-Deliverance-Page-Class', 'general form')
+            # return self.context.restrictedTraverse(
+            #     form_path)(form = request.form)
 
         checkboxes = {}
         for c in checkboxlist:
@@ -107,31 +182,6 @@ class CharterView(BaseDBView, NationalPartnerForm):
             cb_list[k] = '1'
 
         checkboxint=''.join(cb_list)
-
-        if 1:
-            now = DateTime().ISO()
-
-            query = insert_hw2012_charter % dict(
-                        Organisation    = organisation,
-                        Address         = address,
-                        Postalcode      = postal_code,
-                        City            = city,
-                        Country         = country,
-                        Firstname       = firstname,
-                        Lastname        = lastname,
-                        Function        = sector,
-                        Email           = email,
-                        Telephone       = telephone,
-                        Commitment      = checkboxint,
-                        Commitment_other = other,
-                        Date            = now,
-                        Sector          = sector,
-                        Language  = language
-                        )
-            try:
-                self.conn.execute(query)
-            except Exception, e:
-                raise e
 
         from_address = 'information@osha.europa.eu'
 
@@ -158,8 +208,3 @@ class CharterView(BaseDBView, NationalPartnerForm):
             return request.RESPONSE.redirect(url+'?portal_status_message='+str(e)) # context.set(status='failure', portal_status_message='Error: '+exception)
 
         request.RESPONSE.redirect(url)
-
-    def create_table(self):
-        """ create the table """
-        self.conn.execute(create_hw2012_charter)
-        return "Table created"

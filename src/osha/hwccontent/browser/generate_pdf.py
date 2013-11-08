@@ -8,13 +8,14 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph, Frame
-from reportlab.lib.colors import red, black
+from reportlab.lib.colors import red, black, blue, green, HexColor
 from reportlab.lib.enums import TA_CENTER
 import reportlab.rl_config
 from zope.i18n import translate
 import xml.sax.saxutils as saxutils
 
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
+HW2012BLUE = HexColor('#0a428f')
 
 def generatePDF(self,
 
@@ -48,7 +49,8 @@ def generatePDF(self,
 
     # register the font for writing company, name and actions
     pwd = os.path.dirname(__file__)
-    font_dir = os.path.realpath(os.path.join(pwd, "../resources/fonts"))
+    resources_dir = os.path.realpath(os.path.join(pwd, "../resources"))
+    font_dir = os.path.realpath(os.path.join(resources_dir, "fonts"))
     arial = font_dir + '/arial.ttf'
     pdfmetrics.registerFont( TTFont('Arial', arial) )
     arial_bold =  font_dir + '/arialbd.ttf'
@@ -61,13 +63,13 @@ def generatePDF(self,
     pdfmetrics.registerFont( TTFont('ArialNarrowBold', arial_nb) )
      # get the frontimage and write it to the canvas
     charterfilename = "charter_hw2012.jpg"
-    frontfile = getattr(self, charterfilename, None)
-    # Fallback to English
-#    if not frontfile:
-#        frontfile = getattr(self.charter_img, charterfilename % 'en')
-    frontdata = str(frontfile._data)
-    frontfile =StringIO(frontdata)
-    frontimage = ImageReader(frontfile)
+#     frontfile = getattr(self, charterfilename, None)
+#     # Fallback to English
+# #    if not frontfile:
+# #        frontfile = getattr(self.charter_img, charterfilename % 'en')
+#     frontdata = str(frontfile._data)
+#     frontfile =StringIO(frontdata)
+    frontimage = ImageReader(os.path.join(resources_dir, charterfilename))
     # my_canvas.drawImage(frontimage, 0 , 0, 87.5*cm, 123.8*cm)
     my_canvas.drawImage(frontimage, 0 , 0, 29.7*cm, 21*cm)
 
@@ -202,9 +204,10 @@ def generatePDF(self,
 #        if not charterfile:
 #            charterfile = getattr(self.charter_img, chartername % 'en')
         print "have charterfile:", [charterfile]
-        charterdata = str(charterfile._data)
-        charterdata = StringIO(charterdata)
-        charterimage = ImageReader(charterdata)
+        # charterdata = str(charterfile._data)
+        # charterdata = StringIO(charterdata)
+        # charterimage = ImageReader(charterdata)
+        charterimage = ImageReader(os.path.join(resources_dir, charterfilename))
         my_canvas.showPage()
         my_canvas.save()
         return acknowledge.getvalue()

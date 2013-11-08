@@ -137,6 +137,16 @@
     layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
     />
 
+  <browser:page
+     for="*"
+     name="national-campaign-partner-application-form-2012"
+     class=".charter.CharterView"
+     permission="zope.Public"
+     allowed_attributes="get_validation_messages" 
+     template="templates/partner-application.pt"
+     />
+
+
   <!-- viewlet for editing and workflow on Organisation -->
   <browser:viewlet
     name="organisationmanage"
