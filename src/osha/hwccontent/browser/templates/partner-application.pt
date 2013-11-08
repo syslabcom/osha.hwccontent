@@ -38,61 +38,61 @@
               <label>
                 <span tal:omit-tag="" i18n:translate="field_company">Company/Organisation</span>
                 <sup class="required">*)</sup> 
-                <input type="text" name="organisation" tal:attributes="value form/organisation | "/>
+                <input type="text" name="organisation" tal:attributes="value form/organisation | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_address">Address</span>
                 <sup class="required">*)</sup> 
                 <input type="text" name="address" 
-                       tal:attributes="value form/address | "/>
+                       tal:attributes="value form/address | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_postalcode">Postal code</span>
                 <sup class="required">*)</sup> 
                 <input type="text" class="span-2" name="postal_code" 
-                       tal:attributes="value form/postal_code | "/>
+                       tal:attributes="value form/postal_code | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_city">City</span>
                 <sup class="required">*)</sup> 
                 <input type="text" class="span-6" name="city" 
-                       tal:attributes="value form/city | "/>
+                       tal:attributes="value form/city | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_country">Country</span>
                 <sup class="required">*)</sup> 
                 <input type="text" class="span-6" name="country" 
-                       tal:attributes="value form/country | "/>
+                       tal:attributes="value form/country | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_firstname">First name of contact person </span>
                 <sup class="required">*)</sup> 
                 <input type="text" name="firstname" 
-                       tal:attributes="value form/firstname | "/>
+                       tal:attributes="value form/firstname | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_lastname">Last name</span>
                 <sup class="required">*)</sup> 
                 <input type="text" name="lastname" 
-                       tal:attributes="value form/lastname | "/>
+                       tal:attributes="value form/lastname | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_sector">Business/sector </span>
                 <sup class="required">*)</sup> 
                 <input type="text" name="sector"
-                       tal:attributes="value form/sector | "/>
+                       tal:attributes="value form/sector | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_email">E-mail address </span>
                 <sup class="required">*)</sup> 
                 <input type="text" name="email" 
-                       tal:attributes="value form/email | "/>
+                       tal:attributes="value form/email | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_telephone">Telephone number </span>
                 <sup class="required">*)</sup> 
                 <input type="text" name="telephone" 
-                       tal:attributes="value form/telephone | "/>
+                       tal:attributes="value form/telephone | string:"/>
               </label> 
               <fieldset class="comprehensive checkList"
                         tal:define="checkboxlist python:form and form.get('checkboxlist', []) or []"> 
@@ -173,7 +173,7 @@
 
                   <span tal:omit-tag="" i18n:translate="other">
                     Other
-                    </span> <input type="text" name="other" tal:attributes="value form/other | "/>
+                    </span> <input type="text" name="other" tal:attributes="value form/other | string:"/>
                 </label>   
               </fieldset> 
             </fieldset> 

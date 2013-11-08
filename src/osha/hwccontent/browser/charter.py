@@ -60,12 +60,12 @@ def send_charter_email(context, pdf, to, sender, body, language):
     mailhost._send(sender, to, msg.as_string())
 
 
-class CharterView(BrowserView):
-
-    # def __call__(self, form=None):
-    #     self.form = form
-    #     return super(
-    #         CharterView, self).__call__(self.context, self.request)
+class NationalPartnerForm(BrowserView):
+    """ """
+    def __call__(self, form=None):
+        self.form = form
+        return super(
+            NationalPartnerForm, self).__call__(self.context, self.request)
 
     def get_validation_messages(self):
         """ """
@@ -110,7 +110,11 @@ class CharterView(BrowserView):
 
         return {'messages': messages}
 
-    def __call__(self, form=None):
+
+class CharterView(NationalPartnerForm):
+    """ """
+
+    def __call__(self):
 
         request = self.context.REQUEST
         language = self.context.portal_languages.getPreferredLanguage()
@@ -161,14 +165,14 @@ class CharterView(BrowserView):
                 messages.add(
                     error_messages[required_field]["required"],
                     type=u"error")
-        #if has_errors:
-            # form_path = (
-            #     "%s/@@national-campaign-partner-application-form-2012"
-            #     % "/".join(self.context.getPhysicalPath()))
-            # request.RESPONSE.setHeader(
-            #     'X-Deliverance-Page-Class', 'general form')
-            # return self.context.restrictedTraverse(
-            #     form_path)(form = request.form)
+        if has_errors:
+            form_path = (
+                "%s/@@national-campaign-partner-application-form-2012"
+                % "/".join(self.context.getPhysicalPath()))
+            request.RESPONSE.setHeader(
+                'X-Deliverance-Page-Class', 'general form')
+            return self.context.restrictedTraverse(
+                form_path)(form = request.form)
 
         checkboxes = {}
         for c in checkboxlist:
