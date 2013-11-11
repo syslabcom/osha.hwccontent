@@ -139,14 +139,14 @@
 
   <browser:page
       for="*"
-      name="charter2012"
+      name="charter"
       class=".charter.CharterView"
       permission="zope.Public"
       />
 
   <browser:page
       for="*"
-      name="national-campaign-partner-application-form-2012"
+      name="national-campaign-partner-application-form"
       class=".charter.NationalPartnerForm"
       permission="zope.Public"
       allowed_attributes="get_validation_messages" 
