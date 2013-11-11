@@ -3,7 +3,7 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="osha.hw2010">
   <body>
-    <div id="content" metal:fill-slot="main">
+    <div id="content-core" metal:fill-slot="main">
       <tal:main-macro metal:define-macro="main">
         <tal:set define="dummy python:request.RESPONSE.setHeader('X-Deliverance-Page-Class', 'general form')" />
         <h1 class="documentFirstHeading"> 
@@ -38,60 +38,60 @@
               <label>
                 <span tal:omit-tag="" i18n:translate="field_company">Company/Organisation</span>
                 <sup class="required">*)</sup> 
-                <input type="text" name="organisation" tal:attributes="value form/organisation | string:"/>
+                <input type="text" name="organisation" required="required" tal:attributes="value form/organisation | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_address">Address</span>
                 <sup class="required">*)</sup> 
-                <input type="text" name="address" 
+                <input type="text" name="address" required="required"
                        tal:attributes="value form/address | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_postalcode">Postal code</span>
                 <sup class="required">*)</sup> 
-                <input type="text" class="span-2" name="postal_code" 
+                <input type="text" name="postal_code" required="required"
                        tal:attributes="value form/postal_code | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_city">City</span>
                 <sup class="required">*)</sup> 
-                <input type="text" class="span-6" name="city" 
+                <input type="text" name="city" required="required"
                        tal:attributes="value form/city | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_country">Country</span>
                 <sup class="required">*)</sup> 
-                <input type="text" class="span-6" name="country" 
+                <input type="text" name="country" required="required"
                        tal:attributes="value form/country | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_firstname">First name of contact person </span>
                 <sup class="required">*)</sup> 
-                <input type="text" name="firstname" 
+                <input type="text" name="firstname" required="required"
                        tal:attributes="value form/firstname | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_lastname">Last name</span>
                 <sup class="required">*)</sup> 
-                <input type="text" name="lastname" 
+                <input type="text" name="lastname" required="required"
                        tal:attributes="value form/lastname | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_sector">Business/sector </span>
                 <sup class="required">*)</sup> 
-                <input type="text" name="sector"
+                <input type="text" name="sector" required="required"
                        tal:attributes="value form/sector | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_email">E-mail address </span>
                 <sup class="required">*)</sup> 
-                <input type="text" name="email" 
+                <input type="text" name="email" required="required"
                        tal:attributes="value form/email | string:"/>
               </label> 
               <label>
                 <span tal:omit-tag="" i18n:translate="field_telephone">Telephone number </span>
                 <sup class="required">*)</sup> 
-                <input type="text" name="telephone" 
+                <input type="text" name="telephone" required="required"
                        tal:attributes="value form/telephone | string:"/>
               </label> 
               <fieldset class="comprehensive checkList"
