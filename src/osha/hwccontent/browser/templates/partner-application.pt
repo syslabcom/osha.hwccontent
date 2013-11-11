@@ -3,9 +3,8 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="osha.hw2010">
   <body>
-    <div id="content-core" metal:fill-slot="main">
+    <div id="content" metal:fill-slot="main">
       <tal:main-macro metal:define-macro="main">
-        <tal:set define="dummy python:request.RESPONSE.setHeader('X-Deliverance-Page-Class', 'general form')" />
         <h1 class="documentFirstHeading">
           <span id="parent-fieldname-title"
                 i18n:translate="partner_form_title">
@@ -13,6 +12,7 @@
           </span>
         </h1>
 
+        <div id="content-core">
         <div id="parent-fieldname-text">
           <h3 i18n:translate="certificate_of_participation">
             Certificate of Participation - Online Application Form
@@ -28,72 +28,72 @@
             <a href="/en/campaigns/hw2010/partners/focal-points">national focal point</a>.
           </p>
           <form id="national-partner-application-form"
-                class="concise"
-                action="@@charter2012"
+                class="row-fluid"
+                action="@@charter"
                 method="post"
                 tal:define="form view/form" >
 
-            <p class="discrete" i18n:translate="partner_form_required_fields_are_marked">Required fields are marked *)</p>
             <fieldset>
-              <label>
+              <label for="organisation" class="horizontal">
                 <span tal:omit-tag="" i18n:translate="field_company">Company/Organisation</span>
-                <sup class="required">*)</sup>
-                <input type="text" name="organisation" required="required" tal:attributes="value form/organisation | string:"/>
-              </label>
-              <label>
+                <span class="required horizontal" title="Required"> </span>
+              </label><br/>
+              <input type="text" id="organisation" name="organisation" required="required"
+                     tal:attributes="value form/organisation | string:"/>
+              <label for="address">
                 <span tal:omit-tag="" i18n:translate="field_address">Address</span>
-                <sup class="required">*)</sup>
-                <input type="text" name="address" required="required"
-                       tal:attributes="value form/address | string:"/>
+                <span class="required horizontal" title="Required"> </span>
               </label>
-              <label>
+              <input type="text" id="address" name="address" required="required"
+                     tal:attributes="value form/address | string:"/>
+              <label for="postal_code">
                 <span tal:omit-tag="" i18n:translate="field_postalcode">Postal code</span>
-                <sup class="required">*)</sup>
-                <input type="text" name="postal_code" required="required"
-                       tal:attributes="value form/postal_code | string:"/>
+                <span class="required horizontal" title="Required"> </span>
               </label>
-              <label>
+              <input type="text" id="postal_code" name="postal_code" required="required"
+                     tal:attributes="value form/postal_code | string:"/>
+              <label for="city">
                 <span tal:omit-tag="" i18n:translate="field_city">City</span>
-                <sup class="required">*)</sup>
-                <input type="text" name="city" required="required"
-                       tal:attributes="value form/city | string:"/>
+                <span class="required horizontal" title="Required"> </span>
               </label>
-              <label>
+              <input type="text" id="city" name="city" required="required"
+                     tal:attributes="value form/city | string:"/>
+              <label for="country">
                 <span tal:omit-tag="" i18n:translate="field_country">Country</span>
-                <sup class="required">*)</sup>
-                <input type="text" name="country" required="required"
-                       tal:attributes="value form/country | string:"/>
+                <span class="required horizontal" title="Required"> </span>
               </label>
-              <label>
+              <input type="text" id="country" name="country" required="required"
+                     tal:attributes="value form/country | string:"/>
+              <label for="firstname">
                 <span tal:omit-tag="" i18n:translate="field_firstname">First name of contact person </span>
-                <sup class="required">*)</sup>
-                <input type="text" name="firstname" required="required"
-                       tal:attributes="value form/firstname | string:"/>
+                <span class="required horizontal" title="Required"> </span>
               </label>
-              <label>
+              <input type="text" id="firstname" name="firstname" required="required"
+                     tal:attributes="value form/firstname | string:"/>
+              <label for="lastname">
                 <span tal:omit-tag="" i18n:translate="field_lastname">Last name</span>
-                <sup class="required">*)</sup>
-                <input type="text" name="lastname" required="required"
-                       tal:attributes="value form/lastname | string:"/>
+                <span class="required horizontal" title="Required"> </span>
               </label>
-              <label>
+              <input type="text" id="lastname" name="lastname" required="required"
+                     tal:attributes="value form/lastname | string:"/>
+              <label for="sector">
                 <span tal:omit-tag="" i18n:translate="field_sector">Business/sector </span>
-                <sup class="required">*)</sup>
-                <input type="text" name="sector" required="required"
-                       tal:attributes="value form/sector | string:"/>
+                <span class="required horizontal" title="Required"> </span>
               </label>
-              <label>
+              <input type="text" id="sector" name="sector" required="required"
+                     tal:attributes="value form/sector | string:"/>
+              <label for="email">
                 <span tal:omit-tag="" i18n:translate="field_email">E-mail address </span>
-                <sup class="required">*)</sup>
-                <input type="text" name="email" required="required"
-                       tal:attributes="value form/email | string:"/>
+                <span class="required horizontal" title="Required"> </span>
               </label>
-              <label>
+              <input type="text" id="email" name="email" required="required"
+                     tal:attributes="value form/email | string:"/>
+              <label for="telephone">
                 <span tal:omit-tag="" i18n:translate="field_telephone">Telephone number </span>
-                <sup class="required">*)</sup>
-                <input type="text" name="telephone" required="required"
-                       tal:attributes="value form/telephone | string:"/>
+                <span class="required horizontal" title="Required"> </span>
               </label>
+              <input type="text" id="telephone" name="telephone" required="required"
+                     tal:attributes="value form/telephone | string:"/>
               <fieldset class="comprehensive checkList"
                         tal:define="checkboxlist python:form and form.get('checkboxlist', []) or []">
                 <legend i18n:translate="field_comprehensive_checklist">
@@ -190,6 +190,7 @@
           <p i18n:translate="partner_form_description_contacted">
             Please note that you may be contacted by the Agency to provide more details on your Campaign activities.
           </p>
+        </div>
         </div>
       </tal:main-macro>
     </div>
