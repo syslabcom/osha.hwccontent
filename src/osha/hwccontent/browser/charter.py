@@ -1,13 +1,16 @@
-from Acquisition import aq_inner, aq_parent
+from Acquisition import aq_inner
 from Products.Archetypes import PloneMessageFactory as _
 from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFDefault.utils import checkEmailAddress
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
+from datetime import datetime
 from email import Encoders
 from email.MIMEBase import MIMEBase
 from email.MIMEMultipart import MIMEMultipart
 from email.Utils import formatdate
+from plone import api
+from zope.annotation.interfaces import IAnnotations
 from zope.i18n import translate
 from generate_pdf import generatePDF
 
@@ -114,6 +117,19 @@ class NationalPartnerForm(BrowserView):
 class CharterView(NationalPartnerForm):
     """ """
 
+    def store_participant_details(self, details):
+        """Store the details of the participant in a dict, using
+        annotations (OOBTree) to avoid conflicts"""
+        portal = api.portal.get()
+        participants = portal.get("participants")
+        if not participants:
+            participants = api.content.create(
+                container=portal, type="Document", id="participants")
+
+        storage = IAnnotations(participants)
+        key = datetime.now()
+        storage[key] = details
+
     def __call__(self):
 
         request = self.context.REQUEST
@@ -186,6 +202,21 @@ class CharterView(NationalPartnerForm):
             cb_list[k] = '1'
 
         checkboxint=''.join(cb_list)
+
+        self.store_participant_details({
+            'organisation': organisation,
+            'address': address,
+            'postal_code': postal_code,
+            'city': city,
+            'country': country,
+            'firstname': firstname,
+            'lastname': lastname,
+            'sector': sector,
+            'email': email,
+            'telephone': telephone,
+            'checkboxlist': checkboxint,
+            'other': other,
+        })
 
         from_address = 'information@osha.europa.eu'
 
