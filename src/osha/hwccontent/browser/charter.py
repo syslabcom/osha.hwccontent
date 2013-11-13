@@ -212,7 +212,6 @@ class CharterView(NationalPartnerForm):
             'hazard_spotting',
             'inspections',
             'initiatives',
-            'other',
         ]
         checkbox_options = {}
         for i, key in enumerate(checkbox_keys):

@@ -168,13 +168,12 @@
                       </span>
                     </label>
                     <label>
-                      <input type="checkbox" id="checkboxlist10" name="checkboxlist:list" value="9_other"
-                             tal:attributes="checked python:'checked' if '9_other' in checkboxlist else ''"/>
-
                       <span tal:omit-tag="" i18n:translate="other">
                         Other
-                        </span> <input type="text" name="other" tal:attributes="value form/other | string:"/>
+                        </span>
+                        <input type="text" name="other_activities_text" tal:attributes="value form/other_activities_text | string:"/>
                     </label>
+
                   </fieldset>
                 </fieldset>
                 <fieldset class="buttonBar">
