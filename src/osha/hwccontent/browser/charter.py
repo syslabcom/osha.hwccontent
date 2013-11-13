@@ -5,7 +5,6 @@ from Products.CMFDefault.utils import checkEmailAddress
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from StringIO import StringIO
-from datetime import datetime
 from email import Encoders
 from email.MIMEBase import MIMEBase
 from email.MIMEMultipart import MIMEMultipart
@@ -18,6 +17,7 @@ from zope.i18n import translate
 
 import csv
 import json
+import time
 
 log = getLogger('osha.hw2014.browser.charter')
 
@@ -135,7 +135,7 @@ class CharterView(NationalPartnerForm):
                 container=portal, type="Document", id="participants")
 
         storage = IAnnotations(participants)
-        key = datetime.now()
+        key = time.time()
         storage[key] = details
 
     def __call__(self):
@@ -202,13 +202,23 @@ class CharterView(NationalPartnerForm):
                 args[1] = other
             checkboxes[int(args[0])] = args[1]
 
-        cb_list = ['0' for x in range(10)]
-        for k in checkboxes.keys():
-            cb_list[k] = '1'
+        checkbox_keys = [
+            'seminars',
+            'competitions',
+            'audiovisual',
+            'advertising',
+            'partnerships',
+            'good_neighbour',
+            'hazard_spotting',
+            'inspections',
+            'initiatives',
+            'other',
+        ]
+        checkbox_options = {}
+        for i, key in enumerate(checkbox_keys):
+            checkbox_options[key] = checkboxes.get(i, '')
 
-        checkboxint = ''.join(cb_list)
-
-        self.store_participant_details({
+        participant_details = {
             'organisation': organisation,
             'address': address,
             'postal_code': postal_code,
@@ -219,9 +229,10 @@ class CharterView(NationalPartnerForm):
             'sector': sector,
             'email': email,
             'telephone': telephone,
-            'checkboxlist': checkboxint,
             'other': other,
-        })
+        }
+        participant_details.update(checkbox_options)
+        self.store_participant_details(participant_details)
 
         from_address = 'information@osha.europa.eu'
 
@@ -284,7 +295,15 @@ class ParticipantsCSV(BrowserView):
             'sector',
             'email',
             'telephone',
-            'checkboxlist',
+            'seminars',
+            'competitions',
+            'audiovisual',
+            'advertising',
+            'partnerships',
+            'good_neighbour',
+            'hazard_spotting',
+            'inspections',
+            'initiatives',
             'other',
         ]
         writer = csv.DictWriter(
