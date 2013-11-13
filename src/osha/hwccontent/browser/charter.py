@@ -4,6 +4,7 @@ from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFDefault.utils import checkEmailAddress
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
+from StringIO import StringIO
 from datetime import datetime
 from email import Encoders
 from email.MIMEBase import MIMEBase
@@ -15,7 +16,8 @@ from plone import api
 from zope.annotation.interfaces import IAnnotations
 from zope.i18n import translate
 
-import simplejson as json
+import csv
+import json
 
 log = getLogger('osha.hw2014.browser.charter')
 
@@ -254,3 +256,56 @@ class CharterView(NationalPartnerForm):
                 url+'?portal_status_message='+str(e))
 
         request.RESPONSE.redirect(url)
+
+
+class ParticipantsCSV(BrowserView):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        response = self.request.RESPONSE
+        self.set_response_headers(response)
+        return self.get_participants_as_csv()
+
+    def get_participants_as_csv(self):
+        buffer = StringIO()
+        participant_details = IAnnotations(
+            api.content.get(path="/participants"))
+        fieldnames = [
+            'organisation',
+            'address',
+            'postal_code',
+            'city',
+            'country',
+            'firstname',
+            'lastname',
+            'sector',
+            'email',
+            'telephone',
+            'checkboxlist',
+            'other',
+        ]
+        writer = csv.DictWriter(
+            buffer,
+            fieldnames=fieldnames,
+            delimiter=',',
+            quotechar='|',
+            quoting=csv.QUOTE_MINIMAL,
+        )
+        writer.writerow(dict((fn,fn) for fn in fieldnames))
+        for key in participant_details:
+            writer.writerow(participant_details[key])
+        csv_data = buffer.getvalue()
+        buffer.close()
+
+        return csv_data
+
+    def set_response_headers(self, response):
+        response.setHeader(
+            "Content-Disposition",
+            "attachment; filename=hwc2014-participants.csv",
+        )
+        response.setHeader(
+            "Content-Type", 'text/comma-separated-values;charset=utf-8')

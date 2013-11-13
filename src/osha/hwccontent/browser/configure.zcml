@@ -146,6 +146,13 @@
 
   <browser:page
       for="*"
+      name="download-participant-details"
+      class=".charter.ParticipantsCSV"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      for="*"
       name="national-campaign-partner-application-form"
       class=".charter.NationalPartnerForm"
       permission="zope.Public"
