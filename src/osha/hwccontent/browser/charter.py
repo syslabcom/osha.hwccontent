@@ -281,8 +281,8 @@ class ParticipantsCSV(BrowserView):
 
     def get_participants_as_csv(self):
         buffer = StringIO()
-        participant_details = IAnnotations(
-            api.content.get(path="/participants"))
+        portal = api.portal.get()
+        participant_details = IAnnotations(portal.participants)
         fieldnames = [
             'organisation',
             'address',
