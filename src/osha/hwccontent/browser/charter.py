@@ -50,7 +50,7 @@ def send_charter_email(context, pdf, to, sender, body, language):
     mailhost = context.MailHost
     msg = MIMEMultipart()
 
-    msg['Subject'] = "The Healthy Workplaces 2012 Campaign Charter"
+    msg['Subject'] = "The Healthy Workplaces 2014 Campaign Charter"
     msg['From'] = sender
     msg['To'] = to
     msg['Date'] = formatdate(localtime=True)
@@ -65,7 +65,7 @@ def send_charter_email(context, pdf, to, sender, body, language):
     Encoders.encode_base64(part)
     part.add_header(
         'Content-Disposition',
-        'attachment; filename="hw2012-campaign-charter.pdf"',
+        'attachment; filename="hw2014-campaign-charter.pdf"',
     )
     msg.attach(part)
 
@@ -190,7 +190,7 @@ class CharterView(NationalPartnerForm):
                     type=u"error")
         if has_errors:
             form_path = (
-                "%s/@@national-campaign-partner-application-form-2012"
+                "%s/@@national-campaign-partner-application-form"
                 % "/".join(self.context.getPhysicalPath()))
             return self.context.restrictedTraverse(
                 form_path)(form=request.form)
