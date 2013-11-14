@@ -33,7 +33,8 @@
                        tal:content="news_item/title">Good health and safety is good for business</a></h3>
                 <a href="news" tal:attributes="title news_item/Title">
                   <img tal:condition="has_image" src="/++theme++osha.hwctheme/HWManageStress_files/images/newsimage2.jpg" class="pull-left"
-                      tal:attributes="src string:${news_item/absolute_url}/@@images/image/thumb" />
+                    tal:define="scales news_item/@@images"
+                    tal:replace="structure python: scales.tag('image', width=120, height=125, direction='down')" >
                   <img tal:condition="not:has_image" class="pull-left" src="++theme++osha.hwctheme/HWManageStress_files/images/newsdefault.jpg" />
                   </a>
             <p class="data"
