@@ -46,7 +46,7 @@ class HelperView(BrowserView):
     def break_in_lines(self, text, max_width=20):
         """ tries to add a break after a number of chars """
         arr = []
-        while (text!=''):
+        while (text != ''):
             if len(text) < max_width:
                 arr.append(text)
                 text = ''
@@ -58,7 +58,6 @@ class HelperView(BrowserView):
 
             arr.append(text[:space])
             text = text[space:]
-
 
         carr = [x for x in arr if x.strip() != '']
 
@@ -90,9 +89,7 @@ class HelperView(BrowserView):
     def my_profile_url(self):
         profiles = self.get_my_profiles()
         if len(profiles) > 0:
-            print "profile url: %s" % profiles[0]['url']
             return profiles[0]['url']
-        print "NO profile url"
         return ''
 
     def get_organisations_folder_url(self):
