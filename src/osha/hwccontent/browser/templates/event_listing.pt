@@ -106,6 +106,7 @@
           </div>
 
           <p itemprop="description" class="description" tal:condition="data/description" tal:content="data/description" />
+          <p tal:condition="data/text" tal:content="structure data/text" />
 
           <ul class="horizontal metadata">
 
