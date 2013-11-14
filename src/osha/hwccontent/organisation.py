@@ -26,16 +26,15 @@ from osha.hwccontent import _, vocabularies
 
 
 INTRO_TEXT_PHASE_1 = _(
-    u"<p>Please fill in the form to apply to become an Official Campaign "
-    u"Partner (OCP) of the Healthy Workplaces Campaign 2014-15 on "
-    u"‘Healthy workplaces manage stress’. Required fields are marked "
+    u"<p>Please fill in the 2-pages form to apply to become an Official "
+    u"Campaign Partner (OCP) of the Healthy Workplaces Campaign 2014-15 on "
+    u"‘Healthy workplaces manage stress’. (Learn about the current campaign "
+    u"partnership offer.)</p><p>Required fields are marked "
     u"with a red dot.</p><p>You might want to take a look at the OCP of "
     u"the 2012-13 Healthy workplaces campaign: "
     u"<a href='http://www.healthy-workplaces.eu/en/about/campaign-partners'>"
     u"http://www.healthy-workplaces.eu/en/about/campaign-partners</a></p><p>"
-    u"You might want to download the pdf version of the application "
-    u"form. However, only online applications will be evaluated.</p><p>"
-    u"Please note that the form consists of two pages.</p>"
+    u""
 )
 
 
