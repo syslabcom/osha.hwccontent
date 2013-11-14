@@ -1,25 +1,18 @@
 from Acquisition import ImplicitAcquisitionWrapper
 from Products.CMFPlone.PloneBatch import Batch
-from Products.ZCatalog.interfaces import ICatalogBrain
 from datetime import datetime, timedelta
 from json import load
 from osha.hwccontent.browser.mixin import ListingView
 from osha.hwccontent.interfaces import IFullWidth
 from plone import api
-from plone.app.contenttypes.interfaces import ICollection
-from plone.app.event.base import date_speller
 from plone.app.event.browser.event_listing import EventListing
-from plone.app.event.dx.behaviors import EventAccessor
-from plone.app.querystring.querybuilder import QueryBuilder
 from plone.event.interfaces import IEventAccessor
-from plone.memoize import ram
 from pytz import timezone
 from urllib import urlencode
 from urllib import urlopen
-from zope.component import getMultiAdapter
-from zope.contentprovider.interfaces import IContentProvider
 from zope.interface import implements
-        
+
+
 def isotime2dt(isotime, tz):
     separator = isotime[-6]
     if separator in '+-':
@@ -29,14 +22,14 @@ def isotime2dt(isotime, tz):
         spec = isotime
     dt = datetime.strptime(spec, '%Y-%m-%dT%H:%M:%S')
     return tz.localize(dt)
-    
+
 
 class JSONEventAccessor(object):
     """Event type generic accessor adapter."""
 
     implements(IEventAccessor)
 
-    recurrence = '' # No recurrence support
+    recurrence = ''  # No recurrence support
 
     def __init__(self, kw, context):
         self.context = ImplicitAcquisitionWrapper(self, context)
@@ -49,27 +42,27 @@ class JSONEventAccessor(object):
         tz = kw['startDate'][-6:]
         minutes = tz[-2:]
         hours = tz[-5:-3]
-        seconds = int(minutes)*60 + int(hours)*3600
+        seconds = int(minutes) * 60 + int(hours) * 3600
         if tz[0] == '-':
             seconds = -seconds
         offset = timedelta(seconds=seconds)
 
         # We try CET first, because it's most common, and if none works, we use CET anyway.
         # So Brussels should be both first and last in this list:
-        for tzname in ['Europe/Brussels', 'Europe/London', 'Europe/Helsinki', 'Atlantic/Reykjavik']:#, 'Europe/Brussels']:
+        for tzname in ['Europe/Brussels', 'Europe/London', 'Europe/Helsinki', 'Atlantic/Reykjavik']:  # , 'Europe/Brussels']:
             zone = timezone(tzname)
             if tz[0] not in '-+':
                 # Naive date time, just assume CET
                 break
-            
+
             # Verify this:
             if isotime2dt(kw['startDate'], zone).utcoffset() == offset:
-                break 
-        
+                break
+
         self.start = isotime2dt(kw['startDate'], zone)
         self.end = isotime2dt(kw['endDate'], zone)
         self.timezone = tzname
-        
+
         self.location = kw['location']
         self.attendees = kw['attendees']
         self.contact_name = kw['contactName']
@@ -80,14 +73,14 @@ class JSONEventAccessor(object):
         self.text = kw['text']
 
     # Unified create method via Accessor
-    @classmethod        
+    @classmethod
     def create(self, **kw):
         return JSONEventAccessor(kw)
 
     @property
     def uid(self):
         return None
-    
+
     @property
     def whole_day(self):
         return False
@@ -95,15 +88,14 @@ class JSONEventAccessor(object):
     @property
     def open_end(self):
         return False
-                
+
     @property
     def duration(self):
-        return end - start
+        return self.end - self.start
 
 
 class EventListing(ListingView, EventListing):
     implements(IFullWidth)
-
 
     def __init__(self, context, request):
         super(EventListing, self).__init__(context, request)
@@ -120,13 +112,13 @@ class EventListing(ListingView, EventListing):
         )
 
     def events(self, ret_mode=3, batch=True):
-        local_events = self._get_events(3) # Only accessors works with remote events.
+        local_events = self._get_events(3)  # Only accessors works with remote events.
         remote_events = self._remote_events()
         reverse = self.mode == 'past'
         all_events = sorted(local_events + remote_events, key=lambda x: x.start, reverse=reverse)
         if batch:
             b_start = self.b_start
-            b_size  = self.b_size
+            b_size = self.b_size
             res = Batch(all_events, size=b_size, start=b_start, orphan=self.orphan)
         return res
 
@@ -145,12 +137,12 @@ class EventListing(ListingView, EventListing):
             q['start'] = start.strftime('%Y-%m-%dT%H:%M:%S%z')
         if end:
             q['end'] = end.strftime('%Y-%m-%dT%H:%M:%S%z')
-        
+
         qurl = '%s/%s/jsonfeed?' % (self.osha_json_url, lang)
         qurl += urlencode(q)
         print qurl
         result = urlopen(qurl)
         if result.code == 200:
-            for item in load(result):                
+            for item in load(result):
                 items.append(JSONEventAccessor(item, self))
         return items
