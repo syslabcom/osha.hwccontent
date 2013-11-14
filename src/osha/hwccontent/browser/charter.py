@@ -144,7 +144,7 @@ class CharterView(NationalPartnerForm):
         language = self.context.portal_languages.getPreferredLanguage()
         messages = IStatusMessage(request)
 
-        url = "/%s/get-involved/become-a-national-partner/feedback" % language
+        url = "/%s/get-involved/get-your-certificate/feedback" % language
 
         organisation = request.get('organisation', '')
         address = request.get('address', '')
