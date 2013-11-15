@@ -153,11 +153,11 @@
 
   <browser:page
       for="*"
-      name="national-campaign-partner-application-form"
+      name="get-campaign-certificate"
       class=".charter.NationalPartnerForm"
       permission="zope.Public"
-      allowed_attributes="get_validation_messages" 
-      template="templates/partner-application.pt"
+      allowed_attributes="get_validation_messages"
+      template="templates/get_campaign_certificate.pt"
       />
 
   <!-- viewlet for editing and workflow on Organisation -->
