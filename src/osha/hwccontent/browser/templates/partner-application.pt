@@ -3,8 +3,9 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="osha.hw2010">
   <body>
-    <div id="content" metal:fill-slot="main">
+    <metal:block fill-slot="main">
       <tal:main-macro metal:define-macro="main">
+
         <h1 class="documentFirstHeading">
           <span id="parent-fieldname-title"
                 i18n:translate="partner_form_title">
@@ -192,6 +193,6 @@
             </div>
           </div>
         </tal:main-macro>
-      </div>
+      </metal:block>
     </body>
   </html>
