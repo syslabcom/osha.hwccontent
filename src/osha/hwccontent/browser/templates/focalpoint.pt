@@ -83,7 +83,6 @@
                 <p>Tel: <span tal:content="context/phone">+34948006000</span></p>
                 <p>Fax: <span tal:content="context/fax">+34948006000</span></p>
                 <p><strong>Contact Persons</strong></p>
-                <p><strong>QSE Director</strong></p>
                 <p tal:content="context/key_name">Mikel Gastón Lujambio</p>
                 <p><strong>Health and Safety Representative</strong></p>
                 <p tal:content="context/representative_name">Eloy Jáuregui Martín</p>
