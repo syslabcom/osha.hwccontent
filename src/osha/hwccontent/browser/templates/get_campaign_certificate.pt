@@ -20,11 +20,7 @@
               <strong>personalised certificate of participation</strong>
               in recognition of your commitment to the Healthy Workplaces Campaign.
             </p>
-            <p i18n:translate="partner_form_instructions_official_partner">
-              If you want to get involved in the Campaign more substantially and become an
-              <strong>official national Campaign partner</strong>, get in touch with your corresponding
-              <a href="/en/campaigns/hw2010/partners/focal-points">national focal point</a>.
-            </p>
+
             <form id="get-campaign-certificate"
                   class="row-fluid"
                   action="get-campaign-certificate"
@@ -94,7 +90,7 @@
                          tal:attributes="value form/telephone | string:"/>
                   <fieldset class="comprehensive checkList"
                             tal:define="checkboxlist python:form and form.get('checkboxlist', []) or []">
-                    <legend i18n:translate="field_comprehensive_checklist">
+                    <legend i18n:domain="osha.hwc" i18n:translate="field_comprehensive_checklist">
                       I/we participated in the Healthy Workplace Campaign and organised the following activities
                     </legend>
                     <label>
