@@ -73,20 +73,17 @@
                   <span tal:content="context/city">Sarriguren</span>
                 </p>
                 <p tal:content="context/country">Spain</p>
-                <p tal:content="context/email">comunicacion@acciona.es</p>
                 <p>
                   <a tal:attributes="href context/url"
                      tal:content="context/url">
                     http://www.acciona-energia.com
                   </a>
                 </p>
-                <p>Tel: <span tal:content="context/phone">+34948006000</span></p>
-                <p>Fax: <span tal:content="context/fax">+34948006000</span></p>
                 <p><strong>Contact Persons</strong></p>
                 <p tal:content="context/key_name">Mikel Gastón Lujambio</p>
-                <p><strong>Health and Safety Representative</strong></p>
-                <p tal:content="context/representative_name">Eloy Jáuregui Martín</p>
-
+                <p tal:content="context/email">comunicacion@acciona.es</p>
+                <p>Tel: <span tal:content="context/phone">+34948006000</span></p>
+                <p>Fax: <span tal:content="context/fax">+34948006000</span></p>
                 <br/>
                 <div tal:define="events view/get_events;"
                      tal:condition="events">
@@ -98,11 +95,11 @@
                       <br/>
                     </li>
                   </ul>
-                  <a tal:condition="context/events|nothing" class="more" href="*" 
+                  <a tal:condition="context/events|nothing" class="more" href="*"
                      tal:attributes="href context/events/absolute_url">More events</a><br/>
                   <br/>
                 </div>
-                
+
                 <div tal:define="news view/get_news;"
                      tal:condition="news">
                   <h3>NEWS</h3>
@@ -112,7 +109,7 @@
                       <a tal:attributes="href item/absolute_url" tal:content="item/Title">Austrian Kick-Off of the Campaign "Working together for risk prevention"</a>
                     </li>
                   </ul>
-                  <a tal:condition="context/news|nothing" class="more" href="*" 
+                  <a tal:condition="context/news|nothing" class="more" href="*"
                      tal:attributes="href context/news/absolute_url">More news</a><br/>
                 </div>
 

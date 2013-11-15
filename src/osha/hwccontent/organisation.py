@@ -182,36 +182,6 @@ class IOrganisationBase(model.Schema):
     formdirectives.omitted('campaign_pledge')
     formdirectives.no_omit(IEditForm, 'campaign_pledge')
 
-    representative_name = schema.TextLine(
-        required=False,
-        title=_(
-            u"Name of your organisation's health and safety representative"),
-    )
-    directives.languageindependent('representative_name')
-    formdirectives.omitted('representative_name')
-    formdirectives.no_omit(IEditForm, 'representative_name')
-
-    representative_email = schema.TextLine(
-        required=False,
-        title=_(
-            u"Email address of your organisation's health and safety "
-            "representative"),
-        constraint=isEmail,
-    )
-    directives.languageindependent('representative_email')
-    formdirectives.omitted('representative_email')
-    formdirectives.no_omit(IEditForm, 'representative_email')
-
-    representative_phone = schema.TextLine(
-        required=False,
-        title=_(
-            u"Telephone number of your organisation's health and safety "
-            "representative"),
-    )
-    directives.languageindependent('representative_phone')
-    formdirectives.omitted('representative_phone')
-    formdirectives.no_omit(IEditForm, 'representative_phone')
-
     mission_statement = schema.Text(
         title=_(u"Your mission statement"),
         description=_(u"Briefly outline the mission of your company"),
@@ -444,6 +414,36 @@ class IOrganisationExtra(model.Schema):
         title=_(u"Position of the main contact person."),
     )
     directives.languageindependent('key_position')
+
+    representative_name = schema.TextLine(
+        required=False,
+        title=_(
+            u"Name of your organisation's health and safety representative"),
+    )
+    directives.languageindependent('representative_name')
+    formdirectives.omitted('representative_name')
+    formdirectives.no_omit(IEditForm, 'representative_name')
+
+    representative_email = schema.TextLine(
+        required=False,
+        title=_(
+            u"Email address of your organisation's health and safety "
+            "representative"),
+        constraint=isEmail,
+    )
+    directives.languageindependent('representative_email')
+    formdirectives.omitted('representative_email')
+    formdirectives.no_omit(IEditForm, 'representative_email')
+
+    representative_phone = schema.TextLine(
+        required=False,
+        title=_(
+            u"Telephone number of your organisation's health and safety "
+            "representative"),
+    )
+    directives.languageindependent('representative_phone')
+    formdirectives.omitted('representative_phone')
+    formdirectives.no_omit(IEditForm, 'representative_phone')
 
 
 class IOrganisation(IOrganisationBase, IOrganisationExtra):

@@ -21,8 +21,7 @@ class IFocalPoint(IOrganisationBase):
             'address_extra', 'city', 'zip_code', 'country', 'email', 'phone',
             'fax', 'url', 'campaign_url', 'logo', 'mission_statement',
             'campaign_pledge', 'ceo_image', 'key_name', 'key_email',
-            'key_phone', 'representative_name', 'representative_email',
-            'representative_phone'
+            'key_phone',
         ],
     )
 
@@ -30,9 +29,6 @@ class IFocalPoint(IOrganisationBase):
     formdirectives.no_omit(IAddForm, 'mission_statement')
     formdirectives.no_omit(IAddForm, 'logo')
     formdirectives.no_omit(IAddForm, 'ceo_image')
-    formdirectives.no_omit(IAddForm, 'representative_name')
-    formdirectives.no_omit(IAddForm, 'representative_email')
-    formdirectives.no_omit(IAddForm, 'representative_phone')
 
     description = schema.Text(
         title=_(u'Description'),
