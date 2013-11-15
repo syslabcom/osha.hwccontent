@@ -1,4 +1,7 @@
-import os, tempfile
+# _+- coding: utf-8 -*-
+
+import os
+import tempfile
 from StringIO import StringIO
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.styles import ParagraphStyle
@@ -7,15 +10,17 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
-from reportlab.platypus import Paragraph, Frame
-from reportlab.lib.colors import red, black, blue, green, HexColor
+from reportlab.lib.colors import HexColor
 from reportlab.lib.enums import TA_CENTER
 import reportlab.rl_config
 from zope.i18n import translate
 import xml.sax.saxutils as saxutils
 
+from osha.hwccontent import _
+
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
 HW2012BLUE = HexColor('#0a428f')
+
 
 def generatePDF(self,
 
@@ -31,14 +36,11 @@ def generatePDF(self,
     if language not in [
                 'bg', 'cs', 'da', 'de',
                 'el', 'en', 'es', 'et',
-                'fi', 'fr', 'hu', 'it',
+                'fi', 'fr', 'hu', 'it', 'hr',
                 'lt', 'lv', 'mt', 'nl',
                 'pl', 'ro', 'pt', 'sk', 'no', 'is',
                 'sl', 'sv']:
         language = "en"
-
-    ptt_domain = 'osha_ew'
-    year = "2010"
 
     # create a canvas and set metadata
     acknowledge = StringIO()
@@ -70,13 +72,10 @@ def generatePDF(self,
 #     frontdata = str(frontfile._data)
 #     frontfile =StringIO(frontdata)
     frontimage = ImageReader(os.path.join(resources_dir, charterfilename))
-    # my_canvas.drawImage(frontimage, 0 , 0, 87.5*cm, 123.8*cm)
     my_canvas.drawImage(frontimage, 0 , 0, 29.7*cm, 21*cm)
 
-    msg_id = 'campaign_name_'+year
-    u_campaign_name = translate(
-                                domain=ptt_domain,
-                                msgid=msg_id,
+    campagin_name = _(u"campaign_name", default=u'Healthy Workplaces')
+    u_campaign_name = translate(campagin_name,
                                 target_language=language,
                                 context=self
                                 )
@@ -86,55 +85,41 @@ def generatePDF(self,
     my_canvas.setFont('ArialBold', 20)
     my_canvas.drawCentredString(x, y, u_campaign_name.upper())
     print " +- set Heading"
-    mapping = {'campaign_slogan':u_campaign_name, 'year':year}
 
-    msg_id = 'campaign_slogan_'+year
-    u_campaign_slogan = translate(
-                                domain=ptt_domain,
-                                msgid=msg_id,
-                                target_language=language,
-                                context=self
-                                )
+    campaign_slogan = _(u'campaign_slogan', default=u'Good for you. Good for business.')
+    u_campaign_slogan = translate(campaign_slogan,
+                                  target_language=language,
+                                  context=self
+                                  )
     x = 14.85 * cm
     y = 18 * cm
     my_canvas.setFont('ArialBold', 17)
     my_canvas.drawCentredString(x, y, u_campaign_slogan.upper())
     print " +- set slogan"
-    mapping = {'campaign_slogan':u_campaign_slogan, 'year':year}
 
     # print first subline
-    certificate_for = translate(domain=ptt_domain,
-                                    msgid='certificate_for_'+year,
-                                    mapping=mapping,
+    certificate_for = _(u'certificate_for', default=u'This certificate acknowledges the participation of ')
+    u_certificate_for = translate(certificate_for,
                                     target_language=language,
                                     context=self)
 
-
-    certificate_title = translate(
-                                domain=ptt_domain,
-                                msgid='certificate_title_'+year,
-                                target_language=language,
-                                context=self
-                                )
+    certificate_title = _(u'certificate_title', default=u'Certificate of Participation')
+    u_certificate_title = translate(certificate_title,
+                                    target_language=language,
+                                    context=self
+                                    )
     x = 14.85 * cm
     y = 11 * cm
     my_canvas.setFont('Arial', 32)
     my_canvas.setFillColor(HW2012BLUE)
-    my_canvas.drawCentredString(x, y, certificate_title.upper())
+    my_canvas.drawCentredString(x, y, u_certificate_title.upper())
     print " +- set Headline"#, certificate_title
-    mapping = {'campaign_slogan':u_campaign_slogan, 'year':year}
 
-    # print first subline
-    certificate_for = translate(domain=ptt_domain,
-                                    msgid='certificate_for_'+year,
-                                    mapping=mapping,
-                                    target_language=language,
-                                    context=self)
-    certificate_for = certificate_for.encode('utf-8')
+    u_certificate_for = u_certificate_for.encode('utf-8')
     x = 14.85 * cm
     y = 10 * cm
     my_canvas.setFont('Arial', 18)
-    my_canvas.drawCentredString(x, y, certificate_for)
+    my_canvas.drawCentredString(x, y, u_certificate_for)
     print " +- set first subline"#, certificate_for
 
     # print company name
@@ -178,21 +163,19 @@ def generatePDF(self,
     width -= 5 * cm
     height = 10 * cm
 
-    contribution_headline = translate(domain=ptt_domain,
-                                          msgid='contribution_headline_2012',
-                                          mapping=mapping,
+    contribution_headline = _(u'contribution_headline', default=u" in the Healthy Workplaces Campaign 2014-15 on ‘Healthy workplaces manage stress’.")
+    u_contribution_headline = translate(contribution_headline,
                                           target_language=language,
                                           context=self)
+    print "contribution_headline", u_contribution_headline
 
-    contribution_headline = contribution_headline.encode('utf-8')
+    u_contribution_headline = u_contribution_headline.encode('utf-8')
     my_canvas.setFont('Arial', 18)
-    my_canvas.drawCentredString(x, y, contribution_headline)
+    my_canvas.drawCentredString(x, y, u_contribution_headline)
     # P = Paragraph(contribution_headline, style)
     # wi, he = P.wrap(width, height)
     # P.drawOn(my_canvas, x - wi/2, y - he/2)
-    print " +- set contribution headline"#, company
-
-
+    print " +- set contribution headline"  # , company
 
     # ***** FALLBACK-SOLUTION UNTIL PDFTK IS AVAILABLE *******
     if usePDFTK == 0:
