@@ -139,13 +139,6 @@
 
   <browser:page
       for="*"
-      name="charter"
-      class=".charter.CharterView"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      for="*"
       name="download-participant-details"
       class=".charter.ParticipantsCSV"
       permission="cmf.ManagePortal"

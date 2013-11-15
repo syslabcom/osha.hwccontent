@@ -74,10 +74,6 @@ def send_charter_email(context, pdf, to, sender, body, language):
 
 class NationalPartnerForm(BrowserView):
     """ """
-    def __call__(self, form=None):
-        self.form = form
-        return super(
-            NationalPartnerForm, self).__call__(self.context, self.request)
 
     def get_validation_messages(self):
         """ """
@@ -121,10 +117,6 @@ class NationalPartnerForm(BrowserView):
 
         return {'messages': messages}
 
-
-class CharterView(NationalPartnerForm):
-    """ """
-
     def store_participant_details(self, details):
         """Store the details of the participant in a dict, using
         annotations (OOBTree) to avoid conflicts"""
@@ -138,9 +130,13 @@ class CharterView(NationalPartnerForm):
         key = time.time()
         storage[key] = details
 
-    def __call__(self):
-
+    def __call__(self, form=None):
+        self.form = form
         request = self.context.REQUEST
+        if 'form.submitted' not in request.form:
+            return super(
+                NationalPartnerForm, self).__call__(self.context, self.request)
+
         language = self.context.portal_languages.getPreferredLanguage()
         messages = IStatusMessage(request)
 
@@ -189,8 +185,10 @@ class CharterView(NationalPartnerForm):
                     error_messages[required_field]["required"],
                     type=u"error")
         if has_errors:
+            if 'form.submitted' in request.form:
+                del request.form['form.submitted']
             form_path = (
-                "%s/@@national-campaign-partner-application-form"
+                "%s/@@get-campaign-certificate"
                 % "/".join(self.context.getPhysicalPath()))
             return self.context.restrictedTraverse(
                 form_path)(form=request.form)
@@ -263,7 +261,7 @@ class CharterView(NationalPartnerForm):
             logit("Exception: " + exception)
             raise
             return request.RESPONSE.redirect(
-                url+'?portal_status_message='+str(e))
+                url + '?portal_status_message=' + str(e))
 
         request.RESPONSE.redirect(url)
 
@@ -312,7 +310,7 @@ class ParticipantsCSV(BrowserView):
             quotechar='|',
             quoting=csv.QUOTE_MINIMAL,
         )
-        writer.writerow(dict((fn,fn) for fn in fieldnames))
+        writer.writerow(dict((fn, fn) for fn in fieldnames))
         for key in participant_details:
             writer.writerow(participant_details[key])
         csv_data = buffer.getvalue()

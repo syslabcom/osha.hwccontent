@@ -25,9 +25,9 @@
               <strong>official national Campaign partner</strong>, get in touch with your corresponding
               <a href="/en/campaigns/hw2010/partners/focal-points">national focal point</a>.
             </p>
-            <form id="national-partner-application-form"
+            <form id="get-campaign-certificate"
                   class="row-fluid"
-                  action="@@charter"
+                  action="get-campaign-certificate"
                   method="post"
                   tal:define="form view/form" >
 
@@ -179,6 +179,7 @@
                 </fieldset>
                 <input type="hidden" name="set_language" value="en"
                        tal:attributes="value here/portal_languages/getPreferredLanguage" />
+                <input type="hidden" name="form.submitted" value="1" />
               </form>
               <p i18n:translate="partner_form_description_email_certificate">
                 We will issue a personalised email certificate based on the information that you provided us with,
