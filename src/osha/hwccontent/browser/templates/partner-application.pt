@@ -8,16 +8,13 @@
 
         <h1 class="documentFirstHeading">
           <span id="parent-fieldname-title"
-                i18n:translate="partner_form_title">
-            National campaign partner, application form
+                i18n:translate="certificate_of_participation">
+           Certificate of Participation - Online Application Form
           </span>
         </h1>
 
         <div id="content-core">
           <div id="parent-fieldname-text">
-            <h3 i18n:translate="certificate_of_participation">
-              Certificate of Participation - Online Application Form
-            </h3>
             <p i18n:translate="partner_form_instructions">
               It’s easy! Just fill in the electronic form and the Agency will send you by email a
               <strong>personalised certificate of participation</strong>
