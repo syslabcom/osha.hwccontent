@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+from Products.CMFPlone.utils import safe_unicode
 from Products.Five import BrowserView
 from plone import api
 from plone.app.contenttypes.interfaces import IImage
@@ -46,6 +49,7 @@ class HelperView(BrowserView):
     def break_in_lines(self, text, max_width=20):
         """ tries to add a break after a number of chars """
         arr = []
+        text = safe_unicode(text)
         while (text != ''):
             if len(text) < max_width:
                 arr.append(text)
