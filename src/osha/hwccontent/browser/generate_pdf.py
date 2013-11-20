@@ -84,7 +84,6 @@ def generatePDF(self,
     my_canvas.setFillColor(HW2012BLUE)
     my_canvas.setFont('ArialBold', 20)
     my_canvas.drawCentredString(x, y, u_campaign_name.upper())
-    print " +- set Heading"
 
     campaign_slogan = _(u'campaign_slogan', default=u'Good for you. Good for business.')
     u_campaign_slogan = translate(campaign_slogan,
@@ -95,7 +94,6 @@ def generatePDF(self,
     y = 18 * cm
     my_canvas.setFont('ArialBold', 17)
     my_canvas.drawCentredString(x, y, u_campaign_slogan.upper())
-    print " +- set slogan"
 
     # print first subline
     certificate_for = _(u'certificate_for', default=u'This certificate acknowledges the participation of ')
@@ -113,14 +111,12 @@ def generatePDF(self,
     my_canvas.setFont('Arial', 32)
     my_canvas.setFillColor(HW2012BLUE)
     my_canvas.drawCentredString(x, y, u_certificate_title.upper())
-    print " +- set Headline"#, certificate_title
 
     u_certificate_for = u_certificate_for.encode('utf-8')
     x = 14.85 * cm
     y = 10 * cm
     my_canvas.setFont('Arial', 18)
     my_canvas.drawCentredString(x, y, u_certificate_for)
-    print " +- set first subline"#, certificate_for
 
     # print company name
     x = 14.85 * cm
@@ -142,7 +138,6 @@ def generatePDF(self,
     # P = Paragraph(company, style)
     # wi, he = P.wrap(width, height)
     # P.drawOn(my_canvas, x - wi/2, y - he/2)
-    print " +- set company name"#, company
 
     style = ParagraphStyle(
             name='ContributionHeadline',
@@ -167,7 +162,6 @@ def generatePDF(self,
     u_contribution_headline = translate(contribution_headline,
                                           target_language=language,
                                           context=self)
-    print "contribution_headline", u_contribution_headline
 
     u_contribution_headline = u_contribution_headline.encode('utf-8')
     my_canvas.setFont('Arial', 18)
@@ -175,18 +169,15 @@ def generatePDF(self,
     # P = Paragraph(contribution_headline, style)
     # wi, he = P.wrap(width, height)
     # P.drawOn(my_canvas, x - wi/2, y - he/2)
-    print " +- set contribution headline"  # , company
 
     # ***** FALLBACK-SOLUTION UNTIL PDFTK IS AVAILABLE *******
     if usePDFTK == 0:
-        print "Set Charter-Image as second page w/o PDFTK"
         # set the webcharter-image as second page
         chartername = "charter_hw2012.jpg"
         charterfile = getattr(self, chartername , None)
         # Fallback to English
 #        if not charterfile:
 #            charterfile = getattr(self.charter_img, chartername % 'en')
-        print "have charterfile:", [charterfile]
         # charterdata = str(charterfile._data)
         # charterdata = StringIO(charterdata)
         # charterimage = ImageReader(charterdata)
@@ -197,21 +188,18 @@ def generatePDF(self,
 
     # ****** NEEDS PDFTK SUPPORT ********
     if usePDFTK == 1:
-        print "Start merging with PDFTK"
         # merge the webcharter and the acknowledge PDFs
         chartername = "charter_hw2012.jpg"
         charterfile = getattr(self, chartername , None)
         # Fallback to English
 #        if not charterfile:
 #            charterfile = getattr(self.charter_img, chartername % 'en')
-        print "got webcharter:", chartername
 
         # generate temp-files of both PDFs
         tmp_charter_file = tempfile.mkstemp(suffix='.pdf')
         charter_fd = open(tmp_charter_file[1], 'w')
         charter_fd.write(str(charterfile._data))
         #charter_fd.close()
-        print "wrote charter-temp", tmp_charter_file[1]
 
         # save the acknowledge
         my_canvas.save()
@@ -219,19 +207,15 @@ def generatePDF(self,
         ack_fd = open(tmp_ack_file[1], 'w')
         ack_fd.write(acknowledge.getvalue())
         #ack_fd.close()
-        print "wrote ack-temp", tmp_ack_file[1], len(acknowledge.getvalue())
 
         # merge PDFs with PDF-Toolkit
         statement = 'pdftk %s %s cat output -' % (tmp_charter_file[1], tmp_ack_file[1])
-        print "system-call:", statement
         ph = os.popen(statement)
         data = StringIO()
         data.write(ph.read())
         ph.close()
-        print "output len:", len(data.getvalue())
 
         os.remove(tmp_charter_file[1])
         os.remove(tmp_ack_file[1])
 
-        print "==================================="
         return data.getvalue()
