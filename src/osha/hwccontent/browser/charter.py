@@ -49,7 +49,7 @@ def send_charter_email(context, pdf, to, sender, body, language):
     mailhost = context.MailHost
     msg = MIMEMultipart()
 
-    msg['Subject'] = "The Healthy Workplaces 2014 Campaign Charter"
+    msg['Subject'] = "The Healthy Workplaces Campaign certificate"
     msg['From'] = sender
     msg['To'] = to
     msg['Date'] = formatdate(localtime=True)
