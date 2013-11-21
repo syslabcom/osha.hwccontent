@@ -1,7 +1,8 @@
 from Acquisition import aq_inner
-from Products.Archetypes import PloneMessageFactory as _
+from osha.hwccontent import _
 from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFDefault.utils import checkEmailAddress
+from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from StringIO import StringIO
@@ -22,16 +23,14 @@ import time
 log = getLogger('osha.hw2014.browser.charter')
 
 # consider translating the strings
-email_template = """<p>Thank you for signing the European Week Charter.</p>
+email_template = _(u"""<p>Thank you for signing the Healthy Workplaces Campaign certificate.</p>
 
 <p>Please find a PDF version of the charter attached to this email,
 which you may print.</p>
 
 <p>For more information on the Healthy Workplaces Campaign, please
 consult the website at http://www.healthy-workplaces.eu.</p>
-
-
-"""
+""")
 
 
 def logit(*kwargs):
@@ -65,7 +64,7 @@ def send_charter_email(context, pdf, to, sender, body, language):
     Encoders.encode_base64(part)
     part.add_header(
         'Content-Disposition',
-        'attachment; filename="hw2014-campaign-charter.pdf"',
+        'attachment; filename="campaign-certificate.pdf"',
     )
     msg.attach(part)
 
@@ -139,6 +138,8 @@ class NationalPartnerForm(BrowserView):
 
         language = self.context.portal_languages.getPreferredLanguage()
         messages = IStatusMessage(request)
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        from_address = portal.getProperty('email_from_address', '')
 
         url = "/%s/get-involved/get-your-certificate/feedback" % language
 
@@ -231,8 +232,6 @@ class NationalPartnerForm(BrowserView):
         participant_details.update(checkbox_options)
         self.store_participant_details(participant_details)
 
-        from_address = 'information@osha.europa.eu'
-
         try:
             logit(" ... calling generatePDF, language: %s" % language)
             logit(" ... calling generatePDF")
@@ -251,8 +250,8 @@ class NationalPartnerForm(BrowserView):
                 self.context,
                 pdf=pdf,
                 to=email,
-                sender=from_address,
-                body=email_template,
+                sender="Healthy Workplaces <%s>" % from_address,
+                body=translate(email_template, target_language=language,),
                 language=language,
             )
         #XXX Too many things could possibly go wrong. So we catch all.
