@@ -12,6 +12,8 @@ from osha.hwccontent.organisation import (
     IProfileRejectedEvent,
 )
 from osha.hwccontent.interfaces import IOSHAHWCContentLayer
+from osha.hwccontent import utils
+
 import logging
 
 log = logging.getLogger(__name__)
@@ -140,33 +142,7 @@ def _send_notification(obj, template_name, *extra_args):
 
 
 def add_user_and_send_notifications(obj):
-    site_props = getToolByName(obj, 'portal_properties').get('site_properties')
-    portal_membership = getToolByName(obj, 'portal_membership')
-    portal_registration = getToolByName(obj, 'portal_registration')
-    use_email_as_username = site_props.use_email_as_login
-    creator_name = obj.key_name
-    username = creator_email = obj.key_email
-
-    if not use_email_as_username:
-        username = username.split('@')[0]
-    username = username.encode('utf-8')
-    if portal_membership.getMemberById(username) is None:
-        chars = string.ascii_letters + string.digits + '\'()[]{}$%&#+*~.,;:-_'
-        password = ''.join(random.choice(chars) for x in range(16))
-        while portal_registration.testPasswordValidity(password):
-            password = ''.join(random.choice(chars) for x in range(16))
-        portal_registration.addMember(
-            username,
-            password,
-            [],
-            properties={'email': creator_email,
-                        'username': username,
-                        'fullname': creator_name,
-                        }
-        )
-    roles = ["Reader", "Contributor", "Editor"]
-    obj.manage_setLocalRoles(username, roles)
-
+    username = utils.create_key_user_if_not_exists(obj)
     _send_notification(obj, "mail_approve_phase_1", username)
 
 

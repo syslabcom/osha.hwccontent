@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from Products.CMFPlone.utils import safe_unicode
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
+from five import grok
 from plone import api
 from plone.app.contenttypes.interfaces import IImage
 from zope.interface import implements
 from zope.interface import Interface
 import logging
+
+from osha.hwccontent import utils
 
 log = logging.getLogger(__name__)
 
@@ -113,3 +118,26 @@ class HelperView(BrowserView):
                 continue
             return obj.absolute_url()
         return None
+
+
+class CreateFocalpointUsers(grok.View):
+    grok.name('create-focalpoint-users')
+    grok.require('cmf.ManagePortal')
+    grok.context(ISiteRoot)
+
+    def render(self):
+        cat = getToolByName(self.context, 'portal_catalog')
+        gt = getToolByName(self.context, 'portal_groups')
+        rt = getToolByName(self.context, 'portal_registration')
+        users = []
+        for fp in cat(portal_type=['osha.hwccontent.focalpoint']):
+            obj = fp.getObject()
+            username = utils.create_key_user_if_not_exists(obj)
+            group = gt.getGroupById("Focal Points")
+            if group is None:
+                gt.addGroup("Focal Points")
+                group = gt.getGroupById("Focal Points")
+            group.addMember(username)
+            rt.mailPassword(username, self.request)
+            users.append(username)
+        return 'Processed users: <br>\n{0}'.format('<br>\n'.join(users))
