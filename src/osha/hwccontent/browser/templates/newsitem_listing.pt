@@ -19,23 +19,20 @@
                     obj nocall:item/obj|nothing"
                 tal:attributes="class python:('newsItem' + first + last)">
 
-                <a href="#"
-                    tal:condition="item/image|item/image_base64|nothing"
-                    tal:attributes="href item/getURL">
-                    <div class="tileImage">
-                        <tal:if_blob tal:condition="item/image|nothing">
-                            <img src="" alt=""
-                                tal:define="scales obj/@@images;
-                                            scale python:scales.scale('image', 'thumb')"
-                                tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
-                        </tal:if_blob>
 
-                        <tal:if_base64 tal:condition="item/image_base64|nothing">
-                            <img src="" alt="" class="tileImage"
-                                tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
-                        </tal:if_base64>
-                    </div>
-                </a>
+                <div class="tileImage" tal:condition="item/image|item/image_base64|nothing">
+                    <tal:if_blob tal:condition="item/image|nothing">
+                        <img src="" alt=""
+                            tal:define="scales obj/@@images;
+                                        scale python:scales.scale('image', 'thumb')"
+                            tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
+                    </tal:if_blob>
+
+                    <tal:if_base64 tal:condition="item/image_base64|nothing">
+                        <img src="" alt="" class="tileImage"
+                            tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
+                    </tal:if_base64>
+                </div>
 
                 <h2 class="tileHeadline" tal:content="item/Title">Foo</h2>
                 <p class="metadata">
