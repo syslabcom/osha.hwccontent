@@ -24,7 +24,7 @@ class View(dexterity.DisplayForm):
 
     def get_events(self):
         results = self.portal_catalog(
-            portal_type='plone.app.event.dx.event',
+            portal_type='Event',
             path='/'.join(self.context.getPhysicalPath()))
         return [x.getObject() for x in results]
 

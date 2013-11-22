@@ -164,7 +164,7 @@
     />
   <browser:viewlet
     name="organisationmanage"
-    for="plone.app.event.dx.interfaces.IDXEvent"
+    for="plone.app.contenttypes.interfaces.IEvent"
     class=".organisation.OrganisationManage"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
     template="templates/organisationmanage_sub.pt"

@@ -80,4 +80,13 @@
     permission="zope2.View"
     />
 
+  <!-- Event organiser -->
+    <plone:behavior
+        title="Event Organiser"
+        description="Organiser of an Event / Meeting."
+        provides=".event.IEventOrganiser"
+        factory="plone.behavior.AnnotationStorage"
+        for="plone.dexterity.interfaces.IDexterityContent"
+        />
+
 </configure>

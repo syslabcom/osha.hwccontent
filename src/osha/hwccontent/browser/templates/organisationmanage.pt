@@ -17,7 +17,7 @@
          Thank you for your application. You will be notified when it has been reviewed by EU-OSHA.
      </p>
      <p tal:condition="python:view.owner and view.wfstate=='approved_phase_1' and not here.mission_statement" class="callout">
-         Thank you for your application. Before your profile can be made public, please 
+         Thank you for your application. Before your profile can be made public, please
          <a tal:attributes="href string:${here_url}/edit">fill in some additional information by clicking this link.</a><br />
      </p>
 
@@ -38,7 +38,7 @@
         <ul>
             <li><a tal:attributes="href string:${here_url}/edit">Click here to update your profile.</a></li>
             <li><a tal:attributes="href string:${here_url}/++add++News%20Item">Add news item</a></li>
-            <li><a tal:attributes="href string:${here_url}/++add++plone.app.event.dx.event">Add event</a></li>
+            <li><a tal:attributes="href string:${here_url}/++add++Event">Add event</a></li>
         <ul>
      </span>
 

@@ -4,6 +4,7 @@ from Products.Five.browser import BrowserView
 from plone import api
 from plone.app.event.dx.behaviors import IEventLocation
 from osha.hwccontent.browser.utils import get_partners, css_by_orientation
+from osha.hwccontent.behaviors.event import IEventOrganiser
 
 
 class FrontPageView(BrowserView):
@@ -23,7 +24,7 @@ class FrontPageView(BrowserView):
         catalog = api.portal.get_tool(name='portal_catalog')
         num_results = 2
         results = catalog.searchResults(
-            portal_type="plone.app.event.dx.event",
+            portal_type="Event",
             sort_limit=num_results,
             sort_on="start",
             sort_order="descending",
@@ -40,6 +41,13 @@ class FrontPageView(BrowserView):
         except TypeError:
             return None
 
+    def get_event_organiser(self, event):
+        try:
+            event = IEventOrganiser(event)
+            return event.organiser
+        except TypeError:
+            return None
+
     def partners(self):
         return get_partners()
 
@@ -48,4 +56,3 @@ class FrontPageView(BrowserView):
         """ This is a helper to determine logo orientation for a partner.
         """
         return css_by_orientation(partner)
-    

@@ -8,6 +8,7 @@
     i18n_domain="osha.hwccontent">
 
   <include file="permissions.zcml" />
+  <include file="upgrades.zcml" />
   <include package=".browser" />
   <include package=".behaviors" />
 

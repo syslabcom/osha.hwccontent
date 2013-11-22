@@ -2,7 +2,7 @@
  <object name="osha.hwccontent.organisationfolder" meta_type="Dexterity FTI" />
  <object name="osha.hwccontent.organisation" meta_type="Dexterity FTI" />
  <object name="osha.hwccontent.focalpoint" meta_type="Dexterity FTI" />
- <object name="plone.app.event.dx.event" meta_type="Dexterity FTI" />
+ <object name="Event" meta_type="Dexterity FTI" />
  <object name="Document" meta_type="Dexterity FTI" />
  <object name="Folder" meta_type="Dexterity FTI" />
  <object name="File" meta_type="Dexterity FTI" />
