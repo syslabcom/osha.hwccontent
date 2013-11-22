@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       lang="en"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="osha.hw2010">
+      i18n:domain="osha.hwc">
   <body>
     <metal:block fill-slot="main">
       <tal:main-macro metal:define-macro="main">
@@ -90,7 +90,7 @@
                          tal:attributes="value form/telephone | string:"/>
                   <fieldset class="comprehensive checkList"
                             tal:define="checkboxlist python:form and form.get('checkboxlist', []) or []">
-                    <legend i18n:domain="osha.hwc" i18n:translate="field_comprehensive_checklist">
+                    <legend i18n:translate="field_comprehensive_checklist">
                       I/we participated in the Healthy Workplace Campaign and organised the following activities
                     </legend>
                     <label>
