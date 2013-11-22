@@ -4,7 +4,7 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone">
+      i18n:domain="osha.hwc">
 
   <body>
 
@@ -96,7 +96,7 @@
                     </li>
                   </ul>
                   <a tal:condition="context/events|nothing" class="more" href="*"
-                     tal:attributes="href context/events/absolute_url">More events</a><br/>
+                     tal:attributes="href context/events/absolute_url" i18n:translate="">See all events</a><br/>
                   <br/>
                 </div>
 
@@ -110,7 +110,7 @@
                     </li>
                   </ul>
                   <a tal:condition="context/news|nothing" class="more" href="*"
-                     tal:attributes="href context/news/absolute_url">More news</a><br/>
+                     tal:attributes="href context/news/absolute_url" i18n:translate="">See all news</a><br/>
                 </div>
 
               </dd>
