@@ -4,7 +4,7 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       metal:use-macro="context/main_template/macros/master"
-      i18n:domain="plone">
+      i18n:domain="osha.hwc">
 <body>
 
 <metal:content-core fill-slot="content-core"
@@ -38,7 +38,7 @@
     }
 </style>
 
-  <h2 tal:condition="python:len(files) > 0">Downloads</h2>
+  <h2 tal:condition="python:len(files) > 0" i18n:translate="Downloads">Downloads</h2>
 
   <div class="downloads">
     <a tal:repeat="file files" tal:attributes="href string:${file/absolute_url}/@@download/file">

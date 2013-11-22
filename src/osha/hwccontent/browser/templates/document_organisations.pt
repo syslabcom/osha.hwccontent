@@ -4,7 +4,7 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       metal:use-macro="context/main_template/macros/master"
-      i18n:domain="plone">
+      i18n:domain="osha.hwc">
   <body>
 
     <metal:content-core fill-slot="content-core" tal:define="portal_url context/@@plone_portal_state/portal_url">
@@ -45,7 +45,7 @@
       </div>
       </metal:block>
 
-    </metal:content-core>      
+    </metal:content-core>
 
   </body>
 </html>
