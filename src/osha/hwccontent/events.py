@@ -142,7 +142,7 @@ def _send_notification(obj, template_name, *extra_args):
 
 
 def add_user_and_send_notifications(obj):
-    username = utils.create_key_user_if_not_exists(obj)
+    username, created = utils.create_key_user_if_not_exists(obj)
     _send_notification(obj, "mail_approve_phase_1", username)
 
 

@@ -129,15 +129,23 @@ class CreateFocalpointUsers(grok.View):
         cat = getToolByName(self.context, 'portal_catalog')
         gt = getToolByName(self.context, 'portal_groups')
         rt = getToolByName(self.context, 'portal_registration')
-        users = []
+        created_users = []
+        existed_users = []
         for fp in cat(portal_type=['osha.hwccontent.focalpoint']):
             obj = fp.getObject()
-            username = utils.create_key_user_if_not_exists(obj)
+            username, created = utils.create_key_user_if_not_exists(obj)
             group = gt.getGroupById("Focal Points")
             if group is None:
                 gt.addGroup("Focal Points")
                 group = gt.getGroupById("Focal Points")
             group.addMember(username)
-            rt.mailPassword(username, self.request)
-            users.append(username)
-        return 'Processed users: <br>\n{0}'.format('<br>\n'.join(users))
+            if created:
+                rt.mailPassword(username, self.request)
+                created_users.append(username)
+            else:
+                existed_users.append(username)
+        msg = (u'Created users: \n{0}\n\n'
+               u'Existing users:\n{1}\n').format(
+                   u'\n'.join(created_users),
+                   u'\n'.join(existed_users))
+        return msg

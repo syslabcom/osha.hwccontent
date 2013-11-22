@@ -13,6 +13,7 @@ def create_key_user_if_not_exists(obj):
     portal_membership = getToolByName(obj, 'portal_membership')
     portal_registration = getToolByName(obj, 'portal_registration')
     use_email_as_username = site_props.use_email_as_login
+    created = False
 
     username = email = obj.key_email
     if not use_email_as_username:
@@ -33,6 +34,7 @@ def create_key_user_if_not_exists(obj):
                         'fullname': fullname,
                         }
         )
+        created = True
     roles = ["Reader", "Contributor", "Editor"]
     obj.manage_setLocalRoles(username, roles)
-    return username
+    return username, created
