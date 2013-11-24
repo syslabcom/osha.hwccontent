@@ -1,0 +1,23 @@
+From: <tal:from tal:replace="structure view/from_addr">us@site.org</tal:from>
+To: <tal:recipient tal:replace="structure view/creator_email">user@organisation.org</tal:recipient>
+Subject: <tal:subject tal:replace="view/subject">Profile approved</tal:subject>
+
+Dear <tal:creator_name tal:replace="view/creator_name">User</tal:creator_name>,
+
+Your organisation profile has beed published on the Healthy Workplaces Campaign
+website. It is now visible on the home page and the Official Campaign Partners section
+under the "Type of organisation" you entered (<tal:organisation_type replace="view/organisation_type">Type</tal:organisation_type>):
+
+    <tal:portal_url replace="view/portal_url">Home page</tal:portal_url>
+    <tal:folder_url replace="view/folder_url">Home page</tal:folder_url>
+
+If you log in with the account information you have received previously, you
+can continue to update your profile. You can also add News and Events.
+
+The direct link to your profile stays the same as before:
+
+    <tal:object_url tal:replace="view/object_url">http://nohost/organisation</tal:object_url>
+
+Best regards,
+
+The EU-OSHA Healthy Workplaces Campaign team

@@ -1,6 +1,6 @@
-import string
-import random
+# _+- coding: utf-8 -*-
 
+from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from Products.DCWorkflow.interfaces import IBeforeTransitionEvent
 from five import grok
@@ -29,8 +29,10 @@ class MailTemplateBase(grok.View):
         super(MailTemplateBase, self).__init__(context, request)
         portal = getToolByName(context, 'portal_url').getPortalObject()
         self.object_url = context.absolute_url()
+        self.folder_url = aq_parent(context).absolute_url()
         self.portal_url = portal.absolute_url()
         self.creator_name = context.key_name
+        self.organisation_type = context.organisation_type
         self.creator_email = "%(name)s <%(email)s>" % dict(
             name=context.key_name, email=context.key_email)
         self.from_addr = "%(name)s <%(email)s>" % dict(
@@ -129,6 +131,19 @@ class OrganisationRejectedMailTemplate(MailTemplateBase):
         return self.template.render(self)
 
 
+class OrganisationPublishedCreatorMailTemplate(MailTemplateBase):
+    """ """
+    grok.name('mail_organisation_published_creator')
+    grok.context(IOrganisation)
+    grok.layer(IOSHAHWCContentLayer)
+    grok.require('cmf.ReviewPortalContent')
+
+    def render(self):
+        self.subject = 'Application to the Healthy Workplaces campaign'
+        self.template = grok.PageTemplateFile(
+            'templates/mail_organisation_published_creator.pt')
+        return self.template.render(self)
+
 def _send_notification(obj, template_name, *extra_args):
     if not _send_emails:
         return
@@ -158,6 +173,8 @@ def handle_wf_transition(obj, event):
     elif event.transition.id == 'submit':
         _send_notification(obj, "mail_organisation_submitted_creator")
         _send_notification(obj, "mail_organisation_submitted_siteowner")
+    elif event.transition.id == 'publish':
+        _send_notification(obj, 'mail_organisation_published_creator')
 
 
 @grok.subscribe(IOrganisation, IProfileRejectedEvent)
