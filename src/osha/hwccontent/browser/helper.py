@@ -131,21 +131,30 @@ class CreateFocalpointUsers(grok.View):
         rt = getToolByName(self.context, 'portal_registration')
         created_users = []
         existed_users = []
+        failed = []
         for fp in cat(portal_type=['osha.hwccontent.focalpoint']):
             obj = fp.getObject()
             username, created = utils.create_key_user_if_not_exists(obj)
-            group = gt.getGroupById("Focal Points")
-            if group is None:
-                gt.addGroup("Focal Points")
+            if username is not None:
                 group = gt.getGroupById("Focal Points")
-            group.addMember(username)
-            if created:
-                rt.mailPassword(username, self.request)
-                created_users.append(username)
+                if group is None:
+                    gt.addGroup("Focal Points")
+                    group = gt.getGroupById("Focal Points")
+                group.addMember(username)
+                if created:
+                    rt.mailPassword(username, self.request)
+                    created_users.append(u"{0} <a href='{1}'>{2}</a>".format(
+                        username, obj.absolute_url(), safe_unicode(obj.Title())))
+                else:
+                    existed_users.append(u"{0} <a href='{1}'>{2}</a>".format(
+                        username, obj.absolute_url(), safe_unicode(obj.Title())))
             else:
-                existed_users.append(username)
-        msg = (u'Created users: \n{0}\n\n'
-               u'Existing users:\n{1}\n').format(
-                   u'\n'.join(created_users),
-                   u'\n'.join(existed_users))
+                failed.append(u"<a href='{0}'>{1}</a>".format(
+                    obj.absolute_url(), safe_unicode(obj.Title())))
+        msg = (u'<html><h2>Created users:</h2><p>{0}</p>'
+               u'<h2>Existing users:</h2><p>{1}</p>'
+               u'<h2>Failed profiles:</h2><p>{2}</p></html>').format(
+                   u'<br>'.join(created_users),
+                   u'<br>'.join(existed_users),
+                   u'<br>'.join(failed))
         return msg
