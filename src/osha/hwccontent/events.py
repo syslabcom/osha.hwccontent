@@ -47,11 +47,16 @@ class ApprovePhase1MailTemplate(MailTemplateBase):
     grok.layer(IOSHAHWCContentLayer)
     grok.require('cmf.ReviewPortalContent')
 
-    def render(self, username):
+    def render(self, username, created):
         self.username = username
         self.subject = 'Profile approved'
         self.template = grok.PageTemplateFile(
             'templates/mail_approve_phase_1.pt')
+        self.created = created
+        reset_tool = getToolByName(self, 'portal_password_reset')
+        membership = getToolByName(self, 'portal_membership')
+        member = membership.getMemberById(username)
+        self.reset = reset_tool.requestReset(member.getId())
         return self.template.render(self)
 
 
@@ -161,7 +166,7 @@ def _send_notification(obj, template_name, *extra_args):
 
 def add_user_and_send_notifications(obj):
     username, created = utils.create_key_user_if_not_exists(obj)
-    _send_notification(obj, "mail_approve_phase_1", username)
+    _send_notification(obj, "mail_approve_phase_1", username, created)
 
 
 @grok.subscribe(IOrganisation, IBeforeTransitionEvent)

@@ -4,9 +4,17 @@ Subject: <tal:subject tal:replace="view/subject">Profile approved</tal:subject>
 
 Dear <tal:creator_name tal:replace="view/creator_name">User</tal:creator_name>,
 
-Your organisation profile has been approved. You can set a password for your user account here:
+Your organisation profile has been approved.
 
-    <tal:portal_url tal:replace="view/portal_url">http://nohost</tal:portal_url>/mail_password_form?userid=<tal:username tal:replace="view/username">user</tal:username>
+An account has been created for you. Your email address <tal:username tal:replace="view/username">user</tal:username> can be used for logging in.
+The following link will take you to a page where you can set your password for your new account.
+Enter your email address and your new password:
+    <span tal:define="reset nocall:view/reset" tal:replace="python:here.pwreset_constructURL(reset['randomstring'])"
+              tal:omit-tag=""/>
+
+    <div tal:omit-tag="">(This link is valid for <span tal:content="here/portal_password_reset/getExpirationTimeout"
+              tal:omit-tag="" /> hours)
+    </div>
 
 You can then view and complete the profile here:
 
