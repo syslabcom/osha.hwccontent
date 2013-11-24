@@ -31,8 +31,11 @@ class MailTemplateBase(grok.View):
         self.object_url = context.absolute_url()
         self.portal_url = portal.absolute_url()
         self.creator_name = context.key_name
-        self.creator_email = context.key_email
-        self.from_addr = portal.getProperty('email_from_address', '')
+        self.creator_email = "%(name)s <%(email)s>" % dict(
+            name=context.key_name, email=context.key_email)
+        self.from_addr = "%(name)s <%(email)s>" % dict(
+            name=portal.getProperty('email_from_name', ''),
+            email=portal.getProperty('email_from_address', ''))
 
 
 class ApprovePhase1MailTemplate(MailTemplateBase):
@@ -58,7 +61,7 @@ class OrganisationCreatedCreatorMailTemplate(MailTemplateBase):
     grok.require('cmf.ReviewPortalContent')
 
     def render(self):
-        self.subject = 'Profile created'
+        self.subject = 'Application to the Healthy Workplaces campaign'
         self.template = grok.PageTemplateFile(
             'templates/mail_organisation_created_creator.pt')
         return self.template.render(self)
@@ -72,7 +75,7 @@ class OrganisationCreatedSiteOwnerMailTemplate(MailTemplateBase):
     grok.require('cmf.ReviewPortalContent')
 
     def render(self):
-        self.subject = 'Profile created'
+        self.subject = 'Application to the Healthy Workplaces campaign'
         self.template = grok.PageTemplateFile(
             'templates/mail_organisation_created_siteowner.pt')
         if not self.from_addr:
