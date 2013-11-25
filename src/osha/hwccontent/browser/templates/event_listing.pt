@@ -137,7 +137,7 @@
               </a>
             </li>
 
-            <li tal:condition="data/contact_phone" i18n:attributes="title label_phone">
+            <li tal:condition="data/contact_phone" title="Phone" i18n:attributes="title label_phone">
               <span i18n:translate="label_phone">Phone</span>:
               <a class="contact_phone" title=""
                   tal:attributes="href string:tel:${data/contact_phone}"
