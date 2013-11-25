@@ -187,4 +187,14 @@
     layer="..interfaces.IOSHAHWCContentLayer"
     />
 
+  <!-- override resolveuid to become translation-aware -->
+
+  <browser:page
+    name="resolveuid"
+    for="*"
+    class=".resolveuid.ResolveUIDView"
+    permission="zope.Public"
+    layer="..interfaces.IOSHAHWCContentLayer"
+    />
+
 </configure>
