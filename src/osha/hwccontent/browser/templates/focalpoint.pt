@@ -60,7 +60,7 @@
               </dd>
             </dl>
             <dl class="row-fluid">
-              <dt class="span4 partnerlogo">
+              <dt class="span4 focalpointflag">
                 <img src="#" tal:replace="structure logo/tag|nothing" />
               </dt>
               <dd class="span8">
