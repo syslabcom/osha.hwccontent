@@ -85,7 +85,7 @@ def generatePDF(self,
     my_canvas.setFont('ArialBold', 20)
     my_canvas.drawCentredString(x, y, u_campaign_name.upper())
 
-    campaign_slogan = _(u'campaign_slogan', default=u'Good for you. Good for business.')
+    campaign_slogan = _(u'campaign_slogan', default=u'Healthy Workplaces Manage Stress.')
     u_campaign_slogan = translate(campaign_slogan,
                                   target_language=language,
                                   context=self
