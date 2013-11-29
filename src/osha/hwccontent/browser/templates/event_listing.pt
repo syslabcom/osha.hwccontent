@@ -86,11 +86,21 @@
           <li itemprop="endDate" class="dtend" tal:content="data/end/isoformat">end</li>
         </ul>
 
+
+        <div class="databox pull-left">
+              <p class="day"
+                     tal:content="python:data.start.strftime('%d')">17</p>
+              <p class="mounth" i18n:translate=""
+                     tal:content="python:data.start.strftime('%B')">september</p>
+              <p class="year"
+                     tal:content="python:data.start.strftime('%Y')">2013</p>
+        </div>
+<!--
         <div class="cal_date">
             <span class="cal_wkday" tal:content="python:startf['wkday_abbr'][:2]">Tue</span>
             <span class="cal_day" tal:content="string:${startf/day}.">15.</span>
             <span class="cal_month" tal:content="string:${startf/month_abbr}.">Oct.</span>
-        </div>
+        </div> -->
 
         <div class="cal_info">
           <h2>
