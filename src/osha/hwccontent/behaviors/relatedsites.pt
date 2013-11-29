@@ -3,7 +3,7 @@
      <h2 i18n:translate="Related Sites">Related Sites</h2>
      <ul>
         <li tal:repeat="item view/items">
-            <a href="#" tal:attributes="href item/url" tal:content="item/label">link</a>
+            <a href="#" tal:attributes="href item/url" target="_blank" tal:content="item/label">link</a>
         </li>
      </ul>
 
