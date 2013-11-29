@@ -45,11 +45,11 @@ def CustomTableWidgetFactory(field, request):
 
 class ITableRowSchema(form.Schema):
     label = schema.TextLine(
-        title=_(u"Title"),
+        title=u"Title",
         required=False,
     )
     url = schema.URI(
-        title=_(u"URL"),
+        title=u"URL",
         required=False,
     )
 
@@ -65,7 +65,7 @@ class IRelatedSites(model.Schema):
         title=_(u"Related sites"),
         required=False,
         value_type=DictRow(
-            title=_(u"tablerow"),
+            title=u"tablerow",
             required=False,
             schema=ITableRowSchema,),
     )
@@ -89,10 +89,10 @@ class ISeeAlso(model.Schema):
 
     see_also = RelationList(
         title=_(u"See also"),
-        description=_(u"Pick existing items"),
+        description=u"Pick existing items",
         required=False,
         value_type=RelationChoice(
-            title=_(u"Select an existing item"),
+            title=u"Select an existing item",
             required=False,
             source=ObjPathSourceBinder(),
         ),
@@ -118,11 +118,11 @@ class ISectionImage(form.Schema):
                    fields=['section_image'])
 
     section_image = RelationList(
-        title=_(u"Section images"),
-        description=_(u"Pick one or more existing images"),
+        title=u"Section images",
+        description=u"Pick one or more existing images",
         required=False,
         value_type=RelationChoice(
-            title=_(u"Browse for images in the site"),
+            title=u"Browse for images in the site",
             required=False,
             source=ObjPathSourceBinder(portal_type='Image'),
         ),
