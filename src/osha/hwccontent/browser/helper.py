@@ -1,17 +1,27 @@
 # -*- coding: utf-8 -*-
 
+from Acquisition import aq_base
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
+from Products.Five.utilities.interfaces import IMarkerInterfaces
 from five import grok
 from plone import api
 from plone.app.contenttypes.interfaces import IImage
+from plone.multilingual.interfaces import (
+    ITranslationManager,
+    ITranslatable,
+)
 from zope.interface import implements
 from zope.interface import Interface
 import logging
 
 from osha.hwccontent import utils
+from osha.hwccontent.behaviors.moreabout import (
+    IRelatedSites,
+    ISectionImage,
+)
 
 log = logging.getLogger(__name__)
 
@@ -158,3 +168,62 @@ class CreateFocalpointUsers(grok.View):
                    u'<br>'.join(existed_users),
                    u'<br>'.join(failed))
         return msg
+
+
+class PropagateFolderSettings(grok.View):
+    """ This view propagates all settings pertaining to layout to the translations
+    """
+    grok.name('propagate-folder-settings')
+    grok.require('cmf.ManagePortal')
+    grok.context(ISiteRoot)
+
+    def render(self):
+        cat = getToolByName(self.context, 'portal_catalog')
+        query = dict(portal_type='Folder', Language='en')
+        res = cat(query)
+        print len(res)
+        for r in res:
+            if r.getPath().split('/')[2] != 'en':
+                log.warning("Found a folder with lang EN not under /en: {0}".format(
+                    r.getPath()))
+                continue
+            obj = r.getObject()
+            if not ITranslatable.providedBy(obj):
+                log.warning('Found a folder that is not translatable, WTF: {0}'.format(
+                    r.getPath()))
+                continue
+            tm = ITranslationManager(obj)
+            for lang, trans in tm.get_translations().items():
+                if lang == 'en':
+                    continue
+                # Copy "Exclude from navigation", section images and related sites
+                trans.exclude_from_nav = obj.exclude_from_nav
+                IRelatedSites(trans).related_sites_links = IRelatedSites(obj).related_sites_links
+                ISectionImage(trans).section_image = ISectionImage(obj).section_image
+                # Copy over marker interfaces
+                ifaces_to_add = IMarkerInterfaces(obj).getDirectlyProvidedNames()
+                if len(ifaces_to_add):
+                    t_ifaces = IMarkerInterfaces(trans)
+                    add = t_ifaces.dottedToInterfaces(ifaces_to_add)
+                    t_ifaces.update(add=add, remove=list())
+                # handle the default page settings
+                prop = 'default_page'
+                propval = aq_base(obj).getProperty(prop, None)
+                if propval:
+                    # get translation of default-page, if it exists (since the id might be different!)
+                    default_page = getattr(obj, propval, None)
+                    t_default_page = default_page and ITranslationManager(default_page).get_translation(lang)
+                    if not t_default_page:
+                        continue
+                    # check if marker interfaces need to be copied
+                    dp_ifaces_to_add = IMarkerInterfaces(default_page).getDirectlyProvidedNames()
+                    if len(dp_ifaces_to_add):
+                        t_dp_ifaces = IMarkerInterfaces(t_default_page)
+                        add = t_dp_ifaces.dottedToInterfaces(dp_ifaces_to_add)
+                        t_dp_ifaces.update(add=add, remove=list())
+                    if aq_base(trans).hasProperty(prop):
+                        trans._delProperty(prop)
+                    trans._setProperty(id=prop, value=t_default_page.id, type="string")
+
+
+        return "ok"
