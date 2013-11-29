@@ -19,9 +19,9 @@ _("November")
 _("December")
 
 # organisation types
-_('Enterprise')
-_('Trade union')
-_('Employer organisation')
+_('Enterprises')
+_('Trade unions')
+_('Employer organisations')
 _('OSH professionals')
 _('Research')
 _('Other')
