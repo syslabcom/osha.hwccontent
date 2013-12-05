@@ -1,14 +1,17 @@
 # _+- coding: utf-8 -*-
 
 from five import grok
-from osha.hwccontent import _, vocabularies
+from osha.hwccontent import vocabularies
 from plone.supermodel import model
 from z3c.form.interfaces import IAddForm
 from zope import schema
 from plone.autoform import directives as formdirectives
 from plone.directives import dexterity
 from plone.multilingualbehavior import directives
-from osha.hwccontent.organisation import IOrganisationBase
+from osha.hwccontent.organisation import (
+    IOrganisationBase,
+    _,
+)
 
 
 class IFocalPoint(IOrganisationBase):

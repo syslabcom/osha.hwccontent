@@ -22,7 +22,11 @@ from zope import interface
 from zope import schema
 from zope.component.interfaces import IObjectEvent, ObjectEvent
 
-from osha.hwccontent import _, vocabularies
+from osha.hwccontent import vocabularies
+
+from zope.i18nmessageid import MessageFactory
+
+_ = MessageFactory('will-not-be-translated')
 
 
 INTRO_TEXT_PHASE_1 = _(
