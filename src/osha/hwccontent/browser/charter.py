@@ -25,7 +25,7 @@ log = getLogger('osha.hw2014.browser.charter')
 # consider translating the strings
 email_template = _(u"""<p>Thank you for signing the Healthy Workplaces Campaign certificate.</p>
 
-<p>Please find a PDF version of the charter attached to this email,
+<p>Please find a PDF version of the certificate attached to this email,
 which you may print.</p>
 
 <p>For more information on the Healthy Workplaces Campaign, please
