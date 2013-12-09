@@ -31,3 +31,5 @@ _('Privacy Policy')
 _('Disclaimer')
 _('Copyright')
 _('European Agency for Safety and Health at Work')
+
+_(u'campaign_name', default=u'Healthy Workplaces')

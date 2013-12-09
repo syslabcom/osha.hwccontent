@@ -16,7 +16,7 @@ import reportlab.rl_config
 from zope.i18n import translate
 import xml.sax.saxutils as saxutils
 
-from osha.hwccontent import _
+from osha.hwccontent.organisation import _
 
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
 HW2012BLUE = HexColor('#0a428f')
