@@ -58,7 +58,7 @@ class ITableRowSchema(form.Schema):
 class IRelatedSites(model.Schema):
     """Marker / Form interface for additional links """
 
-    model.fieldset('settings', label=_(u"Settings"),
+    model.fieldset('settings', label=u"Settings",
                    fields=['related_sites_links'])
 
     related_sites_links = schema.List(
@@ -84,7 +84,7 @@ class RelatedSites(object):
 class ISeeAlso(model.Schema):
     """Marker / Form interface for internal references"""
 
-    model.fieldset('settings', label=_(u"Settings"),
+    model.fieldset('settings', label=u"Settings",
                    fields=['see_also'])
 
     see_also = RelationList(
@@ -114,7 +114,7 @@ class SeeAlso(object):
 class ISectionImage(form.Schema):
     """Marker / Form interface for adding section image(s)"""
 
-    model.fieldset('settings', label=_(u"Settings"),
+    model.fieldset('settings', label=u"Settings",
                    fields=['section_image'])
 
     section_image = RelationList(
