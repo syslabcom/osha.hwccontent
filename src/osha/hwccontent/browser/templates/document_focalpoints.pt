@@ -22,7 +22,7 @@
                    tabs python:sorted(focalpoints);">
 
 
-    <h2 i18n:translate="title_focal_points">Focal points</h2>
+    <h2 i18n:translate="title_focal_points">National Focal Points</h2>
     <div class="focalpoints-menu">
       <div class="row-fluid">
         <ul>
