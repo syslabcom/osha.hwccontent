@@ -49,3 +49,25 @@ def create_key_user_if_not_exists(obj):
     roles = ["Reader", "Contributor", "Editor"]
     obj.manage_setLocalRoles(username, roles)
     return username, created
+
+
+def create_group_if_not_exists(group_id):
+    portal = getSite()
+    pg = getToolByName(portal, 'portal_groups')
+    group = pg.getGroupById(group_id)
+    if group is None:
+        pg.addGroup(group_id)
+        group = pg.getGroupById(group_id)
+    group.setGroupProperties({'title':  group_id})
+    return group
+
+
+def create_and_populate_partners_group():
+    portal = getSite()
+    group = create_group_if_not_exists("Official Campaign Partners")
+    cat = getToolByName(portal, 'portal_catalog')
+    orgas = cat(portal_type=['osha.hwccontent.organisation'])
+    for orga in orgas:
+        username, created = create_key_user_if_not_exists(orga.getObject())
+        group.addMember(username)
+    return group

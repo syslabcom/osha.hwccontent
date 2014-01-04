@@ -227,3 +227,13 @@ class PropagateFolderSettings(grok.View):
 
 
         return "ok"
+
+
+class CreateAndPopulatePartnersGroup(grok.View):
+    grok.name('create-partners-group')
+    grok.require('cmf.ManagePortal')
+    grok.context(ISiteRoot)
+
+    def render(self):
+        group = utils.create_and_populate_partners_group()
+        return "Group '{0}' created and/or populated.".format(group.getId())
