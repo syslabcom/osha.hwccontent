@@ -46,11 +46,7 @@ INTRO_TEXT_PHASE_2 = _(
     u"<p><em>Your application as campaign partner of the Healthy Workplaces "
     u"Campaign 2014-15 on ‘Healthy workplaces manage stress’ has been accepted"
     u"!</em></p><p><em>Please complete now your online profile with some "
-    u"additional information. Your online profile will be published on the "
-    u"Healthy Workplaces Campaign website (see the partners’ profiles of the "
-    u"Healthy Workplaces Campaign 2012-13 <a href='"
-    u"http://www.healthy-workplaces.eu/en/about/campaign-partners'>"
-    u"http://www.healthy-workplaces.eu/en/about/campaign-partners</a></em></p>"
+    u"additional information."
 )
 
 
