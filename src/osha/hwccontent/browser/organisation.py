@@ -46,6 +46,10 @@ class View(dexterity.DisplayForm):
         except KeyError:
             return ''
 
+    @property
+    def campaign_url(self):
+        return self.context.campaign_url or self.context.url
+
 
 class PostAddView(grok.View):
     grok.context(IOrganisation)
