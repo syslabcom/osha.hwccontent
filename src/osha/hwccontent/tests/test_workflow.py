@@ -62,9 +62,9 @@ class TestWorkflow(unittest.TestCase):
             key_email=u'ignatius@neworganisation.com',
             key_name=u'Ignatius Schliefenmühl')
         self.assertEqual(len(self.sent_mails), 2, msg='Mail not sent')
-        self.assertIn('To: ignatius@neworganisation.com',
+        self.assertIn('ignatius@neworganisation.com',
                       '\n'.join(self.sent_mails))
-        self.assertIn('To: ' + self.portal.email_from_address,
+        self.assertIn(self.portal.email_from_address,
                       '\n'.join(self.sent_mails))
         self.assertIn(new_org.absolute_url(),
                       '\n'.join(self.sent_mails))
@@ -120,9 +120,9 @@ class TestWorkflow(unittest.TestCase):
             self.wftool.getInfoFor(self.org, 'review_state'),
             'pending_phase_2')
         self.assertEqual(len(self.sent_mails), 2, msg='Mail not sent')
-        self.assertIn('To: harold@testorganisation.com',
+        self.assertIn('harold@testorganisation.com',
                       '\n'.join(self.sent_mails))
-        self.assertIn('To: ' + self.portal.email_from_address,
+        self.assertIn(self.portal.email_from_address,
                       '\n'.join(self.sent_mails))
         self.assertIn(self.org.absolute_url(),
                       '\n'.join(self.sent_mails))
