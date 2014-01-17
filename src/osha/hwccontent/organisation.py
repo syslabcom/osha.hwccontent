@@ -3,6 +3,7 @@
 import re
 
 from Acquisition import aq_parent
+from Products.CMFCore.utils import getToolByName
 from Products.validation.validators.BaseValidators import EMAIL_RE
 from five import grok
 from plone import api
@@ -21,6 +22,7 @@ from zope import event
 from zope import interface
 from zope import schema
 from zope.component.interfaces import IObjectEvent, ObjectEvent
+from zope.component.hooks import getSite
 
 from osha.hwccontent import vocabularies
 
@@ -54,10 +56,25 @@ class InvalidEmailError(schema.ValidationError):
     __doc__ = u'Please enter a valid e-mail address.'
 
 
+class ExistingEmailError(schema.ValidationError):
+    __doc__ = (u"This email address is already in use and cannot be "
+               "registered again. Please contact the website support.")
+
+
 def isEmail(value):
     if re.match('^' + EMAIL_RE, value):
         return True
     raise InvalidEmailError
+
+
+def isEmailAvailable(value):
+    if not isEmail(value):
+        return False
+    site = getSite()
+    catalog = getToolByName(site, 'portal_catalog')
+    if len(catalog(key_email=value)) == 0:
+        return True
+    raise ExistingEmailError
 
 
 class NonMissingSelectWidget(select.SelectWidget):
@@ -142,7 +159,7 @@ class IOrganisationBase(model.Schema):
 
     key_email = schema.TextLine(
         title=_(u"Email address of main contact person."),
-        constraint=isEmail,
+        constraint=isEmailAvailable,
     )
     directives.languageindependent('key_email')
 
