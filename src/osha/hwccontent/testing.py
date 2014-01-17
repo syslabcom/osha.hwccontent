@@ -80,6 +80,13 @@ class OSHAHWContentLayer(PloneSandboxLayer):
                     factory="osha.hwccontent.events.OrganisationRejectedMailTemplate"
                     name="mail_organisation_rejected"
                     />
+                <adapter
+                    for="osha.hwccontent.organisation.IOrganisation
+                         ZPublisher.HTTPRequest.HTTPRequest"
+                    provides="grokcore.view.interfaces.IGrokView"
+                    factory="osha.hwccontent.events.OrganisationPublishedCreatorMailTemplate"
+                    name="mail_organisation_published_creator"
+                    />
                </configure>
             """,
             context=configurationContext
