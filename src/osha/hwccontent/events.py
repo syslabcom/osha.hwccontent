@@ -7,6 +7,7 @@ from five import grok
 from zope.component import getMultiAdapter
 from zope.app.container.interfaces import IObjectAddedEvent
 
+from osha.hwccontent import OCP_GROUP_NAME
 from osha.hwccontent.organisation import (
     IOrganisation,
     IProfileRejectedEvent,
@@ -149,6 +150,7 @@ class OrganisationPublishedCreatorMailTemplate(MailTemplateBase):
             'templates/mail_organisation_published_creator.pt')
         return self.template.render(self)
 
+
 def _send_notification(obj, template_name, *extra_args):
     if not _send_emails:
         return
@@ -166,6 +168,9 @@ def _send_notification(obj, template_name, *extra_args):
 
 def add_user_and_send_notifications(obj):
     username, created = utils.create_key_user_if_not_exists(obj)
+    pg = getToolByName(obj, 'portal_groups')
+    group = pg.getGroupById(OCP_GROUP_NAME)
+    group.addMember(username)
     _send_notification(obj, "mail_approve_phase_1", username, created)
 
 

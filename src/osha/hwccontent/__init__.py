@@ -1,5 +1,7 @@
 from zope.i18nmessageid import MessageFactory
 
+OCP_GROUP_NAME = "Official Campaign Partners"
+
 _ = MessageFactory("osha.hwc")
 
 # OBSOLETE:

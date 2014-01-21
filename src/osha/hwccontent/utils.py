@@ -4,6 +4,8 @@ import random
 from Products.CMFCore.utils import getToolByName
 from zope.component.hooks import getSite
 
+from osha.hwccontent import OCP_GROUP_NAME
+
 import logging
 log = logging.getLogger(__name__)
 
@@ -58,13 +60,13 @@ def create_group_if_not_exists(group_id):
     if group is None:
         pg.addGroup(group_id)
         group = pg.getGroupById(group_id)
-    group.setGroupProperties({'title':  group_id})
+    group.setGroupProperties({'title': group_id})
     return group
 
 
 def create_and_populate_partners_group():
     portal = getSite()
-    group = create_group_if_not_exists("Official Campaign Partners")
+    group = create_group_if_not_exists(OCP_GROUP_NAME)
     cat = getToolByName(portal, 'portal_catalog')
     orgas = cat(portal_type=['osha.hwccontent.organisation'])
     for orga in orgas:
