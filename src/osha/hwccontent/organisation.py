@@ -71,8 +71,8 @@ def isEmailAvailable(value):
     if not isEmail(value):
         return False
     site = getSite()
-    catalog = getToolByName(site, 'portal_catalog')
-    if len(catalog(key_email=value)) == 0:
+    existing = site.acl_users.searchUsers(email=value)
+    if len(existing) == 0:
         return True
     raise ExistingEmailError
 
