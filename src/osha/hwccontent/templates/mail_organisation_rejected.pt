@@ -5,7 +5,7 @@ Subject: <tal:subject tal:replace="view/subject">Campaign application rejected</
 Dear <tal:creator_name tal:replace="view/creator_name">User</tal:creator_name>,
 
 We are sorry to inform you that your application to become an Official Campaign
-Partner of the European Healthy Workplaces has not been accepted.
+Partner of the European Healthy Workplaces Campaign has not been accepted.
 
 Best regards,
 
