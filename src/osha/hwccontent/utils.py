@@ -3,11 +3,14 @@ import random
 
 from Products.CMFCore.utils import getToolByName
 from zope.component.hooks import getSite
+from zope.component import getMultiAdapter
 
 from osha.hwccontent import OCP_GROUP_NAME
 
 import logging
 log = logging.getLogger(__name__)
+
+_send_emails = True
 
 
 def create_key_user_if_not_exists(obj):
@@ -73,3 +76,18 @@ def create_and_populate_partners_group():
         username, created = create_key_user_if_not_exists(orga.getObject())
         group.addMember(username)
     return group
+
+
+def _send_notification(obj, template_name, *extra_args):
+    if not _send_emails:
+        return
+
+    mail_template = getMultiAdapter(
+        (obj, obj.REQUEST),
+        name=template_name)
+    MailHost = getToolByName(obj, 'MailHost')
+    try:
+        MailHost.send(mail_template.render(*extra_args), charset='UTF-8')
+    except KeyError as e:
+        log.warn('No {0}, cannot send notification {1}'.format(
+            str(e), template_name))

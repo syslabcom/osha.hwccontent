@@ -4,7 +4,7 @@ from Products.CMFCore.interfaces import ISiteRoot
 from five import grok
 from osha.hwccontent.focalpoint import IFocalPoint
 from osha.hwccontent.organisation import IOrganisation
-from osha.hwccontent import events
+from osha.hwccontent import utils
 from plone.api import content
 from plone.app.textfield.interfaces import IRichText
 from plone.app.textfield.value import RichTextValue
@@ -48,7 +48,7 @@ class HWCImportForm(form.SchemaForm):
             self.status = self.formErrorsMessage
             return
 
-        events._send_emails = False
+        utils._send_emails = False
         try:
 
             en_folder = self.context.restrictedTraverse('en')
@@ -124,7 +124,7 @@ class HWCImportForm(form.SchemaForm):
             self.status = "%s partners imported" % count
         except Exception:
             # Enable emails again:
-            events._send_emails = True
+            utils._send_emails = True
             raise
 
     @button.buttonAndHandler(u"Cancel")

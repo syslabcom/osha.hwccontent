@@ -6,7 +6,7 @@ from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.app.testing import helpers, SITE_OWNER_NAME
 
-from osha.hwccontent import events
+from osha.hwccontent import utils
 from osha.hwccontent.testing import \
     OSHA_HWCCONTENT_INTEGRATION_TESTING
 
@@ -30,7 +30,7 @@ class TestWorkflow(unittest.TestCase):
             ['osha.hwccontent.organisation'],
             'organisation_workflow')
 
-        events._send_emails = False
+        utils._send_emails = False
         self.org = api.content.create(
             self.organisations,
             type='osha.hwccontent.organisation',
@@ -44,7 +44,7 @@ class TestWorkflow(unittest.TestCase):
             self.creator_id = 'harold'
 
         self.sent_mails = []
-        events._send_emails = True
+        utils._send_emails = True
         self.portal.MailHost.send = self._mock_send
 
     def tearDown(self):
@@ -94,10 +94,10 @@ class TestWorkflow(unittest.TestCase):
         self.assertIn('harold@testorganisation.com', self.sent_mails[0])
 
     def test_creator_cannot_submit_incomplete_organisation(self):
-        events._send_emails = False
+        utils._send_emails = False
         helpers.login(self.portal, 'Site Administrator')
         self.wftool.doActionFor(self.org, 'approve_phase_1')
-        events._send_emails = True
+        utils._send_emails = True
 
         helpers.login(self.portal, self.creator_id)
         self.assertNotIn(
@@ -105,10 +105,10 @@ class TestWorkflow(unittest.TestCase):
             [a['id'] for a in self.wftool.listActions(object=self.org)])
 
     def test_creator_submits_organisation(self):
-        events._send_emails = False
+        utils._send_emails = False
         helpers.login(self.portal, 'Site Administrator')
         self.wftool.doActionFor(self.org, 'approve_phase_1')
-        events._send_emails = True
+        utils._send_emails = True
 
         helpers.login(self.portal, self.creator_id)
         self.org.mission_statement = u'We Care Because We Can'
@@ -128,12 +128,12 @@ class TestWorkflow(unittest.TestCase):
                       '\n'.join(self.sent_mails))
 
     def test_reviewer_publishes_organisation(self):
-        events._send_emails = False
+        utils._send_emails = False
         helpers.login(self.portal, 'Site Administrator')
         self.wftool.doActionFor(self.org, 'approve_phase_1')
         self.org.mission_statement = u'We Care Because We Can'
         self.wftool.doActionFor(self.org, 'submit')
-        events._send_emails = True
+        utils._send_emails = True
 
         helpers.login(self.portal, 'Site Administrator')
         self.wftool.doActionFor(self.org, 'publish')
@@ -150,7 +150,7 @@ class TestWorkflow(unittest.TestCase):
         self.assertIn(
             'test-organisation',
             self.organisations.objectIds())
-        self.org.reject()
+        self.org.restrictedTraverse('@@reject')()
         self.assertNotIn(
             'test-organisation',
             self.organisations.objectIds())

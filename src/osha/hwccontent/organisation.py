@@ -18,13 +18,13 @@ from plone.supermodel import model
 from z3c.form import field
 from z3c.form.browser import select
 from z3c.form.interfaces import IAddForm, IEditForm, NO_VALUE
-from zope import event
-from zope import interface
+from zope.event import notify
 from zope import schema
-from zope.component.interfaces import IObjectEvent, ObjectEvent
 from zope.component.hooks import getSite
+from zope.lifecycleevent import ObjectRemovedEvent
 
 from osha.hwccontent import vocabularies
+from osha.hwccontent.utils import _send_notification
 
 from zope.i18nmessageid import MessageFactory
 
@@ -510,22 +510,8 @@ class IOrganisation(IOrganisationBase, IOrganisationExtra):
     )
 
 
-class IProfileRejectedEvent(IObjectEvent):
-    """ """
-
-
-class ProfileRejectedEvent(ObjectEvent):
-    """ """
-    interface.implements(IProfileRejectedEvent)
-
-
 class Organisation(Container):
     """Implementation of Organisation content"""
-
-    def reject(self):
-        """Delete the object and send notification to key_email"""
-        event.notify(ProfileRejectedEvent(self))
-        api.content.delete(obj=self)
 
 
 class AddForm(dexterity.AddForm):
@@ -553,6 +539,7 @@ class AddForm(dexterity.AddForm):
         tmp_fields['key_email'].field.description = u'This email address ' \
             u'can be used for logging in to the campaign site once your ' \
             u'application has been approved.'
+        tmp_fields['key_email'].field.constraint = isEmailAvailable
 
 
 class EditForm(dexterity.EditForm):
@@ -596,6 +583,8 @@ class EditForm(dexterity.EditForm):
                 email_field = group.fields['key_email'].field
                 if is_manager:
                     email_field.description = EMAIL_HINT_MANAGER
+                    # Allow changing to an existing email
+                    email_field.constraint = isEmail
                 else:
                     group.widgets['key_email'].mode = 'display'
                     email_field.description = EMAIL_HINT_USER
@@ -605,12 +594,25 @@ class EditForm(dexterity.EditForm):
 
 class RejectView(grok.View):
     grok.context(IOrganisation)
-    grok.require("zope2.DeleteObjects")
+    grok.require("cmf.ReviewPortalContent")
     grok.name("reject")
 
     def render(self):
+        """ We need to delete the current profile without shooting ourselves
+        in the foot. Therefore, use a low-level method for deletion and make
+        sure the necessary events get triggered.
+        """
         msg = 'The organisation profile "{0}" has been rejected'.format(
             self.context.Title())
-        self.context.reject()
         api.portal.show_message(message=msg, request=self.request)
-        self.request.response.redirect(aq_parent(self.context).absolute_url())
+        _send_notification(self.context, "mail_organisation_rejected")
+        id = self.context.id
+        container = aq_parent(self.context)
+        url = container.absolute_url()
+        ob = container._getOb(id)
+        obj_path = '/'.join(ob.getPhysicalPath())
+        catalog = getToolByName(container, "portal_catalog")
+        container._delObject(id=id, suppress_events=True)
+        notify(ObjectRemovedEvent(ob, container, id))
+        catalog.uncatalog_object(obj_path)
+        self.request.response.redirect(url)

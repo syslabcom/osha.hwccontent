@@ -4,22 +4,15 @@ from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from Products.DCWorkflow.interfaces import IBeforeTransitionEvent
 from five import grok
-from zope.component import getMultiAdapter
 from zope.app.container.interfaces import IObjectAddedEvent
 
 from osha.hwccontent import OCP_GROUP_NAME
-from osha.hwccontent.organisation import (
-    IOrganisation,
-    IProfileRejectedEvent,
-)
+from osha.hwccontent.organisation import IOrganisation
 from osha.hwccontent.interfaces import IOSHAHWCContentLayer
 from osha.hwccontent import utils
-
 import logging
 
 log = logging.getLogger(__name__)
-
-_send_emails = True
 
 
 class MailTemplateBase(grok.View):
@@ -151,27 +144,11 @@ class OrganisationPublishedCreatorMailTemplate(MailTemplateBase):
         return self.template.render(self)
 
 
-def _send_notification(obj, template_name, *extra_args):
-    if not _send_emails:
-        return
-
-    mail_template = getMultiAdapter(
-        (obj, obj.REQUEST),
-        name=template_name)
-    MailHost = getToolByName(obj, 'MailHost')
-    try:
-        MailHost.send(mail_template.render(*extra_args), charset='UTF-8')
-    except KeyError as e:
-        log.warn('No {0}, cannot send notification {1}'.format(
-            str(e), template_name))
-
-
 def add_user_and_send_notifications(obj):
     username, created = utils.create_key_user_if_not_exists(obj)
-    pg = getToolByName(obj, 'portal_groups')
-    group = pg.getGroupById(OCP_GROUP_NAME)
+    group = utils.create_group_if_not_exists(OCP_GROUP_NAME)
     group.addMember(username)
-    _send_notification(obj, "mail_approve_phase_1", username, created)
+    utils._send_notification(obj, "mail_approve_phase_1", username, created)
 
 
 @grok.subscribe(IOrganisation, IBeforeTransitionEvent)
@@ -181,18 +158,13 @@ def handle_wf_transition(obj, event):
     if event.transition.id == 'approve_phase_1':
         add_user_and_send_notifications(obj)
     elif event.transition.id == 'submit':
-        _send_notification(obj, "mail_organisation_submitted_creator")
-        _send_notification(obj, "mail_organisation_submitted_siteowner")
+        utils._send_notification(obj, "mail_organisation_submitted_creator")
+        utils._send_notification(obj, "mail_organisation_submitted_siteowner")
     elif event.transition.id == 'publish':
-        _send_notification(obj, 'mail_organisation_published_creator')
-
-
-@grok.subscribe(IOrganisation, IProfileRejectedEvent)
-def handle_after_wf_transition(obj, event):
-    _send_notification(obj, "mail_organisation_rejected")
+        utils._send_notification(obj, 'mail_organisation_published_creator')
 
 
 @grok.subscribe(IOrganisation, IObjectAddedEvent)
 def handle_organisation_created(obj, event):
-    _send_notification(obj, "mail_organisation_created_creator")
-    _send_notification(obj, "mail_organisation_created_siteowner")
+    utils._send_notification(obj, "mail_organisation_created_creator")
+    utils._send_notification(obj, "mail_organisation_created_siteowner")
