@@ -51,6 +51,14 @@ INTRO_TEXT_PHASE_2 = _(
     u"additional information."
 )
 
+EMAIL_HINT_USER = u'This email address is linked to your user account and ' \
+    u'therefore cannot be changed. If you need to change it please contact ' \
+    u'the website support.'
+
+EMAIL_HINT_MANAGER = u"Hint for the Manager: Beware - if you change this " \
+    u"email address, you must also update the user's account with the new " \
+    u"email address, otherwise the user will not find their profile any more."
+
 
 class InvalidEmailError(schema.ValidationError):
     __doc__ = u'Please enter a valid e-mail address.'
@@ -579,13 +587,18 @@ class EditForm(dexterity.EditForm):
         This is important, since we need to manipulate the already set-up
         groups and be sure that our changes don't get overwritten again.
         """
+        # Make the key_email field read-only, but only if the user is not a
+        # manager
+        user = api.user.get_current()
+        is_manager = user.checkPermission('Manage portal', self.context)
         for group in self.groups:
             if group.__name__ == 'about_organisation':
-                group.widgets['key_email'].mode = 'display'
-                group.fields['key_email'].field.description = u'This email ' \
-                    u'address is linked to your user account and therefore ' \
-                    u'cannot be changed. If you need to change it ' \
-                    u'please contact the website support.'
+                email_field = group.fields['key_email'].field
+                if is_manager:
+                    email_field.description = EMAIL_HINT_MANAGER
+                else:
+                    group.widgets['key_email'].mode = 'display'
+                    email_field.description = EMAIL_HINT_USER
 
         super(EditForm, self).updateActions()
 
