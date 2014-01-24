@@ -71,7 +71,8 @@ def isEmailAvailable(value):
     if not isEmail(value):
         return False
     site = getSite()
-    existing = site.acl_users.searchUsers(email=value)
+    acl_users = getToolByName(site, 'acl_users')
+    existing = acl_users.searchUsers(email=value)
     if len(existing) == 0:
         return True
     raise ExistingEmailError
@@ -538,6 +539,12 @@ class AddForm(dexterity.AddForm):
         self.widgets['phase_1_intro'].value = RichTextValue(
             INTRO_TEXT_PHASE_1, "text/html", "text/html")
         self.widgets['phase_1_intro'].mode = 'display'
+        # In the AddForm we want a different discription for the key email
+        # than in the EditForm
+        tmp_fields = field.Fields(IOrganisation)
+        tmp_fields['key_email'].field.description = u'This email address ' \
+            u'can be used for logging in to the campaign site once your ' \
+            u'application has been approved.'
 
 
 class EditForm(dexterity.EditForm):
@@ -551,9 +558,9 @@ class EditForm(dexterity.EditForm):
         return u"Update your profile"
 
     def updateWidgets(self):
-        # XXX: Here, determine if we are still in phase 2, i.e. if the user
+        # Here, determine if we are still in phase 2, i.e. if the user
         # still needs to fill the additional information fields
-        # For the moment, we just check if one of the required fields from
+        # We just check if one of the required fields from
         # phase 1 is still none
         is_phase_2 = self.context.mission_statement is None
         if is_phase_2:
@@ -565,6 +572,22 @@ class EditForm(dexterity.EditForm):
             self.widgets['phase_2_intro'].value = RichTextValue(
                 INTRO_TEXT_PHASE_2, "text/html", "text/html")
             self.widgets['phase_2_intro'].mode = 'display'
+
+    def updateActions(self):
+        """ BEWARE - Dirty Hack (tm)
+        uppdateActions() is called _after_ update() in z3c.form.group.GroupForm
+        This is important, since we need to manipulate the already set-up
+        groups and be sure that our changes don't get overwritten again.
+        """
+        for group in self.groups:
+            if group.__name__ == 'about_organisation':
+                group.widgets['key_email'].mode = 'display'
+                group.fields['key_email'].field.description = u'This email ' \
+                    u'address is linked to your user account and therefore ' \
+                    u'cannot be changed. If you need to change it ' \
+                    u'please contact the website support.'
+
+        super(EditForm, self).updateActions()
 
 
 class RejectView(grok.View):
