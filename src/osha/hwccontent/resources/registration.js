@@ -80,4 +80,12 @@ jQuery(document).ready(function() {
     // add placehoder text for autocomplete / content browse inputs
     jQuery('.querySelectSearch input').attr('placeholder', "Enter text or click the browse button")
 
+
+    jQuery('div#manage_organisation a#reject').click( function() {
+        var answer = confirm("Really reject the application and delete the profile?");
+        if (answer){
+            return true;
+        }
+        return false;
+        });
 });

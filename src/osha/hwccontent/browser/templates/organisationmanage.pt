@@ -12,7 +12,7 @@
                 </li>
             </span>
             <li tal:condition="python:view.wfstate=='pending'">
-                <a tal:attributes="href string:${here_url}/reject">Reject</a>. Rejecting the application will delete this profile and notify the original author. WARNING: this can't be undone.
+                <a tal:attributes="href string:${here_url}/reject" id="reject">Reject</a>. Rejecting the application will delete this profile and notify the original author. WARNING: this can't be undone.
             </li>
         </ul>
      </span>
