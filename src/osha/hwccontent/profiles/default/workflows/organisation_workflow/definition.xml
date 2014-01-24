@@ -1,63 +1,13 @@
 <?xml version="1.0"?>
-<dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="osha" workflow_id="organisation_workflow" title="Organization Profile Two Phase Approval Workflow" description="" state_variable="review_state" initial_state="pending" manager_bypass="False" i18n:attributes="title; description">
+<dc-workflow workflow_id="organisation_workflow" title="Organization Profile Two Phase Approval Workflow" description="" state_variable="review_state" initial_state="pending" manager_bypass="False">
  <permission>Access contents information</permission>
+ <permission>Add portal content</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
- <permission>Add portal content</permission>
-
- <state state_id="pending" title="Pending review (Phase 1)">
-  <description i18n:translate="">Waiting to be reviewed.</description>
-  <exit-transition transition_id="reject"/>
-  <exit-transition transition_id="approve_phase_1"/>
-  <permission-map name="Add portal content" acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
-  </permission-map>
-  <permission-map name="Access contents information" acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Reader</permission-role>
-   <permission-role>Contributor</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
-  </permission-map>
-  <permission-map name="Change portal events" acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
-  </permission-map>
-  <permission-map name="Modify portal content" acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
-  </permission-map>
-  <permission-map name="View" acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Reader</permission-role>
-   <permission-role>Contributor</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
-  </permission-map>
- </state>
-
  <state state_id="approved_phase_1" title="Approved (Phase 1)">
-  <description i18n:translate="">Waiting to be finalised.</description>
+  <description>Waiting to be finalised.</description>
   <exit-transition transition_id="revoke_phase_1"/>
   <exit-transition transition_id="submit"/>
-  <permission-map name="Add portal content" acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Site Administrator</permission-role>
-  </permission-map>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
@@ -65,6 +15,13 @@
    <permission-role>Reader</permission-role>
    <permission-role>Contributor</permission-role>
    <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Add portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Editor</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Change portal events" acquired="False">
@@ -90,23 +47,63 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
  </state>
-
+ <state state_id="pending" title="Pending review (Phase 1)">
+  <description>Waiting to be reviewed.</description>
+  <exit-transition transition_id="reject"/>
+  <exit-transition transition_id="approve_phase_1"/>
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Add portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Change portal events" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+ </state>
  <state state_id="pending_phase_2" title="Pending review (Phase 2)">
-  <description i18n:translate="">Waiting for final approval.</description>
+  <description>Waiting for final approval.</description>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
-  <permission-map name="Add portal content" acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
-  </permission-map>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Editor</permission-role>
    <permission-role>Reader</permission-role>
    <permission-role>Contributor</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Add portal content" acquired="False">
+   <permission-role>Manager</permission-role>
    <permission-role>Reviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
@@ -130,25 +127,24 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
  </state>
-
  <state state_id="published" title="Published">
-  <description i18n:translate="">Visible to everyone, not editable by the owner.</description>
+  <description>Visible to everyone, not editable by the owner.</description>
   <exit-transition transition_id="retract"/>
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>Anonymous</permission-role>
+  </permission-map>
   <permission-map name="Add portal content" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Editor</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
-  <permission-map name="Access contents information" acquired="False">
-   <permission-role>Anonymous</permission-role>
-  </permission-map>
   <permission-map name="Change portal events" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
-    <permission-role>Editor</permission-role>
+   <permission-role>Editor</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
@@ -156,105 +152,50 @@
    <permission-role>Anonymous</permission-role>
   </permission-map>
  </state>
-
- <transition transition_id="approve_phase_1"
-             title="Reviewer gives phase 1 approval"
-             new_state="approved_phase_1"
-             trigger="USER"
-             before_script=""
-             after_script="">
-  <description>
-         Phase 1 approval creates a user account and enables the new user to enter information required for the next approval phase.
-  </description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=approve_phase_1"
-          category="workflow" icon="">Approve Profile (Phase 1)</action>
+ <transition transition_id="approve_phase_1" title="Reviewer gives phase 1 approval" new_state="approved_phase_1" trigger="USER" before_script="" after_script="">
+  <description>Phase 1 approval creates a user account and enables the new user to enter information required for the next approval phase.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=approve_phase_1" category="workflow" icon="">Approve Profile (Phase 1)</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
-
- <transition transition_id="revoke_phase_1"
-             title="Reviewer revokes phase 1 approval"
-             new_state="pending"
-             trigger="USER"
-             before_script=""
-             after_script="">
-  <description>
-      If approval has been given by mistake, you can revoke it and return the item to the review list.
-  </description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=revoke_phase_1"
-          category="workflow" icon="">Revoke Approval (Phase 1)</action>
+ <transition transition_id="publish" title="Reviewer publishes organisation profile" new_state="published" trigger="USER" before_script="" after_script="">
+  <description>Publishing the item makes it visible to everyone.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=publish" category="workflow" icon="">Publish</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
-
- <transition transition_id="submit"
-             title="User submits profile for publication"
-             new_state="pending_phase_2"
-             trigger="USER"
-             before_script=""
-             after_script="">
-  <description>
-     Submits the item for review. The reviewers will decide whether it can be made publicly visible.
-  </description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=submit"
-          category="workflow" icon="">Submit for publication</action>
+ <transition transition_id="retract" title="Retract submission" new_state="approved_phase_1" trigger="USER" before_script="" after_script="">
+  <description>This will make the profile become private again (not visible to the public any more).</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=retract" category="workflow" icon="">Retract</action>
   <guard>
    <guard-permission>Request review</guard-permission>
-   <!-- This relies on the fact that the object can only be saved when all fields in the "Additional Information" schema have been filled in, so we only need to check one of them -->
+  </guard>
+ </transition>
+ <transition transition_id="revoke_phase_1" title="Reviewer revokes phase 1 approval" new_state="pending" trigger="USER" before_script="" after_script="">
+  <description>If approval has been given by mistake, you can revoke it and return the item to the review list.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=revoke_phase_1" category="workflow" icon="">Revoke Approval (Phase 1)</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="submit" title="User submits profile for publication" new_state="pending_phase_2" trigger="USER" before_script="" after_script="">
+  <description>Submits the item for review. The reviewers will decide whether it can be made publicly visible.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=submit" category="workflow" icon="">Submit for publication</action>
+  <guard>
+   <guard-permission>Request review</guard-permission>
    <guard-expression>here/mission_statement</guard-expression>
   </guard>
  </transition>
-
- <transition transition_id="retract"
-             title="User retracts submission"
-             new_state="approved_phase_1"
-             trigger="USER"
-             before_script=""
-             after_script="">
-  <description>
-     If you submitted the item by mistake or want to perform additional edits, this will take it back.
-  </description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=retract"
-          category="workflow" icon="">Retract</action>
-  <guard>
-   <guard-permission>Request review</guard-permission>
-  </guard>
- </transition>
-
- <transition transition_id="reject"
-             title="Reviewer rejects organisation profile, causing it to be deleted"
-             new_state="pending"
-             trigger="USER"
-             before_script=""
-             after_script="">
-  <description>
-      Rejecting the item will delete it and notify the original author.
-  </description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=reject"
-          category="workflow" icon="">Reject</action>
+ <worklist worklist_id="reviewer_queue" title="">
+  <description>Reviewer tasks</description>
+  <action url="%(portal_url)s/search?review_state=pending" category="global" icon="">Pending (%(count)d)</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
- </transition>
-
- <transition transition_id="publish"
-             title="Reviewer publishes organisation profile"
-             new_state="published"
-             trigger="USER"
-             before_script=""
-             after_script="">
-  <description>
-     Publishing the item makes it visible to everyone.
-  </description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=publish"
-          category="workflow" icon="">Publish</action>
-  <guard>
-   <guard-permission>Review portal content</guard-permission>
-  </guard>
- </transition>
-
+  <match name="review_state" values="pending"/>
+ </worklist>
  <worklist worklist_id="reviewer_queue_phase_1" title="">
   <description>Reviewer tasks</description>
   <action url="%(portal_url)s/search?review_state=pending" category="global" icon="">Pending (%(count)d)</action>
@@ -271,7 +212,6 @@
   </guard>
   <match name="review_state" values="pending_phase_2"/>
  </worklist>
-
  <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>

@@ -6,7 +6,7 @@
             Available actions for the reviewer:</p>
         <ul>
             <li><a tal:attributes="href string:${here_url}/edit">Click here to update the partner's profile.</a></li>
-            <span tal:repeat="wfaction view/wfactions/values" tal:omit-tag="" tal:condition="python:view.wfstate!='published'">
+            <span tal:repeat="wfaction view/wfactions/values" tal:omit-tag="">
                 <li>
                     <a tal:attributes="href wfaction/url" tal:content="wfaction/name">action</a>. <tal:desc tal:content="wfaction/transition/description" i18n:translate="" />
                 </li>
