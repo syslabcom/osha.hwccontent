@@ -11,6 +11,9 @@
                     <a tal:attributes="href wfaction/url" tal:content="wfaction/name">action</a>. <tal:desc tal:content="wfaction/transition/description" i18n:translate="" />
                 </li>
             </span>
+            <li tal:condition="python:view.wfstate=='pending'">
+                <a tal:attributes="href string:${here_url}/reject">Reject</a>. Rejecting the application will delete this profile and notify the original author. WARNING: this can't be undone.
+            </li>
         </ul>
      </span>
      <p tal:condition="python:view.owner and view.wfstate=='pending'">
