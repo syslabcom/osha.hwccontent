@@ -226,6 +226,16 @@ class PropagateFolderSettings(grok.View):
                         trans._delProperty(prop)
                     trans._setProperty(id=prop, value=t_default_page.id, type="string")
 
+        log.info('Now, fix FOP languages')
+        results = cat(portal="osha.hwccontent.focalpoint", Language='all')
+        fopcnt = 0
+        for res in results:
+            fop = res.getObject()
+            if fop.Language() != '':
+                fop.setLanguage('')
+                fop.reindexObject()
+                fopcnt += 1
+        log.info('Reset the language on {0} FOPs'.format(fopcnt))
         return "ok"
 
 
