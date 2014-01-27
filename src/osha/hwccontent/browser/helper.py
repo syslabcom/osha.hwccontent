@@ -181,7 +181,7 @@ class PropagateFolderSettings(grok.View):
         cat = getToolByName(self.context, 'portal_catalog')
         query = dict(portal_type='Folder', Language='en')
         res = cat(query)
-        print len(res)
+        log.info('Total no. of folders found: {0}'.format(len(res)))
         for r in res:
             if r.getPath().split('/')[2] != 'en':
                 log.warning("Found a folder with lang EN not under /en: {0}".format(
@@ -192,6 +192,8 @@ class PropagateFolderSettings(grok.View):
                 log.warning('Found a folder that is not translatable, WTF: {0}'.format(
                     r.getPath()))
                 continue
+            ordering = obj.getOrdering()
+            order = ordering.idsInOrder()
             tm = ITranslationManager(obj)
             log.info('Handling folder {0}.'.format('/'.join(obj.getPhysicalPath())))
             for lang, trans in tm.get_translations().items():
@@ -225,9 +227,18 @@ class PropagateFolderSettings(grok.View):
                     if aq_base(trans).hasProperty(prop):
                         trans._delProperty(prop)
                     trans._setProperty(id=prop, value=t_default_page.id, type="string")
+                # now set the correct order
+                t_ordering = trans.getOrdering()
+                t_order = t_ordering.idsInOrder()
+                for i in range(len(order)):
+                    if order[i] in t_order:
+                        t_ordering.moveObjectToPosition(
+                            order[i], i, suppress_events=True)
+                if t_order != t_ordering.idsInOrder():
+                    trans.reindexObject()
 
         log.info('Now, fix FOP languages')
-        results = cat(portal="osha.hwccontent.focalpoint", Language='all')
+        results = cat(portal_type="osha.hwccontent.focalpoint", Language='all')
         fopcnt = 0
         for res in results:
             fop = res.getObject()
