@@ -80,7 +80,6 @@ jQuery(document).ready(function() {
     // add placehoder text for autocomplete / content browse inputs
     jQuery('.querySelectSearch input').attr('placeholder', "Enter text or click the browse button")
 
-
     jQuery('div#manage_organisation a#reject').click( function() {
         var answer = confirm("Really reject the application and delete the profile?");
         if (answer){
@@ -88,4 +87,15 @@ jQuery(document).ready(function() {
         }
         return false;
         });
+
+    // pre-fill with "http://"
+    function prefill (ev) {
+        value = jQuery(ev.target).val();
+        if (value == "") {
+            jQuery(ev.target).val('http://');
+        }
+    }
+    jQuery('#form-widgets-url').focus(prefill);
+    jQuery('#form-widgets-campaign_url').focus(prefill);
+
 });

@@ -69,6 +69,10 @@ class ExistingEmailError(schema.ValidationError):
                "registered again. Please contact the website support.")
 
 
+class EmptyURIError(schema.ValidationError):
+    __doc__ = (u"Please enter a non-empty homepage URI.")
+
+
 def isEmail(value):
     if re.match('^' + EMAIL_RE, value):
         return True
@@ -84,6 +88,13 @@ def isEmailAvailable(value):
     if len(existing) == 0:
         return True
     raise ExistingEmailError
+
+
+def isNonEmptyURI(value):
+    # non-empty in the sense "not only a scheme string"
+    if re.match(r"[a-zA-z0-9+.-]+://.+$", value):
+        return True
+    raise EmptyURIError
 
 
 class NonMissingSelectWidget(select.SelectWidget):
@@ -183,6 +194,7 @@ class IOrganisationBase(model.Schema):
     url = schema.URI(
         title=_(u"Home page"),
         description=_("Organisation's website"),
+        constraint=isNonEmptyURI,
     )
     directives.languageindependent('url')
 
@@ -191,6 +203,7 @@ class IOrganisationBase(model.Schema):
         description=_(
             u'Special web section dealing with issues related to occupational '
             'health and safety'),
+        constraint=isNonEmptyURI,
         required=False,
     )
     directives.languageindependent('campaign_url')
