@@ -6,11 +6,21 @@ from osha.hwccontent.browser.mixin import ListingView
 from osha.hwccontent.interfaces import IFullWidth
 from plone import api
 from plone.app.event.browser.event_listing import EventListing
+from plone.app.event.base import (
+    get_events,
+    RET_MODE_ACCESSORS,
+)
+from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.multilingual.interfaces import (
+    ITranslationManager,
+    ITranslatable,
+)
 from plone.event.interfaces import IEventAccessor
 from pytz import timezone
 from urllib import urlencode
 from urllib import urlopen
 from zope.interface import implements
+from zope.component.hooks import getSite
 
 
 def isotime2dt(isotime, tz):
@@ -111,8 +121,30 @@ class EventListing(ListingView, EventListing):
             'stress'
         )
 
-    def events(self, ret_mode=3, batch=True):
-        local_events = self._get_events(3)  # Only accessors works with remote events.
+    def events(self, batch=True):
+        # Fall back to default language for local events
+        kw = {}
+        default_lang = api.portal.get_tool(
+            "portal_languages").getDefaultLanguage()
+        if ITranslatable.providedBy(self.context):
+            if default_lang != self.context.Language():
+                portal = getSite()
+                trans = ITranslationManager(self.context).get_translation(
+                    default_lang)
+                root = getNavigationRootObject(trans, portal)
+                kw['path'] = '/'.join(root.getPhysicalPath())
+                kw['Language'] = [default_lang, '']
+        start, end = self._start_end
+        sort = 'start'
+        sort_reverse = False
+        if self.mode in ('past', 'all'):
+            sort_reverse = True
+        expand = True
+        local_events = get_events(
+            self.context, start=start, end=end, sort=sort,
+            sort_reverse=sort_reverse, ret_mode=RET_MODE_ACCESSORS,
+            expand=expand, **kw)
+
         remote_events = self._remote_events()
         reverse = self.mode == 'past'
         all_events = sorted(local_events + remote_events, key=lambda x: x.start, reverse=reverse)
