@@ -193,6 +193,7 @@ class PropagateFolderSettings(grok.View):
                     r.getPath()))
                 continue
             tm = ITranslationManager(obj)
+            log.info('Handling folder {0}.'.format('/'.join(obj.getPhysicalPath())))
             for lang, trans in tm.get_translations().items():
                 if lang == 'en':
                     continue
@@ -224,7 +225,6 @@ class PropagateFolderSettings(grok.View):
                     if aq_base(trans).hasProperty(prop):
                         trans._delProperty(prop)
                     trans._setProperty(id=prop, value=t_default_page.id, type="string")
-
 
         return "ok"
 
