@@ -5,7 +5,6 @@ from json import load
 from osha.hwccontent.browser.mixin import ListingView
 from osha.hwccontent.interfaces import IFullWidth
 from plone import api
-from plone.app.contenttypes.interfaces import ICollection
 from plone.memoize import ram
 from urllib import urlopen
 from zope.interface import implements
@@ -14,7 +13,6 @@ import base64
 
 class NewsItemListing(ListingView):
     implements(IFullWidth)
-
 
     def __init__(self, context, request):
         super(NewsItemListing, self).__init__(context, request)
@@ -58,14 +56,18 @@ class NewsItemListing(ListingView):
         """ Looks in the current folder for Collection objects and then queries
             them for items.
         """
-        items = []
-        for child in self.context.values():
-            if ICollection.providedBy(child):
-                items.extend(child.results(
-                    batch=False,
-                    sort_on='Date',
-                    brains=True))
-        return items
+        catalog = api.portal.get_tool(name='portal_catalog')
+        default_lang = api.portal.get_tool(
+            "portal_languages").getDefaultLanguage()
+        num_results = 2
+        results = catalog.searchResults(
+            portal_type="News Item",
+            sort_limit=num_results,
+            sort_on="effective",
+            sort_order="descending",
+            Language=[default_lang, ''],
+        )
+        return results
 
     @ram.cache(ListingView.cache_for_minutes(10))
     def get_all_news_items(self):

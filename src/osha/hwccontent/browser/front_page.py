@@ -9,6 +9,12 @@ from osha.hwccontent.behaviors.event import IEventOrganiser
 
 class FrontPageView(BrowserView):
 
+    def __init__(self, context, request=None):
+        self.context = context
+        self.request = request
+        self.default_lang = api.portal.get_tool(
+            "portal_languages").getDefaultLanguage()
+
     def news(self):
         catalog = api.portal.get_tool(name='portal_catalog')
         num_results = 2
@@ -17,6 +23,7 @@ class FrontPageView(BrowserView):
             sort_limit=num_results,
             sort_on="effective",
             sort_order="descending",
+            Language=[self.default_lang, ''],
         )[:num_results]
         return [x.getObject() for x in results]
 
@@ -28,6 +35,7 @@ class FrontPageView(BrowserView):
             sort_limit=num_results,
             sort_on="start",
             sort_order="descending",
+            Language=[self.default_lang, ''],
         )[:num_results]
         return [x.getObject() for x in results]
 
@@ -50,7 +58,6 @@ class FrontPageView(BrowserView):
 
     def partners(self):
         return get_partners()
-
 
     def css_by_orientation(self, partner):
         """ This is a helper to determine logo orientation for a partner.
