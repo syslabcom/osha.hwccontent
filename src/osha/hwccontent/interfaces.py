@@ -2,6 +2,8 @@
 from plone.app.contenttypes.interfaces import (
     IPloneAppContenttypesLayer, IFolder)
 from plone.dexterity.interfaces import IDexterityContent
+from plone.event.interfaces import IEventAccessor as IPloneEventAccessor
+from zope.interface import Attribute
 
 
 class IOrganisationFolder(IFolder):
@@ -30,3 +32,9 @@ class ISectionIntro(IDexterityContent):
 
 class IMaterialsView(IDexterityContent):
     """Marker interface for materials listing view"""
+
+
+class IEventAccessor(IPloneEventAccessor):
+    """Extend event accessor with our own fields"""
+
+    organiser = Attribute(u"The organiser of the event.")

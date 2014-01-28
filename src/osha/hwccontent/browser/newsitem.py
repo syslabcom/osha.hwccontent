@@ -53,16 +53,13 @@ class NewsItemListing(ListingView):
         return items
 
     def get_local_news_items(self):
-        """ Looks in the current folder for Collection objects and then queries
-            them for items.
+        """ Search for all local news in the default language
         """
         catalog = api.portal.get_tool(name='portal_catalog')
         default_lang = api.portal.get_tool(
             "portal_languages").getDefaultLanguage()
-        num_results = 2
         results = catalog.searchResults(
             portal_type="News Item",
-            sort_limit=num_results,
             sort_on="effective",
             sort_order="descending",
             Language=[default_lang, ''],

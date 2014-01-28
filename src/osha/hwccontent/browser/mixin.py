@@ -36,7 +36,7 @@ class ListingView(BrowserView):
             as well as the preferred language.
         """
 
-        def _cachekey(method, self):
-            return time() // (60 * minutes), self.lang
+        def _cachekey(method, self, batch=True):
+            return time() // (60 * minutes), self.lang, batch
 
         return _cachekey

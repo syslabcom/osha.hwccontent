@@ -25,24 +25,38 @@
                         plone context/@@plone">
         <div class="span6">
 		  <h2 i18n:translate="">News</h2>
-          <tal:news repeat="news_item news">
+        <tal:news repeat="news_item news">
 		    <div class="news item"
-                 tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['news_item'].start else '')">
+            tal:define="obj nocall:news_item/obj|nothing"
+            tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['news_item'].start else '')">
 		      <div class="row-fluid" tal:define="has_image python:getattr(news_item, 'image', None)">
 		        <h3><a href="news"
-                       tal:content="news_item/title">Good health and safety is good for business</a></h3>
+                       tal:content="news_item/Title">Good health and safety is good for business</a></h3>
                 <a href="news" tal:attributes="title news_item/Title">
-                  <img tal:condition="has_image" src="/++theme++osha.hwctheme/HWManageStress_files/images/newsimage2.jpg" class="pull-left"
-                    tal:define="scales news_item/@@images"
-                    tal:replace="structure python: scales.tag('image', width=120, height=125, direction='down')" >
-                  <img tal:condition="not:has_image" class="pull-left" src="++theme++osha.hwctheme/HWManageStress_files/images/newsdefault.jpg" />
+                    <tal:if_blob tal:condition="news_item/image|nothing">
+                        <img src="" alt=""
+                            tal:define="scales obj/@@images;
+                                        scale python:scales.tag('image', width=120, height=125, direction='down')"
+                            tal:replace="structure python:scale" />
+                    </tal:if_blob>
+
+                    <tal:if_base64 tal:condition="news_item/image_base64|nothing">
+                        <img src="" alt="" class="tileImage"
+                            tal:attributes="src string:data:${news_item/image_content_type};;base64,${news_item/image_base64}" />
+                    </tal:if_base64>
                   </a>
             <p class="data"
-                tal:content="python:plone.toLocalizedTime(news_item.effective(), long_format=False)">17/5/13</p>
-		        <p tal:content="news_item/Description">EU-OSHA’s Healthy Workplaces Campaigns are its principal tools for raising awareness on occupational safety and health. The Campaigns, each of which runs for two years, involve hundreds of organisations from all of the EU Member States ...</p>
+                tal:content="python:plone.toLocalizedTime(news_item['Date'], long_format=False)">17/5/13</p>
+                <tal:if_remote condition="news_item/remote_item|nothing">
+                    <p class="description" tal:content="structure news_item/Description"></p>
+                </tal:if_remote>
+
+                <tal:if_local condition="not:news_item/remote_item|nothing">
+                    <p class="description" tal:content="news_item/Description|nothing"></p>
+                </tal:if_local>
 		      </div>
 		    </div>
-          </tal:news>
+        </tal:news>
 		  <p class="row-fluid"><a href="news" class="btn" i18n:translate="">see all news</a></p>
         </div>
 
@@ -50,12 +64,10 @@
           <h2 i18n:translate="">Events</h2>
           <tal:news repeat="event events">
 		    <div class="event item"
-                 tal:define="event_location python:view.get_event_location(event);
-                 event_organiser python:view.get_event_organiser(event)"
                  tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['event'].start else '')">
 		      <div class="row-fluid">
 		        <h3><a href="events"
-                       tal:content="event/Title">Positive psychology at work - towards flourishing workplaces</a></h3>
+                       tal:content="event/title">Positive psychology at work - towards flourishing workplaces</a></h3>
                 <div class="databox pull-left">
 		          <p class="day"
                      tal:content="python:event.start.strftime('%d')">17</p>
@@ -64,8 +76,8 @@
 		          <p class="year"
                      tal:content="python:event.start.strftime('%Y')">2013</p>
 		        </div>
-		        <p><strong i18n:translate="event_location">Location</strong>: <tal:location content="event_location">FINLAND</tal:location></p>
-		        <p><strong i18n:translate="event_organiser">Organiser</strong>:<br /><tal:organizer content="event_organiser"> Niva - The Nordic Institute for Advanced Training in occupational health .</tal:organizer></p>
+		        <p><strong i18n:translate="event_location">Location</strong>: <tal:location content="python:view.get_location(event)">FINLAND</tal:location></p>
+		        <p><strong i18n:translate="event_organiser">Organiser</strong>:<br /><tal:organizer content="python:view.get_organiser(event)"> Niva - The Nordic Institute for Advanced Training in occupational health .</tal:organizer></p>
 
 		      </div>
 		    </div>

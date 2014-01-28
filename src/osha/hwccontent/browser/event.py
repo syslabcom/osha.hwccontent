@@ -4,7 +4,9 @@ from datetime import datetime, timedelta
 from json import load
 from osha.hwccontent.browser.mixin import ListingView
 from osha.hwccontent.interfaces import IFullWidth
+from osha.hwccontent.behaviors.event import IEventOrganiser
 from plone import api
+from plone.memoize import ram
 from plone.app.event.browser.event_listing import EventListing
 from plone.app.event.base import (
     get_events,
@@ -15,7 +17,7 @@ from plone.multilingual.interfaces import (
     ITranslationManager,
     ITranslatable,
 )
-from plone.event.interfaces import IEventAccessor
+from osha.hwccontent.interfaces import IEventAccessor
 from pytz import timezone
 from urllib import urlencode
 from urllib import urlopen
@@ -81,6 +83,7 @@ class JSONEventAccessor(object):
         self.event_url = kw['eventUrl']
         self.subjects = kw['subject']
         self.text = kw['text']
+        self.organiser = u''
 
     # Unified create method via Accessor
     @classmethod
@@ -121,7 +124,8 @@ class EventListing(ListingView, EventListing):
             'stress'
         )
 
-    def events(self, batch=True):
+    @ram.cache(ListingView.cache_for_minutes(10))
+    def get_all_events(self, batch=True):
         # Fall back to default language for local events
         kw = {}
         default_lang = api.portal.get_tool(
@@ -152,6 +156,8 @@ class EventListing(ListingView, EventListing):
             b_start = self.b_start
             b_size = self.b_size
             res = Batch(all_events, size=b_size, start=b_start, orphan=self.orphan)
+        else:
+            res = all_events
         return res
 
     def _remote_events(self):
@@ -178,3 +184,9 @@ class EventListing(ListingView, EventListing):
             for item in load(result):
                 items.append(JSONEventAccessor(item, self))
         return items
+
+    def get_organiser(self, event):
+        if isinstance(event, JSONEventAccessor):
+            return event.organiser
+        data = IEventOrganiser(event.context)
+        return data.organiser
