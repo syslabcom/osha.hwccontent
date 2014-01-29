@@ -1,5 +1,5 @@
 <div id="seeAlso"
-     tal:condition="view/available">
+     tal:condition="view/available" i18n:domain="osha.hwc">
      <h2 i18n:translate="See also">See also</h2>
      <ul>
         <li tal:repeat="item view/items">

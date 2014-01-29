@@ -1,6 +1,6 @@
 <div id="relatedSites"
-     tal:condition="view/available">
-     <h2 i18n:translate="Related Sites">Related Sites</h2>
+     tal:condition="view/available" i18n:domain="osha.hwc">
+     <h2 i18n:translate="Related sites">Related Sites</h2>
      <ul>
         <li tal:repeat="item view/items">
             <a href="#" tal:attributes="href item/url" target="_blank" tal:content="item/label">link</a>
