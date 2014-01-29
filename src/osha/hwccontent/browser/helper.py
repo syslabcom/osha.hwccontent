@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from Acquisition import aq_base
+from Acquisition import (
+    aq_base,
+    aq_inner,
+)
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
@@ -60,6 +63,26 @@ class HelperView(BrowserView):
 
     def __init__(self, context, request=None):
         self.context = context
+
+    def cropHtmlText(self, text, length, ellipsis=u'...'):
+        """ first strip html, then crop """
+        context = aq_inner(self.context)
+        portal_transforms = getToolByName(context, 'portal_transforms')
+        if isinstance(text, unicode):
+            text = text.encode('utf-8')
+        try:
+            text = portal_transforms.convert('html_to_text', text).getData()
+            text = text.decode('utf-8')
+        except Exception, err:
+            log.error(
+                'An error occurred in cropHTMLText, original text: %s, '
+                'message: %s URL: %s' % (
+                    str([text]), str(err), context.absolute_url()
+                )
+            )
+            return text
+        return context.restrictedTraverse('@@plone').cropText(
+            text, length, ellipsis)
 
     def break_in_lines(self, text, max_width=20):
         """ tries to add a break after a number of chars """

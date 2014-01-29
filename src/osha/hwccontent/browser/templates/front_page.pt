@@ -22,7 +22,9 @@
       <div class="news-events"
            tal:define="news view/news;
                        events view/events;
-                        plone context/@@plone">
+                        plone context/@@plone;
+                        hw_view context/@@hw_view;
+                        crop_chars python:275">
         <div class="span6">
 		  <h2 i18n:translate="">News</h2>
         <tal:news repeat="news_item news">
@@ -45,14 +47,14 @@
                             tal:attributes="src string:data:${news_item/image_content_type};;base64,${news_item/image_base64}" />
                     </tal:if_base64>
                   </a>
-            <p class="data"
-                tal:content="python:plone.toLocalizedTime(news_item['Date'], long_format=False)">17/5/13</p>
+                <p class="data"
+                  tal:content="python:plone.toLocalizedTime(news_item['Date'], long_format=False)">17/5/13</p>
                 <tal:if_remote condition="news_item/remote_item|nothing">
-                    <p class="description" tal:content="structure news_item/Description"></p>
+                    <p class="description" tal:replace="structure python:hw_view.cropHtmlText(news_item['Description'], crop_chars)"></p>
                 </tal:if_remote>
 
                 <tal:if_local condition="not:news_item/remote_item|nothing">
-                    <p class="description" tal:content="news_item/Description|nothing"></p>
+                    <p class="description" tal:content="python:plone.cropText(news_item['Description'], crop_chars)"></p>
                 </tal:if_local>
 		      </div>
 		    </div>
