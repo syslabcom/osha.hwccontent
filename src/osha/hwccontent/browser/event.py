@@ -178,7 +178,6 @@ class EventListing(ListingView, EventListing):
 
         qurl = '%s/%s/jsonfeed?' % (self.osha_json_url, lang)
         qurl += urlencode(q)
-        print qurl
         result = urlopen(qurl)
         if result.code == 200:
             for item in load(result):
