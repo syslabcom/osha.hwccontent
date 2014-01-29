@@ -25,15 +25,17 @@ class SeeAlsoViewlet(ViewletBase):
         self.available = True if (self.context and self.context.see_also) \
             else False
         if self.available:
+            user = api.user.get_current()
             language = api.portal.get_tool(
                 'portal_languages').getPreferredLanguage()
             items = list()
             for relation in self.context.see_also:
                 obj = relation.to_object
                 if ITranslatable.providedBy(obj):
-                    obj = ITranslationManager(obj).get_translation(
+                    obj = ITranslationManager(obj).get_restricted_translation(
                         language) or obj
-                items.append(obj)
+                if user.has_permission('View', obj):
+                    items.append(obj)
             self.items = items
 
 
