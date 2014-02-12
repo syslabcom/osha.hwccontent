@@ -113,10 +113,11 @@ class HelperView(BrowserView):
         cat = api.portal.get_tool(name='portal_catalog')
         wf = api.portal.get_tool('portal_workflow')
         user = ms.getAuthenticatedMember()
-        profiles = cat(portal_type='osha.hwccontent.organisation',
-                       key_email=user.getProperty('email'),
-                       sort_on='modified',
-                       sort_order='descending')
+        profiles = cat(portal_type=[
+            'osha.hwccontent.organisation', 'osha.hwccontent.focalpoint'],
+            key_email=user.getProperty('email'),
+            sort_on='modified',
+            sort_order='descending')
         profile_info = []
         for profile in profiles:
             obj = profile.getObject()
@@ -125,6 +126,7 @@ class HelperView(BrowserView):
                 'Title': obj.Title(),
                 'url': obj.absolute_url(),
                 'review_state': wfstate,
+                'portal_type': obj.portal_type,
             })
         return profile_info
 
