@@ -283,3 +283,22 @@ class CreateAndPopulatePartnersGroup(grok.View):
     def render(self):
         group = utils.create_and_populate_partners_group()
         return "Group '{0}' created and/or populated.".format(group.getId())
+
+
+class GetFOPEmails(grok.View):
+    """ This view propagates all settings pertaining to layout to the translations
+    """
+    grok.name('get-fop-emails')
+    grok.require('cmf.ManagePortal')
+    grok.context(ISiteRoot)
+
+    def render(self):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        fops = catalog(portal_type='osha.hwccontent.focalpoint')
+        out = ['"FOP name", "Link", "Contact person", "Contact Email"']
+        for fop in fops:
+            obj = fop.getObject()
+            out.append(
+                u'"{0}", "{1}", "{2}", "{3}"'.format(
+                    obj.title, obj.absolute_url(), obj.key_name, obj.key_email))
+        return "\n".join(out)
