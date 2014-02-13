@@ -18,6 +18,8 @@
                          logo python: images.scale('logo', width=166, height=166);
                          ">
 
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
         <h1 id="title" class="documentFirstHeading">
           <span id="parent-fieldname-title" tal:content="context/title">title</span>
         </h1>

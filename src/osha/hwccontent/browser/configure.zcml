@@ -179,6 +179,17 @@
     permission="zope2.View"
     />
 
+  <!-- viewlet for editing and workflow on FocalPoint -->
+  <browser:viewlet
+    name="organisationmanage"
+    for="osha.hwccontent.focalpoint.IFocalPoint"
+    class=".organisation.OrganisationManage"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+    template="templates/organisationmanage.pt"
+    permission="zope2.View"
+    />
+
+
   <browser:page
     name="batch_macros"
     for="*"
