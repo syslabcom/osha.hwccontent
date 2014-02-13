@@ -5,11 +5,15 @@ from osha.hwccontent import vocabularies
 from plone.supermodel import model
 from z3c.form.interfaces import IAddForm
 from zope import schema
+from plone import api
 from plone.autoform import directives as formdirectives
 from plone.directives import dexterity
 from plone.multilingualbehavior import directives
 from osha.hwccontent.organisation import (
+    EMAIL_HINT_USER,
+    EMAIL_HINT_MANAGER,
     IOrganisationBase,
+    isEmail,
     _,
 )
 
@@ -80,3 +84,26 @@ class EditForm(dexterity.EditForm, FormBase):
     def update(self):
         super(EditForm, self).update()
         self.adaptWidgets()
+
+    def updateActions(self):
+        """ BEWARE - Dirty Hack (tm)
+        uppdateActions() is called _after_ update() in z3c.form.group.GroupForm
+        This is important, since we need to manipulate the already set-up
+        groups and be sure that our changes don't get overwritten again.
+        """
+        # Make the key_email field read-only, but only if the user is not a
+        # manager
+        user = api.user.get_current()
+        is_manager = user.checkPermission('Manage portal', self.context)
+        for group in self.groups:
+            if group.__name__ == 'about_fop':
+                email_field = group.fields['key_email'].field
+                if is_manager:
+                    email_field.description = EMAIL_HINT_MANAGER
+                    # Allow changing to an existing email
+                    email_field.constraint = isEmail
+                else:
+                    group.widgets['key_email'].mode = 'display'
+                    email_field.description = EMAIL_HINT_USER
+
+        super(EditForm, self).updateActions()
