@@ -90,21 +90,21 @@
       </div>
 
       <metal:block define-macro="partnerstab">
-      <div class="row-fluid partners" id="frontpage-partners" tal:define="partners view/partners">
+      <div class="row-fluid partners" id="frontpage-partners" tal:define="partners view/partners; get_partner_start view/get_partner_start">
         <h2 i18n:translate="Partners">Partners</h2>
         <div class="partners-menu tabbable">
             <ul class="nav nav-tabs nav-justified row-fluid">
                 <span tal:repeat="category partners/keys" tal:omit-tag="">
-                  <li class="span2" tal:define="active repeat/category/start" tal:attributes="class python:active and 'span2 active' or 'span2'"><a href="#tab" tal:attributes="href string:#tab${repeat/category/number}" data-toggle="tab" tal:content="category" i18n:translate="">category</a></li>
+                  <li class="span2" tal:define="number repeat/category/number; active python:number==get_partner_start" tal:attributes="class python:active and 'span2 active' or 'span2'"><a href="#tab" tal:attributes="href string:#tab${repeat/category/number}" data-toggle="tab" tal:content="category" i18n:translate="">category</a></li>
                 </span>
 
             </ul>
 
             <div class="partners-logos tab-content" id="partners-logos">
               <span tal:repeat="category partners/keys" tal:omit-tag="">
-                <div id="tab1" class="tab-pane active" tal:define="active repeat/category/start"
+                <div id="tab1" class="tab-pane active" tal:define="number repeat/category/number; active python:number==get_partner_start"
                   tal:attributes="class python:active and 'tab-pane active' or 'tab-pane';
-                    id string:tab${repeat/category/number}">
+                    id string:tab${number}">
                   <div class="row-fluid" tal:repeat="row python:partners[category]">
                       <div class="span2"
 						   tal:attributes="cls python:view.css_by_orientation(partner)"

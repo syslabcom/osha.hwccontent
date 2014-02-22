@@ -4,6 +4,8 @@ from osha.hwccontent.browser.event import EventListing
 from osha.hwccontent.browser.newsitem import NewsItemListing
 from osha.hwccontent.browser.utils import get_partners, css_by_orientation
 
+import random
+
 
 class FrontPageView(NewsItemListing, EventListing):
 
@@ -25,3 +27,6 @@ class FrontPageView(NewsItemListing, EventListing):
         """ This is a helper to determine logo orientation for a partner.
         """
         return css_by_orientation(partner)
+
+    def get_partner_start(self):
+        return random.randint(1, 6)
