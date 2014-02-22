@@ -95,7 +95,7 @@
         <div class="partners-menu tabbable">
             <ul class="nav nav-tabs nav-justified row-fluid">
                 <span tal:repeat="category partners/keys" tal:omit-tag="">
-                  <li class="span2" tal:define="number repeat/category/number; active python:number==get_partner_start" tal:attributes="class python:active and 'span2 active' or 'span2'"><a href="#tab" tal:attributes="href string:#tab${repeat/category/number}" data-toggle="tab" tal:content="category" i18n:translate="">category</a></li>
+                  <li class="span2" tal:define="number repeat/category/number; active python:number==get_partner_start" tal:attributes="class python:active and 'span2 active' or 'span2'"><a href="#tab" tal:attributes="href string:#tab${number}" data-toggle="tab" tal:content="category" i18n:translate="">category</a></li>
                 </span>
 
             </ul>
