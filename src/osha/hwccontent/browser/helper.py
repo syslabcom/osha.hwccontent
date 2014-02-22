@@ -154,6 +154,12 @@ class HelperView(BrowserView):
             return obj.absolute_url()
         return None
 
+    def get_len_translations(self):
+        if not ITranslatable.providedBy(self.context):
+            return 0
+        tm = ITranslationManager(self.context)
+        return len(tm.get_translations())
+
 
 class CreateFocalpointUsers(grok.View):
     grok.name('create-focalpoint-users')
