@@ -2,6 +2,7 @@ import string
 import random
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 from zope.component.hooks import getSite
 from zope.component import getMultiAdapter
 
@@ -91,3 +92,23 @@ def _send_notification(obj, template_name, *extra_args):
     except KeyError as e:
         log.warn('No {0}, cannot send notification {1}'.format(
             str(e), template_name))
+
+
+def validate_userid_pwreset(context, userid, randomstring):
+    pwt = getToolByName(context, 'portal_password_reset')
+    found_member = get_member_by_login_name(
+        context, userid, raise_exceptions=False)
+    if found_member is not None:
+        userid = found_member.getId()
+    else:
+        return False
+    try:
+        stored_user, expiry = pwt._requests[randomstring]
+    except KeyError:
+        return False
+    if userid != stored_user:
+        return False
+    member = pwt.getValidUser(stored_user)
+    if not member:
+        return False
+    return True

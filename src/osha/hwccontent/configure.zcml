@@ -7,6 +7,8 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="osha.hwccontent">
 
+  <five:registerPackage package="." initialize=".initialize" />
+
   <include file="permissions.zcml" />
   <include file="upgrades.zcml" />
   <include package=".browser" />
