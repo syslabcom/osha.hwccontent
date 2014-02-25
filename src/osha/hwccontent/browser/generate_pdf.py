@@ -64,7 +64,7 @@ def generatePDF(self,
     arial_nb =  font_dir + '/arialnb.ttf'
     pdfmetrics.registerFont( TTFont('ArialNarrowBold', arial_nb) )
      # get the frontimage and write it to the canvas
-    charterfilename = "charter_hw2012.jpg"
+    charterfilename = "charter_hw2014_{0}.jpg".format(language)
 #     frontfile = getattr(self, charterfilename, None)
 #     # Fallback to English
 # #    if not frontfile:
@@ -74,53 +74,53 @@ def generatePDF(self,
     frontimage = ImageReader(os.path.join(resources_dir, charterfilename))
     my_canvas.drawImage(frontimage, 0 , 0, 29.7*cm, 21*cm)
 
-    campagin_name = _(u"campaign_name", default=u'Healthy Workplaces')
-    u_campaign_name = translate(campagin_name,
-                                target_language=language,
-                                context=self
-                                )
-    x = 14.85 * cm
-    y = 19 * cm
-    my_canvas.setFillColor(HW2012BLUE)
-    my_canvas.setFont('ArialBold', 20)
-    my_canvas.drawCentredString(x, y, u_campaign_name.upper())
+    # campagin_name = _(u"campaign_name", default=u'Healthy Workplaces')
+    # u_campaign_name = translate(campagin_name,
+    #                             target_language=language,
+    #                             context=self
+    #                             )
+    # x = 14.85 * cm
+    # y = 19 * cm
+    # my_canvas.setFillColor(HW2012BLUE)
+    # my_canvas.setFont('ArialBold', 20)
+    # my_canvas.drawCentredString(x, y, u_campaign_name.upper())
 
-    campaign_slogan = _(u'campaign_slogan', default=u'Healthy Workplaces Manage Stress.')
-    u_campaign_slogan = translate(campaign_slogan,
-                                  target_language=language,
-                                  context=self
-                                  )
-    x = 14.85 * cm
-    y = 18 * cm
-    my_canvas.setFont('ArialBold', 17)
-    my_canvas.drawCentredString(x, y, u_campaign_slogan.upper())
+    # campaign_slogan = _(u'campaign_slogan', default=u'Healthy Workplaces Manage Stress.')
+    # u_campaign_slogan = translate(campaign_slogan,
+    #                               target_language=language,
+    #                               context=self
+    #                               )
+    # x = 14.85 * cm
+    # y = 18 * cm
+    # my_canvas.setFont('ArialBold', 17)
+    # my_canvas.drawCentredString(x, y, u_campaign_slogan.upper())
 
     # print first subline
-    certificate_for = _(u'certificate_for', default=u'This certificate acknowledges the participation of ')
-    u_certificate_for = translate(certificate_for,
-                                    target_language=language,
-                                    context=self)
+    #certificate_for = _(u'certificate_for', default=u'This certificate acknowledges the participation of ')
+    # u_certificate_for = translate(certificate_for,
+    #                                 target_language=language,
+    #                                 context=self)
 
-    certificate_title = _(u'certificate_title', default=u'Certificate of Participation')
-    u_certificate_title = translate(certificate_title,
-                                    target_language=language,
-                                    context=self
-                                    )
-    x = 14.85 * cm
-    y = 11 * cm
-    my_canvas.setFont('Arial', 32)
+    # certificate_title = _(u'certificate_title', default=u'Certificate of Participation')
+    # u_certificate_title = translate(certificate_title,
+    #                                 target_language=language,
+    #                                 context=self
+    #                                 )
+    # x = 14.85 * cm
+    # y = 11 * cm
+    # my_canvas.setFont('Arial', 32)
     my_canvas.setFillColor(HW2012BLUE)
-    my_canvas.drawCentredString(x, y, u_certificate_title.upper())
+    # my_canvas.drawCentredString(x, y, u_certificate_title.upper())
 
-    u_certificate_for = u_certificate_for.encode('utf-8')
-    x = 14.85 * cm
-    y = 10 * cm
-    my_canvas.setFont('Arial', 18)
-    my_canvas.drawCentredString(x, y, u_certificate_for)
+    # u_certificate_for = u_certificate_for.encode('utf-8')
+    # x = 14.85 * cm
+    # y = 10 * cm
+    # my_canvas.setFont('Arial', 18)
+    # my_canvas.drawCentredString(x, y, u_certificate_for)
 
     # print company name
     x = 14.85 * cm
-    y = 7.5 * cm
+    y = 6.3 * cm
     width, height = landscape(A4)
     width -= 5 * cm
     height = 10 * cm
@@ -151,21 +151,21 @@ def generatePDF(self,
     #lines = []
 
 
-    # print contribution headline
-    x = 14.85 * cm
-    y = 5 * cm
-    width, height = landscape(A4)
-    width -= 5 * cm
-    height = 10 * cm
+    # # print contribution headline
+    # x = 14.85 * cm
+    # y = 5 * cm
+    # width, height = landscape(A4)
+    # width -= 5 * cm
+    # height = 10 * cm
 
-    contribution_headline = _(u'contribution_headline', default=u" in the Healthy Workplaces Campaign 2014-15 on ‘Healthy workplaces manage stress’.")
-    u_contribution_headline = translate(contribution_headline,
-                                          target_language=language,
-                                          context=self)
+    # contribution_headline = _(u'contribution_headline', default=u" in the Healthy Workplaces Campaign 2014-15 on ‘Healthy workplaces manage stress’.")
+    # u_contribution_headline = translate(contribution_headline,
+    #                                       target_language=language,
+    #                                       context=self)
 
-    u_contribution_headline = u_contribution_headline.encode('utf-8')
-    my_canvas.setFont('Arial', 18)
-    my_canvas.drawCentredString(x, y, u_contribution_headline)
+    # u_contribution_headline = u_contribution_headline.encode('utf-8')
+    # my_canvas.setFont('Arial', 18)
+    # my_canvas.drawCentredString(x, y, u_contribution_headline)
     # P = Paragraph(contribution_headline, style)
     # wi, he = P.wrap(width, height)
     # P.drawOn(my_canvas, x - wi/2, y - he/2)
