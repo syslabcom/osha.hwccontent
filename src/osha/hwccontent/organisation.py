@@ -267,7 +267,8 @@ class IOrganisationExtra(model.Schema):
         value_type=schema.Choice(
             vocabulary=vocabularies.countries,
         ),
-        min_length=1,
+        required=False,
+        # min_length=1,
     )
     directives.languageindependent('countries')
 
