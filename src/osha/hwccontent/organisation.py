@@ -148,6 +148,7 @@ class IOrganisationBase(model.Schema):
 
     country = schema.Choice(
         title=_(u"Country"),
+        required=False,
         vocabulary=vocabularies.countries,
     )
     directives.languageindependent('country')
