@@ -435,8 +435,8 @@ class IOrganisationExtra(model.Schema):
 
     description = schema.Text(
         title=_(
-            u'His / her quote on the Healthy Workplaces Campaign on "Working '
-            'together for risk prevention"'),
+            u'His / her quote on the Healthy Workplaces Campaign 2014-15 on '
+            '"Healthy workplaces manage stress"'),
     )
     directives.languageindependent('description')
     formdirectives.omitted('description')
