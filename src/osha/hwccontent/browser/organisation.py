@@ -84,6 +84,7 @@ class OrganisationManage(ViewletBase):
             self.can_edit = False
             self.can_delete = False
             user_email = None
+            self.completed = False
         else:
             user = api.user.get_current()
             user_email = user.getProperty('email')
@@ -106,3 +107,4 @@ class OrganisationManage(ViewletBase):
         self.owner = getattr(self.context, 'key_email', None) == user_email
 
         self.available = self.can_review or self.can_edit or self.owner
+        self.completed = self.context.social_dialogue is not None

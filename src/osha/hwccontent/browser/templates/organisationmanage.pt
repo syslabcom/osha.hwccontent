@@ -28,12 +28,17 @@
          Thank you. Your profile will be reviewed for the final time by EU-OSHA.
      </p>
 
-     <span tal:condition="python:not view.can_review and 'submit' in view.wfactions" tal:omit-tag="">
+     <span tal:condition="python:not view.can_review and 'submit' in view.wfactions and view.completed" tal:omit-tag="">
         <p class="callout">
             Your profile has been completed.
             <a tal:attributes="href view/wfactions/submit/url">Please click here to submit your profile for final review.</a>
         <p>
         <p>Optionally, you can <a tal:attributes="href string:${here_url}/edit">continue to update your profile.</a></p>
+     </span>
+
+     <span tal:condition="python:not view.can_review and 'submit' in view.wfactions and not view.completed" tal:omit-tag="">
+        <p class="callout">
+                Please <a tal:attributes="href string:${here_url}/edit">click here to update your profile.</a></p>
      </span>
 
      <span tal:condition="python:view.owner and view.wfstate=='published'">
