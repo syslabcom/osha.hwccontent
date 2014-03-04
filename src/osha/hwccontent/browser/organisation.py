@@ -107,4 +107,6 @@ class OrganisationManage(ViewletBase):
         self.owner = getattr(self.context, 'key_email', None) == user_email
 
         self.available = self.can_review or self.can_edit or self.owner
-        self.completed = self.context.social_dialogue is not None
+        self.completed = (
+            self.context.portal_type == 'osha.hwccontent.organisation'
+            and self.context.social_dialogue is not None) or True
