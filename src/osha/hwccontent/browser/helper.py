@@ -182,6 +182,8 @@ class CreateFocalpointUsers(grok.View):
                     gt.addGroup("Focal Points")
                     group = gt.getGroupById("Focal Points")
                 group.addMember(username)
+                self.request.set('is_fop', True)
+                self.request.set('name', obj.key_name.encode('utf-8'))
                 if created:
                     rt.mailPassword(username, self.request)
                     created_users.append(u"{0} <a href='{1}'>{2}</a>".format(
