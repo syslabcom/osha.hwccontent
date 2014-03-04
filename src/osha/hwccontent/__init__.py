@@ -2,6 +2,7 @@ from zope.i18nmessageid import MessageFactory
 from AccessControl import ModuleSecurityInfo
 
 OCP_GROUP_NAME = "Official Campaign Partners"
+FOP_GROUP_NAME = "national-focal-points"
 
 _ = MessageFactory("osha.hwc")
 

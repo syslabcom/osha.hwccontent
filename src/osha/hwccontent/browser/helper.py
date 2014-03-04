@@ -20,6 +20,7 @@ from zope.interface import implements
 from zope.interface import Interface
 import logging
 
+from osha.hwccontent import FOP_GROUP_NAME
 from osha.hwccontent import utils
 from osha.hwccontent.behaviors.moreabout import (
     IRelatedSites,
@@ -177,6 +178,48 @@ class CreateFocalpointUsers(grok.View):
             obj = fp.getObject()
             username, created = utils.create_key_user_if_not_exists(obj)
             if username is not None:
+                group = gt.getGroupById(FOP_GROUP_NAME)
+                if group is None:
+                    gt.addGroup(FOP_GROUP_NAME)
+                    group = gt.getGroupById(FOP_GROUP_NAME)
+                group.addMember(username)
+                self.request.set('is_fop', True)
+                self.request.set('name', obj.key_name.encode('utf-8'))
+                if created:
+                    rt.mailPassword(username, self.request)
+                    created_users.append(u"{0} <a href='{1}'>{2}</a>".format(
+                        username, obj.absolute_url(), safe_unicode(obj.Title())))
+                else:
+                    existed_users.append(u"{0} <a href='{1}'>{2}</a>".format(
+                        username, obj.absolute_url(), safe_unicode(obj.Title())))
+            else:
+                failed.append(u"<a href='{0}'>{1}</a>".format(
+                    obj.absolute_url(), safe_unicode(obj.Title())))
+        msg = (u'<html><h2>Created users:</h2><p>{0}</p>'
+               u'<h2>Existing users:</h2><p>{1}</p>'
+               u'<h2>Failed profiles:</h2><p>{2}</p></html>').format(
+                   u'<br>'.join(created_users),
+                   u'<br>'.join(existed_users),
+                   u'<br>'.join(failed))
+        return msg
+
+
+class ResetOCPAccounts(grok.View):
+    grok.name('reset-ocp-accounts')
+    grok.require('cmf.ManagePortal')
+    grok.context(ISiteRoot)
+
+    def render(self):
+        cat = getToolByName(self.context, 'portal_catalog')
+        gt = getToolByName(self.context, 'portal_groups')
+        rt = getToolByName(self.context, 'portal_registration')
+        created_users = []
+        existed_users = []
+        failed = []
+        for fp in cat(portal_type=['osha.hwccontent.organisation']):
+            obj = fp.getObject()
+            username, created = utils.create_key_user_if_not_exists(obj)
+            if username is not None:
                 group = gt.getGroupById("Focal Points")
                 if group is None:
                     gt.addGroup("Focal Points")
@@ -184,8 +227,8 @@ class CreateFocalpointUsers(grok.View):
                 group.addMember(username)
                 self.request.set('is_fop', True)
                 self.request.set('name', obj.key_name.encode('utf-8'))
+                rt.mailPassword(username, self.request)
                 if created:
-                    rt.mailPassword(username, self.request)
                     created_users.append(u"{0} <a href='{1}'>{2}</a>".format(
                         username, obj.absolute_url(), safe_unicode(obj.Title())))
                 else:
