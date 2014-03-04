@@ -4,7 +4,10 @@ from Acquisition import (
     aq_base,
     aq_inner,
 )
-from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.utils import (
+    safe_unicode,
+    getDefaultPage,
+)
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
@@ -324,6 +327,37 @@ class PropagateFolderSettings(grok.View):
                 fopcnt += 1
         log.info('Reset the language on {0} FOPs'.format(fopcnt))
         return "ok"
+
+
+class PropagatePageDescriptions(grok.View):
+    """ This view propagates page descriptions from default pages to
+    their parent folders.
+    """
+    grok.name('propagate-page-descriptions')
+    grok.require('cmf.ManagePortal')
+    grok.context(ISiteRoot)
+
+    def render(self):
+        cat = getToolByName(self.context, 'portal_catalog')
+        query = dict(portal_type='Folder', Language='all')
+        res = cat(query)
+        cnt = 0
+        log.info('Total no. of folders found: {0}'.format(len(res)))
+        for r in res:
+            try:
+                obj = r.getObject()
+            except:
+                log.warn("Stale catalog entry for {0}".format(r.getPath()))
+                continue
+            if obj.Description() == '':
+                default_page = getDefaultPage(obj, self.request)
+                if default_page:
+                    obj.setDescription(getattr(obj, default_page).Description())
+                    obj.reindexObject()
+                    cnt += 1
+            if cnt % 10 == 0:
+                log.info("Handled {0} folders".format(cnt))
+        return "Finished settings descriptions, handled a total of {0}".format(cnt)
 
 
 class CreateAndPopulatePartnersGroup(grok.View):
