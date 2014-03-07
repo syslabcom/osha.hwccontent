@@ -23,7 +23,10 @@ from zope.interface import implements
 from zope.interface import Interface
 import logging
 
-from osha.hwccontent import FOP_GROUP_NAME
+from osha.hwccontent import (
+    FOP_GROUP_NAME,
+    OCP_GROUP_NAME,
+)
 from osha.hwccontent import utils
 from osha.hwccontent.behaviors.moreabout import (
     IRelatedSites,
@@ -223,10 +226,10 @@ class ResetOCPAccounts(grok.View):
             obj = fp.getObject()
             username, created = utils.create_key_user_if_not_exists(obj)
             if username is not None:
-                group = gt.getGroupById("Focal Points")
+                group = gt.getGroupById(OCP_GROUP_NAME)
                 if group is None:
-                    gt.addGroup("Focal Points")
-                    group = gt.getGroupById("Focal Points")
+                    gt.addGroup(OCP_GROUP_NAME)
+                    group = gt.getGroupById(OCP_GROUP_NAME)
                 group.addMember(username)
                 self.request.set('is_fop', True)
                 self.request.set('name', obj.key_name.encode('utf-8'))
