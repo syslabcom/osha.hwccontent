@@ -23,13 +23,14 @@ import time
 log = getLogger('osha.hw2014.browser.charter')
 
 # consider translating the strings
-email_template = _(u"""<p>Thank you for signing the Healthy Workplaces Campaign certificate.</p>
+email_template = _(u"""<p>Thank you for actively supporting the Healthy Workplaces Campaign!</p>
 
-<p>Please find a PDF version of the certificate attached to this email,
-which you may print.</p>
+<p>Please find a PDF version of the Campaign certificate attached to this email, which you may print.</p>
 
 <p>For more information on the Healthy Workplaces Campaign, please
-consult the website at http://www.healthy-workplaces.eu.</p>
+visit the website at http://www.healthy-workplaces.eu.</p>
+
+<p>To keep up to date with the latest news, subscribe to EU-OSHA newsletter https://osha.europa.eu/en/news/oshmail/</p>
 """)
 
 
@@ -49,7 +50,7 @@ def send_charter_email(context, pdf, to, sender, body, language):
     mailhost = context.MailHost
     msg = MIMEMultipart()
 
-    msg['Subject'] = "The Healthy Workplaces Campaign certificate"
+    msg['Subject'] = "Healthy Workplaces Campaign Certificate"
     msg['From'] = sender
     msg['To'] = to
     msg['Date'] = formatdate(localtime=True)
