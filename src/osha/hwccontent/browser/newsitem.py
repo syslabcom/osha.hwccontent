@@ -34,7 +34,7 @@ class NewsItemListing(ListingView):
         """
         items = []
         lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
-        qurl = '%s/%s/jsonfeed?portal_type=News%%20Item&Subject=%s&path=/osha/portal/%s&Language=%s' \
+        qurl = '%s/%s/jsonfeed?portal_type=News%%20Item&Subject=%s&path=/%s&Language=%s' \
             % (self.osha_json_url, lang, self.remote_news_query_tags, lang, lang)
 
         result = urlopen(qurl)
