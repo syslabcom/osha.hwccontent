@@ -399,3 +399,22 @@ class GetFOPEmails(grok.View):
                 u'"{0}", "{1}", "{2}", "{3}"'.format(
                     obj.title, obj.absolute_url(), obj.key_name, obj.key_email))
         return "\n".join(out)
+
+
+class GetOCPEmails(grok.View):
+    """ This view propagates all settings pertaining to layout to the translations
+    """
+    grok.name('get-ocp-emails')
+    grok.require('cmf.ManagePortal')
+    grok.context(ISiteRoot)
+
+    def render(self):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        fops = catalog(portal_type='osha.hwccontent.organisation')
+        out = ['"OCP name", "Link", "Contact person", "Contact Email"']
+        for fop in fops:
+            obj = fop.getObject()
+            out.append(
+                u'"{0}", "{1}", "{2}", "{3}"'.format(
+                    obj.title, obj.absolute_url(), obj.key_name, obj.key_email))
+        return "\n".join(out)
