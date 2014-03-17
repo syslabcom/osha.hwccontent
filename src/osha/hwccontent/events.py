@@ -7,9 +7,15 @@ from five import grok
 from zope.app.container.interfaces import IObjectAddedEvent
 
 from osha.hwccontent import OCP_GROUP_NAME
+from osha.hwccontent.focalpoint import IFocalPoint
 from osha.hwccontent.organisation import IOrganisation
 from osha.hwccontent.interfaces import IOSHAHWCContentLayer
 from osha.hwccontent import utils
+from plone.app.contenttypes.interfaces import (
+    IEvent,
+    INewsItem,
+)
+from plone.dexterity.interfaces import IDexterityContent
 import logging
 
 log = logging.getLogger(__name__)
@@ -144,6 +150,23 @@ class OrganisationPublishedCreatorMailTemplate(MailTemplateBase):
         return self.template.render(self)
 
 
+class OrganisationContentSubmittedMailTemplate(MailTemplateBase):
+    """ """
+    grok.name('mail_content_submitted')
+    grok.context(IDexterityContent)
+    grok.layer(IOSHAHWCContentLayer)
+    grok.require('cmf.ReviewPortalContent')
+
+    def render(self, parent):
+        self.subject = 'Content submitted'
+        self.content_type = self.context.Type()
+        self.parent_type = parent.Type()
+        self.parent_name = parent.Title()
+        self.template = grok.PageTemplateFile(
+            'templates/mail_content_submitted.pt')
+        return self.template.render(self)
+
+
 def add_user_and_send_notifications(obj):
     username, created = utils.create_key_user_if_not_exists(obj)
     group = utils.create_group_if_not_exists(OCP_GROUP_NAME)
@@ -168,3 +191,14 @@ def handle_wf_transition(obj, event):
 def handle_organisation_created(obj, event):
     utils._send_notification(obj, "mail_organisation_created_creator")
     utils._send_notification(obj, "mail_organisation_created_siteowner")
+
+
+@grok.subscribe(IEvent, IBeforeTransitionEvent)
+@grok.subscribe(INewsItem, IBeforeTransitionEvent)
+def handle_wf_transition_partners(obj, event):
+    if not event.transition:
+        return
+    if event.transition.id == "submit":
+        parent = aq_parent(obj)
+        if IOrganisation.providedBy(parent) or IFocalPoint.providedBy(parent):
+            utils._send_notification(obj, 'mail_content_submitted', parent)
