@@ -180,6 +180,7 @@ class CreateFocalpointUsers(grok.View):
         created_users = []
         existed_users = []
         failed = []
+        send_email = bool(self.request.get('send_email', False))
         for fp in cat(portal_type=['osha.hwccontent.focalpoint']):
             obj = fp.getObject()
             username, created = utils.create_key_user_if_not_exists(obj)
@@ -190,9 +191,10 @@ class CreateFocalpointUsers(grok.View):
                     group = gt.getGroupById(FOP_GROUP_NAME)
                 group.addMember(username)
                 self.request.set('is_fop', True)
-                self.request.set('name', obj.key_name.encode('utf-8'))
-                if created:
+                self.request.set('name', obj.key_name.encode('utf-8').strip())
+                if send_email:
                     rt.mailPassword(username, self.request)
+                if created:
                     created_users.append(u"{0} <a href='{1}'>{2}</a>".format(
                         username, obj.absolute_url(), safe_unicode(obj.Title())))
                 else:
@@ -201,12 +203,17 @@ class CreateFocalpointUsers(grok.View):
             else:
                 failed.append(u"<a href='{0}'>{1}</a>".format(
                     obj.absolute_url(), safe_unicode(obj.Title())))
-        msg = (u'<html><h2>Created users:</h2><p>{0}</p>'
-               u'<h2>Existing users:</h2><p>{1}</p>'
-               u'<h2>Failed profiles:</h2><p>{2}</p></html>').format(
-                   u'<br>'.join(created_users),
-                   u'<br>'.join(existed_users),
-                   u'<br>'.join(failed))
+        msg = (
+            u'<html><p>Send email (enable via send_email=1): {0}'
+            u'<h2>Created users:</h2><p>{1}</p>'
+            u'<h2>Existing users:</h2><p>{2}</p>'
+            u'<h2>Failed profiles:</h2><p>{3}</p></html>'
+        ).format(
+            send_email,
+            u'<br>'.join(created_users),
+            u'<br>'.join(existed_users),
+            u'<br>'.join(failed)
+        )
         return msg
 
 
@@ -231,7 +238,7 @@ class ResetOCPAccounts(grok.View):
                     gt.addGroup(OCP_GROUP_NAME)
                     group = gt.getGroupById(OCP_GROUP_NAME)
                 group.addMember(username)
-                self.request.set('is_fop', True)
+                self.request.set('is_ocp', True)
                 self.request.set('name', obj.key_name.encode('utf-8'))
                 rt.mailPassword(username, self.request)
                 if created:
@@ -243,12 +250,14 @@ class ResetOCPAccounts(grok.View):
             else:
                 failed.append(u"<a href='{0}'>{1}</a>".format(
                     obj.absolute_url(), safe_unicode(obj.Title())))
-        msg = (u'<html><h2>Created users:</h2><p>{0}</p>'
-               u'<h2>Existing users:</h2><p>{1}</p>'
-               u'<h2>Failed profiles:</h2><p>{2}</p></html>').format(
-                   u'<br>'.join(created_users),
-                   u'<br>'.join(existed_users),
-                   u'<br>'.join(failed))
+        msg = (
+            u'<html><h2>Created users:</h2><p>{0}</p>'
+            u'<h2>Existing users:</h2><p>{1}</p>'
+            u'<h2>Failed profiles:</h2><p>{2}</p></html>'
+        ).format(
+            u'<br>'.join(created_users),
+            u'<br>'.join(existed_users),
+            u'<br>'.join(failed))
         return msg
 
 
