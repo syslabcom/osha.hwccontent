@@ -227,7 +227,6 @@ class IOrganisationBase(model.Schema):
     )
     directives.languageindependent('mission_statement')
     formdirectives.omitted('mission_statement')
-    formdirectives.no_omit(IEditForm, 'mission_statement')
 
     logo = NamedBlobImage(
         title=_(u"Company / Organisation logo"),
@@ -245,7 +244,6 @@ class IOrganisationBase(model.Schema):
     )
     directives.languageindependent('ceo_image')
     formdirectives.omitted('ceo_image')
-    formdirectives.no_omit(IEditForm, 'ceo_image')
 
 
 class IOrganisationExtra(model.Schema):
@@ -487,6 +485,9 @@ class IOrganisationExtra(model.Schema):
 
 
 class IOrganisation(IOrganisationBase, IOrganisationExtra):
+
+    formdirectives.no_omit(IEditForm, 'mission_statement')
+    formdirectives.no_omit(IEditForm, 'ceo_image')
 
     model.fieldset(
         'about_organisation',

@@ -3,7 +3,10 @@
 from five import grok
 from osha.hwccontent import vocabularies
 from plone.supermodel import model
-from z3c.form.interfaces import IAddForm
+from z3c.form.interfaces import (
+    IAddForm,
+    IEditForm,
+)
 from zope import schema
 from plone import api
 from plone.autoform import directives as formdirectives
@@ -34,8 +37,10 @@ class IFocalPoint(IOrganisationBase):
 
     formdirectives.no_omit(IAddForm, 'campaign_pledge')
     formdirectives.no_omit(IAddForm, 'mission_statement')
+    formdirectives.no_omit(IEditForm, 'mission_statement')
     formdirectives.no_omit(IAddForm, 'logo')
     formdirectives.no_omit(IAddForm, 'ceo_image')
+    formdirectives.no_omit(IEditForm, 'ceo_image')
 
     description = schema.Text(
         title=_(u'Description'),
