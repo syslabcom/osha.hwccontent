@@ -38,6 +38,7 @@ class IFocalPoint(IOrganisationBase):
     formdirectives.no_omit(IAddForm, 'campaign_pledge')
     formdirectives.no_omit(IAddForm, 'mission_statement')
     formdirectives.no_omit(IEditForm, 'mission_statement')
+    formdirectives.no_omit(IEditForm, 'campaign_pledge')
     formdirectives.no_omit(IAddForm, 'logo')
     formdirectives.no_omit(IAddForm, 'ceo_image')
     formdirectives.no_omit(IEditForm, 'ceo_image')

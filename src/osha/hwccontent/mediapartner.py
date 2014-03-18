@@ -8,6 +8,7 @@ from plone.supermodel import model
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.interfaces import (
     IAddForm,
+    IEditForm,
     IFieldWidget,
     IFormLayer,
 )
@@ -73,7 +74,7 @@ class IMediaPartner(IOrganisationBase):
         'about_fop',
         label=_(u'About your publication'),
         fields=[
-            'title', 'logo', 'country', 'campaign_pledge',
+            'title', 'logo', 'country', 'mission_statement',
             'publication_type', 'readership',
             'key_name', 'key_position', 'key_email',
             'editor_in_chief', 'url', 'social_media',
@@ -82,7 +83,8 @@ class IMediaPartner(IOrganisationBase):
     )
 
     formdirectives.no_omit(IAddForm, 'logo')
-    formdirectives.no_omit(IAddForm, 'campaign_pledge')
+    formdirectives.no_omit(IAddForm, 'mission_statement')
+    formdirectives.no_omit(IEditForm, 'mission_statement')
     formdirectives.no_omit(IAddForm, 'street')
     formdirectives.omitted('fax')
     formdirectives.omitted('campaign_url')
@@ -134,9 +136,9 @@ class IMediaPartner(IOrganisationBase):
 class FormBase(object):
 
     def adaptWidgets(self):
-        self.groups[0].widgets['campaign_pledge'].label = _(
+        self.groups[0].widgets['mission_statement'].label = _(
             u"Our contribution")
-        self.groups[0].widgets['campaign_pledge'].field.description = _(
+        self.groups[0].widgets['mission_statement'].field.description = _(
             u"Please summarise briefly the support that you will provide "
             u"for this campaign.")
         self.groups[0].widgets['title'].label = _(u'Publication name')

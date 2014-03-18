@@ -219,7 +219,6 @@ class IOrganisationBase(model.Schema):
     )
     directives.languageindependent('campaign_pledge')
     formdirectives.omitted('campaign_pledge')
-    formdirectives.no_omit(IEditForm, 'campaign_pledge')
 
     mission_statement = schema.Text(
         title=_(u"Your mission statement"),
@@ -488,6 +487,7 @@ class IOrganisation(IOrganisationBase, IOrganisationExtra):
 
     formdirectives.no_omit(IEditForm, 'mission_statement')
     formdirectives.no_omit(IEditForm, 'ceo_image')
+    formdirectives.no_omit(IEditForm, 'campaign_pledge')
 
     model.fieldset(
         'about_organisation',
