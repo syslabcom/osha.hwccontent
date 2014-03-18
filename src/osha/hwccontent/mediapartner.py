@@ -73,11 +73,11 @@ class IMediaPartner(IOrganisationBase):
         'about_fop',
         label=_(u'About your publication'),
         fields=[
-            'title', 'logo', 'countries', 'campaign_pledge',
+            'title', 'logo', 'country', 'campaign_pledge',
             'publication_type', 'readership',
             'key_name', 'key_position', 'key_email',
             'editor_in_chief', 'url', 'social_media',
-            'street', 'address_extra', 'city', 'zip_code', 'country', 'phone',
+            'street', 'address_extra', 'city', 'zip_code', 'phone',
         ],
     )
 
@@ -89,17 +89,6 @@ class IMediaPartner(IOrganisationBase):
     formdirectives.omitted('street')
     formdirectives.omitted('email')
     formdirectives.omitted('key_phone')
-
-    form.widget(countries=CheckBoxFieldWidget)
-    countries = schema.List(
-        title=_(u"Country"),
-        description=_(u"Multiple selections are possible"),
-        value_type=schema.Choice(
-            vocabulary=vocabularies.countries,
-        ),
-        required=False,
-    )
-    directives.languageindependent('countries')
 
     form.widget(publication_type=CheckBoxFieldWidget)
     publication_type = schema.List(
