@@ -1,11 +1,23 @@
 # _+- coding: utf-8 -*-
 
+from collective.z3cform.datagridfield import DataGridField
+from collective.z3cform.datagridfield import DictRow
 from five import grok
 from osha.hwccontent import vocabularies
 from plone.supermodel import model
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
-from z3c.form.interfaces import IAddForm
-from zope import schema
+from z3c.form.interfaces import (
+    IAddForm,
+    IFieldWidget,
+    IFormLayer,
+)
+from z3c.form.widget import FieldWidget
+from zope import (
+    component,
+    interface,
+    schema,
+)
+from zope.schema.interfaces import IField
 from plone import api
 from plone.autoform import directives as formdirectives
 from plone.directives import (
@@ -22,6 +34,39 @@ from osha.hwccontent.organisation import (
 )
 
 
+class ICustomTableWidget(interface.Interface):
+    """Subclass the widget, required for template customization"""
+
+
+@interface.implementer(ICustomTableWidget)
+class CustomTableWidget(DataGridField):
+    """This grid should be applied to an schema.List item which has
+       schema.Object and an interface"""
+
+    allow_insert = True
+    allow_delete = True
+    allow_reorder = True
+    auto_append = True
+
+
+@component.adapter(IField, IFormLayer)
+@interface.implementer(IFieldWidget)
+def CustomTableWidgetFactory(field, request):
+    """IFieldWidget factory for DataGridField."""
+    return FieldWidget(field, CustomTableWidget(request))
+
+
+class ITableRowSchema(form.Schema):
+    label = schema.TextLine(
+        title=u"Name (e.g. Twitter, Facebook, etc.)",
+        required=False,
+    )
+    url = schema.TextLine(
+        title=u"Profile ID",
+        required=False,
+    )
+
+
 class IMediaPartner(IOrganisationBase):
 
     model.fieldset(
@@ -31,10 +76,8 @@ class IMediaPartner(IOrganisationBase):
             'title', 'logo', 'country', 'campaign_pledge',
             'publication_type', 'readership',
             'key_name', 'key_position', 'key_email',
-            'editor_in_chief', 'url',
-            # Social media
+            'editor_in_chief', 'url', 'social_media',
             'street', 'address_extra', 'city', 'zip_code', 'phone',
-            # 'mission_statement', 'ceo_image',
         ],
     )
 
@@ -88,6 +131,16 @@ class IMediaPartner(IOrganisationBase):
         title=_(u"Editor in Chief"),
     )
     directives.languageindependent('editor_in_chief')
+
+    social_media = schema.List(
+        title=_(u"Social media profiles"),
+        required=False,
+        value_type=DictRow(
+            title=u"tablerow",
+            required=False,
+            schema=ITableRowSchema,),
+    )
+    form.widget(social_media=CustomTableWidgetFactory)
 
 
 class FormBase(object):
