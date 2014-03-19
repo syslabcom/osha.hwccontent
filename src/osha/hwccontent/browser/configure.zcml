@@ -148,6 +148,18 @@
     layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
     />
 
+  <!-- Override newsitem_view for attachment support -->
+
+  <browser:page
+    name="newsitem_view"
+    for="osha.hwccontent.behaviors.attachment.IAttachmentField"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    template="templates/newsitem.pt"
+    permission="zope2.View"
+    menu="plone_displayviews"
+    title="View News Item"
+    />
+
   <browser:page
       for="*"
       name="download-participant-details"
