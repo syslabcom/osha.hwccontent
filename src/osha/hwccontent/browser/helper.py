@@ -36,10 +36,7 @@ from osha.hwccontent.behaviors.moreabout import (
 log = logging.getLogger(__name__)
 
 EMAIL_FILTER = [
-    "jniemiec@etuc.org",
     "herman.baets@telenet.be",
-    "stziaferi@hotmail.com",
-    "philippe.gouy-pailler@airliquide.com",
 ]
 
 
