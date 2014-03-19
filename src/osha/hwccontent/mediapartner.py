@@ -159,6 +159,10 @@ class AddForm(dexterity.AddForm, FormBase):
         super(AddForm, self).update()
         self.adaptWidgets()
 
+    @property
+    def label(self):
+        return u"Apply to become a media partner"
+
 
 class EditForm(dexterity.EditForm, FormBase):
     grok.context(IMediaPartner)
