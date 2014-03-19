@@ -2,7 +2,7 @@
      tal:condition="view/available"
      tal:define="here_url here/absolute_url">
      <span tal:condition="view/can_review" tal:omit-tag="">
-        <p id="plone-contentmenu-workflow">The current workflow state is: <em tal:attributes="class string:state-${view/wfstate}" tal:content="view/wfstatetitle">state</em><br/>
+        <p id="plone-contentmenu-workflow">The current workflow state of this <strong tal:content="view/contenttype">item</strong> is: <em tal:attributes="class string:state-${view/wfstate}" tal:content="view/wfstatetitle">state</em><br/>
             Available actions for the reviewer:</p>
         <ul>
             <li><a tal:attributes="href string:${here_url}/edit">Click here to update the partner's profile.</a></li>
