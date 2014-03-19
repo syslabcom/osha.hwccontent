@@ -1,9 +1,11 @@
 # _+- coding: utf-8 -*-
-
+from Acquisition import aq_parent
+from Products.CMFCore.utils import getToolByName
 from collective.z3cform.datagridfield import DataGridField
 from collective.z3cform.datagridfield import DictRow
 from five import grok
 from osha.hwccontent import vocabularies
+from osha.hwccontent.utils import _send_notification
 from plone.supermodel import model
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.interfaces import (
@@ -18,6 +20,8 @@ from zope import (
     interface,
     schema,
 )
+from zope.event import notify
+from zope.lifecycleevent import ObjectRemovedEvent
 from zope.schema.interfaces import IField
 from plone import api
 from plone.autoform import directives as formdirectives
@@ -194,3 +198,29 @@ class EditForm(dexterity.EditForm, FormBase):
                     email_field.description = EMAIL_HINT_USER
 
         super(EditForm, self).updateActions()
+
+
+class RejectView(grok.View):
+    grok.context(IMediaPartner)
+    grok.require("cmf.ReviewPortalContent")
+    grok.name("reject")
+
+    def render(self):
+        """ We need to delete the current profile without shooting ourselves
+        in the foot. Therefore, use a low-level method for deletion and make
+        sure the necessary events get triggered.
+        """
+        msg = 'The media partner profile "{0}" has been rejected'.format(
+            self.context.Title())
+        api.portal.show_message(message=msg, request=self.request)
+        _send_notification(self.context, "mail_mediapartner_rejected")
+        id = self.context.id
+        container = aq_parent(self.context)
+        url = container.absolute_url()
+        ob = container._getOb(id)
+        obj_path = '/'.join(ob.getPhysicalPath())
+        catalog = getToolByName(container, "portal_catalog")
+        container._delObject(id=id, suppress_events=True)
+        notify(ObjectRemovedEvent(ob, container, id))
+        catalog.uncatalog_object(obj_path)
+        self.request.response.redirect(url)

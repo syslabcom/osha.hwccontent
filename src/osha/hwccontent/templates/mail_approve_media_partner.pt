@@ -16,7 +16,7 @@ Enter your email address and your new password:
               tal:omit-tag="" /> hours)
     </div>
 
-You can then view and complete the profile here:
+You can then view your profile and add News items here:
 
     <tal:object_url tal:replace="view/object_url">http://nohost/organisation</tal:object_url>
 

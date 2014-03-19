@@ -167,6 +167,21 @@ class OrganisationRejectedMailTemplate(MailTemplateBase):
         return self.template.render(self)
 
 
+class MediapartnerRejectedMailTemplate(MailTemplateBase):
+    """ """
+    grok.name('mail_mediapartner_rejected')
+    grok.context(IMediaPartner)
+    grok.layer(IOSHAHWCContentLayer)
+    grok.require('cmf.ReviewPortalContent')
+
+    def render(self):
+        self.subject = 'Profile rejected'
+        self.template = grok.PageTemplateFile('templates/mail_mediapartner_rejected.pt')
+        if not self.from_addr:
+            raise KeyError('email_from_address')
+        return self.template.render(self)
+
+
 class OrganisationPublishedCreatorMailTemplate(MailTemplateBase):
     """ """
     grok.name('mail_organisation_published_creator')
@@ -220,7 +235,6 @@ def handle_wf_transition(obj, event):
 
 @grok.subscribe(IMediaPartner, IBeforeTransitionEvent)
 def handle_wf_mp_transition(obj, event):
-    # import pdb; pdb.set_trace( )
     if not event.transition:
         return
     elif event.transition.id == 'publish':
