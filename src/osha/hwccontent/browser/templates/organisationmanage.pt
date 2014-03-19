@@ -42,11 +42,11 @@
      </span>
 
      <span tal:condition="python:view.owner and view.wfstate=='published'">
-        Your profile has been completed. You can continue to update your profile or add news and events:
+        Your profile has been completed. You can continue to update your profile or add news<span tal:condition="python:view.contenttype!='Media Partner'"> and events</span>:
         <ul>
             <li><a tal:attributes="href string:${here_url}/edit">Click here to update your profile.</a></li>
             <li><a tal:attributes="href string:${here_url}/++add++News%20Item">Add news item</a></li>
-            <li><a tal:attributes="href string:${here_url}/++add++Event">Add event</a></li>
+            <li tal:condition="python:view.contenttype!='Media Partner'"><a tal:attributes="href string:${here_url}/++add++Event">Add event</a></li>
         <ul>
      </span>
 

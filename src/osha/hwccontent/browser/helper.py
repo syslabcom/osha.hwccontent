@@ -121,7 +121,7 @@ class HelperView(BrowserView):
         wf = api.portal.get_tool('portal_workflow')
         user = ms.getAuthenticatedMember()
         profiles = cat(portal_type=[
-            'osha.hwccontent.organisation', 'osha.hwccontent.focalpoint'],
+            'osha.hwccontent.organisation', 'osha.hwccontent.focalpoint', 'osha.hwccontent.mediapartner'],
             key_email=user.getProperty('email'),
             sort_on='modified',
             sort_order='descending')

@@ -260,5 +260,5 @@ def handle_wf_transition_partners(obj, event):
         return
     if event.transition.id == "submit":
         parent = aq_parent(obj)
-        if IOrganisation.providedBy(parent) or IFocalPoint.providedBy(parent):
+        if IOrganisation.providedBy(parent) or IFocalPoint.providedBy(parent) or IMediaPartner.providedBy(parent):
             utils._send_notification(obj, 'mail_content_submitted', parent)
