@@ -39,6 +39,7 @@ setup(name='osha.hwccontent',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'Products.RedirectionTool',
           'collective.z3cform.datagridfield>=0.15',
           'plone.api',
           'plone.app.contenttypes',
