@@ -69,8 +69,7 @@ class NewsItemListing(ListingView):
     @ram.cache(ListingView.cache_for_minutes(10))
     def get_all_news_items(self):
         items = sorted(
-            self.get_remote_news_items() + \
-                list(self.get_local_news_items()),
+            self.get_remote_news_items() + list(self.get_local_news_items()),
             key=lambda item: item.__getitem__('Date'),
             reverse=True
         )
@@ -84,7 +83,7 @@ class NewsItemListing(ListingView):
                     'Date': DateTime(item.Date).utcdatetime(),
                     'getURL': item.getPath(),
                     'Description': item.Description,
-                    'text': obj.text.output,
+                    'text': obj.text and obj.text.output or "",
                     'image': blob and base64.encodestring(blob.open().read()) or None,
                     'obj': obj
                 }
