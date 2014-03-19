@@ -35,6 +35,13 @@ from osha.hwccontent.behaviors.moreabout import (
 
 log = logging.getLogger(__name__)
 
+EMAIL_FILTER = [
+    "jniemiec@etuc.org",
+    "herman.baets@telenet.be",
+    "stziaferi@hotmail.com",
+    "philippe.gouy-pailler@airliquide.com",
+]
+
 
 def get_path_to_icon(obj=None, content_type=None):
     if IImage.providedBy(obj):
@@ -231,6 +238,8 @@ class ResetOCPAccounts(grok.View):
         failed = []
         for fp in cat(portal_type=['osha.hwccontent.organisation']):
             obj = fp.getObject()
+            if len(EMAIL_FILTER) and obj.key_email not in EMAIL_FILTER:
+                continue
             username, created = utils.create_key_user_if_not_exists(obj)
             if username is not None:
                 group = gt.getGroupById(OCP_GROUP_NAME)
