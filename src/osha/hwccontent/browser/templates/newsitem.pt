@@ -53,7 +53,7 @@
         </div>
 
        <span tal:condition="attachment">
-            <p tal:define="content_type context/attachment/contentType|nothing;
+            <p tal:define="content_type attachment/contentType|nothing;
                          v python:context.restrictedTraverse('contenttype_utils')">
                 <a tal:attributes="href string:${context/absolute_url}/@@download/attachment/${attachment/filename}">
                     <img tal:attributes="src python: v.getMimeTypeIcon(attachment);

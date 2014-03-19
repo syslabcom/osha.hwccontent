@@ -76,8 +76,24 @@
                   <h3>NEWS</h3>
                   <ul class="events">
                     <li tal:repeat="item news">
+                      <span tal:omit-tag="" tal:define="attachment nocall:item/attachment|nothing">
                       <span tal:content="python:toLocalizedTime(item.effective())">May 25, 2012</span><br/>
                       <a tal:attributes="href item/absolute_url" tal:content="item/Title">Austrian Kick-Off of the Campaign "Working together for risk prevention"</a>
+                      <span tal:condition="attachment">
+                          <p tal:define="content_type attachment/contentType|nothing;
+                                       v python:context.restrictedTraverse('contenttype_utils')">
+                              <a tal:attributes="href string:${item/absolute_url}/@@download/attachment/${attachment/filename}">
+                                  <img tal:attributes="src python: v.getMimeTypeIcon(attachment);
+                                                       alt content_type;" border="0"  />
+                                  <tal:name tal:content="attachment/filename" >Filename</tal:name>
+                              </a>
+                              <span class="discreet"
+                                    tal:define="size attachment/getSize;
+                                                kb python:size/1024">
+                                    &mdash; <span tal:replace="kb" /> KB</span>
+                          </p>
+                      </span>
+                      </span>
                     </li>
                   </ul>
                   <a tal:condition="context/news|nothing" class="more" href="*"
