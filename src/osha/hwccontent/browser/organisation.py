@@ -63,8 +63,11 @@ class PostAddView(grok.View):
             fallback
         )
         if not url.startswith('http'):
+            portal = api.portal.get()
+            if url.startswith('/'):
+                url = url[1:]
             try:
-                obj = self.context.restrictedTraverse(url)
+                obj = portal.restrictedTraverse(url)
                 url = obj.absolute_url()
             except:
                 log.warn('Could not get feedback page: {0}'.format(url))

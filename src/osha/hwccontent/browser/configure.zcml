@@ -56,6 +56,17 @@
     />
 
   <browser:page
+    name="document_mediapartners_view"
+    class=".document.MediaPartnersView"
+    for="plone.app.contenttypes.interfaces.IDocument"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    template="templates/document_mediapartners.pt"
+    permission="zope2.View"
+    menu="plone_displayviews"
+    title="Media Partners Listing"
+    />
+
+  <browser:page
     name="pressrelease_listing"
     class=".pressrelease.PressReleaseListing"
     for="plone.app.contenttypes.interfaces.IFolder"
@@ -137,6 +148,18 @@
     layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
     />
 
+  <!-- Override newsitem_view for attachment support -->
+
+  <browser:page
+    name="newsitem_view"
+    for="osha.hwccontent.behaviors.attachment.IAttachmentField"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    template="templates/newsitem.pt"
+    permission="zope2.View"
+    menu="plone_displayviews"
+    title="View News Item"
+    />
+
   <browser:page
       for="*"
       name="download-participant-details"
@@ -189,6 +212,15 @@
     permission="zope2.View"
     />
 
+  <!-- viewlet for editing and workflow on MediaPartner -->
+  <browser:viewlet
+    name="organisationmanage"
+    for="osha.hwccontent.mediapartner.IMediaPartner"
+    class=".organisation.OrganisationManage"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+    template="templates/organisationmanage.pt"
+    permission="zope2.View"
+    />
 
   <browser:page
     name="batch_macros"

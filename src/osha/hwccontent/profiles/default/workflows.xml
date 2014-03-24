@@ -2,6 +2,7 @@
 <object name="portal_workflow" meta_type="Plone Workflow Tool">
  <object name="organisationfolder_workflow" meta_type="Workflow"/>
  <object name="organisation_workflow" meta_type="Workflow"/>
+ <object name="mediapartner_workflow" meta_type="Workflow"/>
  <object name="simple_publication_workflow" meta_type="Workflow"/>
  <bindings>
   <type type_id="osha.hwccontent.organisationfolder">
@@ -9,6 +10,9 @@
   </type>
   <type type_id="osha.hwccontent.organisation">
    <bound-workflow workflow_id="organisation_workflow"/>
+  </type>
+  <type type_id="osha.hwccontent.mediapartner">
+   <bound-workflow workflow_id="mediapartner_workflow"/>
   </type>
  </bindings>
 </object>

@@ -1,0 +1,25 @@
+From: <tal:from tal:replace="structure view/from_addr">us@site.org</tal:from>
+To: <tal:recipient tal:replace="structure view/creator_email">user@organisation.org</tal:recipient>
+Subject: <tal:subject tal:replace="view/subject">Profile approved</tal:subject>
+
+Dear <tal:creator_name tal:replace="view/creator_name">User</tal:creator_name>,
+
+Your media partner profile has been approved.
+
+An account has been created for you. Your email address <tal:username tal:replace="view/username">user</tal:username> can be used for logging in.
+The following link will take you to a page where you can set your password for your new account.
+Enter your email address and your new password:
+    <span tal:define="reset nocall:view/reset" tal:replace="python:here.pwreset_constructURL(reset['randomstring'])"
+              tal:omit-tag=""/>
+
+    <div tal:omit-tag="">(This link is valid for <span tal:content="here/portal_password_reset/getExpirationTimeout"
+              tal:omit-tag="" /> hours)
+    </div>
+
+You can then view your profile and add News items here:
+
+    <tal:object_url tal:replace="view/object_url">http://nohost/organisation</tal:object_url>
+
+Best regards,
+
+The EU-OSHA Healthy Workplaces Campaign team

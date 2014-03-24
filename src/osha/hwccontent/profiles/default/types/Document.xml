@@ -7,6 +7,7 @@
   <element value="document_files_view"/>
   <element value="document_organisations_view"/>
   <element value="document_focalpoints_view"/>
+  <element value="document_mediapartners_view"/>
  </property>
 
     <property name="behaviors" purge="false">

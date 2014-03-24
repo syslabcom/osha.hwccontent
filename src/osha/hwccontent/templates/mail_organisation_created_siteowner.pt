@@ -2,6 +2,6 @@ From: <tal:sender tal:replace="structure view/from_addr">us@site.org</tal:sender
 To: <tal:recipient tal:replace="structure view/from_addr">us@site.org</tal:recipient>
 Subject: <tal:subject tal:replace="view/subject">Profile created</tal:subject>
 
-<tal:creator_email tal:replace="structure view/creator_email">user@organisation.org</tal:creator_email> has created an organisation profile. You can view it here:
+<tal:creator_email tal:replace="structure view/creator_email">user@organisation.org</tal:creator_email> has created a new <tal:content_type tal:replace="view/content_type" /> profile. You can view it here:
 
     <tal:object_url tal:replace="view/object_url">http://nohost/organisation</tal:object_url>

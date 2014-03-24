@@ -52,3 +52,32 @@ class FocalPointsView(BrowserView):
                 letters[letter] = {}
             letters[letter][country] = fop.absolute_url()
         return letters
+
+
+class MediaPartnersView(BrowserView):
+    implements(IFullWidth)
+
+    def partners(self):
+        catalog = api.portal.get_tool(name='portal_catalog')
+        results = catalog(
+            portal_type="osha.hwccontent.mediapartner",
+            review_state='published')
+
+        letters = {}
+
+        for result in results:
+            try:
+                fop = result.getObject()
+            except:
+                continue
+            title = fop.title
+            letter = title[0].lower()
+            if letter not in letters:
+                letters[letter] = {}
+            letters[letter][title] = fop.absolute_url()
+        return letters
+
+    def css_by_orientation(self, partner):
+        """ This is a helper to determine logo orientation for a partner.
+        """
+        return css_by_orientation(partner)

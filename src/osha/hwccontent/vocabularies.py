@@ -41,3 +41,20 @@ YES_NO = [
 yes_no = SimpleVocabulary(
     [SimpleTerm(value=item[1], title=_(item[0])) for item in YES_NO]
 )
+
+
+MEDIA_TYPES = [
+    'Online', 'Print', 'Newsletter', 'Radio', 'TV', 'Other',
+]
+
+media_types = SimpleVocabulary(
+    [SimpleTerm(value=item, title=item) for item in MEDIA_TYPES])
+
+
+MEDIA_READERSHIP = [
+    'OSH community', 'SMEs', 'Trade', 'Academics', 'Specialists',
+    'EU institutions', 'General audience',
+]
+
+media_readership = SimpleVocabulary(
+    [SimpleTerm(value=item, title=item) for item in MEDIA_READERSHIP])

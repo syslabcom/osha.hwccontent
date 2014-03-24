@@ -34,6 +34,15 @@
     marker=".moreabout.ISectionImage"
     />
 
+  <plone:behavior
+    title="Attachment Field"
+    description='Lets you add a file attachment'
+    provides=".attachment.IAttachmentField"
+    factory=".attachment.AttachmentField"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    marker=".attachment.IAttachmentField"
+    />
+
   <browser:viewlet
     name="contentseealso"
     for="plone.dexterity.interfaces.IDexterityContent"

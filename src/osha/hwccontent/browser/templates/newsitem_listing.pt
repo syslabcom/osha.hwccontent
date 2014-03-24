@@ -16,7 +16,8 @@
                     first python: ' first' if first else '';
                     last repeat/item/end;
                     last python: ' last' if last else '';
-                    obj nocall:item/obj|nothing"
+                    obj nocall:item/obj|nothing;
+                    attachment nocall:obj/attachment|nothing"
                 tal:attributes="class python:('newsItem' + first + last)">
 
 
@@ -47,6 +48,21 @@
                     <p class="description" tal:content="item/Description|nothing"></p>
                 </tal:if_local>
                 <p tal:content="structure item/text">Text</p>
+
+                <span tal:condition="attachment">
+                    <p tal:define="content_type attachment/contentType|nothing;
+                                 v python:context.restrictedTraverse('contenttype_utils')">
+                        <a tal:attributes="href string:${obj/absolute_url}/@@download/attachment/${attachment/filename}">
+                            <img tal:attributes="src python: v.getMimeTypeIcon(attachment);
+                                                 alt content_type;" border="0"  />
+                            <tal:name tal:content="attachment/filename" >Filename</tal:name>
+                        </a>
+                        <span class="discreet"
+                              tal:define="size attachment/getSize;
+                                          kb python:size/1024">
+                              &mdash; <span tal:replace="kb" /> KB</span>
+                    </p>
+                </span>
 
             </tal:item>
         </div>

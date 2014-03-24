@@ -2,7 +2,7 @@
      tal:condition="view/available"
      tal:define="here_url here/absolute_url">
      <span tal:condition="view/can_review" tal:omit-tag="">
-        <p id="plone-contentmenu-workflow">The current workflow state is: <em tal:attributes="class string:state-${view/wfstate}" tal:content="view/wfstatetitle">state</em><br/>
+        <p id="plone-contentmenu-workflow">The current workflow state of this <strong tal:content="view/contenttype">item</strong> is: <em tal:attributes="class string:state-${view/wfstate}" tal:content="view/wfstatetitle">state</em><br/>
             Available actions for the reviewer:</p>
         <ul>
             <li><a tal:attributes="href string:${here_url}/edit">Click here to update the partner's profile.</a></li>
@@ -42,11 +42,11 @@
      </span>
 
      <span tal:condition="python:view.owner and view.wfstate=='published'">
-        Your profile has been completed. You can continue to update your profile or add news and events:
+        Your profile has been completed. You can continue to update your profile or add news<span tal:condition="python:view.contenttype!='Media Partner'"> and events</span>:
         <ul>
             <li><a tal:attributes="href string:${here_url}/edit">Click here to update your profile.</a></li>
             <li><a tal:attributes="href string:${here_url}/++add++News%20Item">Add news item</a></li>
-            <li><a tal:attributes="href string:${here_url}/++add++Event">Add event</a></li>
+            <li tal:condition="python:view.contenttype!='Media Partner'"><a tal:attributes="href string:${here_url}/++add++Event">Add event</a></li>
         <ul>
      </span>
 
