@@ -19,6 +19,7 @@
         <property name="typesUseViewActionInListings" type="lines" purge="False">
             <element value="osha.hwccontent.organisation"/>
         </property>
+        <property name="osha_twitter_hashtag_url" type="string">https://twitter.com/intent/tweet?source=webclient&amp;text=+%23EUmanagestress+http%3A%2F%2Fwww.healthy-workplaces.eu%2F</property>
     </object>
 
 </object>

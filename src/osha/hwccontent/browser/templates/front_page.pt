@@ -11,13 +11,20 @@
 
       <div id="banner">
         <div class="banner-image">
-	    <img src="/++theme++osha.hwctheme/HWManageStress_files/images/banner-en.jpg" class="pull-left"
+          <img src="/++theme++osha.hwctheme/HWManageStress_files/images/banner-en.jpg" class="pull-left"
              tal:attributes="src string:${portal_url}/++theme++osha.hwctheme/HWManageStress_files/images/banner-${context/getId}.jpg"/></div>
-	    <div class="banner-text1 span4">
-	      <p><strong i18n:translate="banner_text_1">Tips and tools to manage stress and psychosocial risks in your workplace</strong>
-	    <img src="/++theme++osha.hwctheme/HWManageStress_files/images/bannerimage.gif" class="pull-right"
+      <div class="banner-text1 span4">
+        <p><strong i18n:translate="banner_text_1">Tips and tools to manage stress and psychosocial risks in your workplace</strong>
+      <img src="/++theme++osha.hwctheme/HWManageStress_files/images/bannerimage.gif" class="pull-right"
         tal:attributes="src string:${portal_url}/++theme++osha.hwctheme/HWManageStress_files/images/bannerimage.gif" /></div>
-	  </div>
+    </div>
+
+
+    <div class="row-fluid">
+      <div id="twitterlink" class="span12">
+        <a target="_new" href="https://twitter.com/" tal:attributes="href view/hashtag_link">#EUmanagestress</a>
+      </div>
+    </div>
 
       <div class="news-events"
            tal:define="news view/news;
@@ -26,13 +33,13 @@
                         hw_view context/@@hw_view;
                         crop_chars python:275">
         <div class="span6">
-		  <h2 i18n:translate="">News</h2>
+      <h2 i18n:translate="">News</h2>
         <tal:news repeat="news_item news">
-		    <div class="news item"
+        <div class="news item"
             tal:define="obj nocall:news_item/obj|nothing"
             tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['news_item'].start else '')">
-		      <div class="row-fluid" tal:define="has_image python:getattr(news_item, 'image', None)">
-		        <h3><a href="news"
+          <div class="row-fluid" tal:define="has_image python:getattr(news_item, 'image', None)">
+            <h3><a href="news"
                        tal:content="news_item/Title">Good health and safety is good for business</a></h3>
                 <a href="news" tal:attributes="title news_item/Title">
                     <tal:if_blob tal:condition="news_item/image|nothing">
@@ -56,35 +63,35 @@
                 <tal:if_local condition="not:news_item/remote_item|nothing">
                     <p class="description" tal:content="python:plone.cropText(news_item['Description'], crop_chars)"></p>
                 </tal:if_local>
-		      </div>
-		    </div>
+          </div>
+        </div>
         </tal:news>
-		  <p class="row-fluid"><a href="news" class="btn" i18n:translate="">see all news</a></p>
+      <p class="row-fluid"><a href="news" class="btn" i18n:translate="">see all news</a></p>
         </div>
 
         <div class="span6">
           <h2 i18n:translate="">Events</h2>
           <tal:news repeat="event events">
-		    <div class="event item"
+        <div class="event item"
                  tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['event'].start else '')">
-		      <div class="row-fluid">
-		        <h3><a href="events"
+          <div class="row-fluid">
+            <h3><a href="events"
                        tal:content="event/title">Positive psychology at work - towards flourishing workplaces</a></h3>
                 <div class="databox pull-left">
-		          <p class="day"
+              <p class="day"
                      tal:content="python:event.start.strftime('%d')">17</p>
-		          <p class="mounth" i18n:translate=""
+              <p class="mounth" i18n:translate=""
                      tal:content="python:event.start.strftime('%B')">september</p>
-		          <p class="year"
+              <p class="year"
                      tal:content="python:event.start.strftime('%Y')">2013</p>
-		        </div>
-		        <p><strong i18n:translate="event_location">Location</strong>: <tal:location content="python:view.get_location(event)">FINLAND</tal:location></p>
-		        <p><strong i18n:translate="event_organiser">Organiser</strong>:<br /><tal:organizer content="python:view.get_organiser(event)"> Niva - The Nordic Institute for Advanced Training in occupational health .</tal:organizer></p>
+            </div>
+            <p><strong i18n:translate="event_location">Location</strong>: <tal:location content="python:view.get_location(event)">FINLAND</tal:location></p>
+            <p><strong i18n:translate="event_organiser">Organiser</strong>:<br /><tal:organizer content="python:view.get_organiser(event)"> Niva - The Nordic Institute for Advanced Training in occupational health .</tal:organizer></p>
 
-		      </div>
-		    </div>
+          </div>
+        </div>
           </tal:news>
-		  <p class="row-fluid"><a href="events" class="btn" i18n:translate="">see all events</a></p>
+      <p class="row-fluid"><a href="events" class="btn" i18n:translate="">see all events</a></p>
         </div>
 
       </div>
@@ -107,8 +114,8 @@
                     id string:tab${number}">
                   <div class="row-fluid" tal:repeat="row python:partners[category]">
                       <div class="span2"
-						   tal:attributes="cls python:view.css_by_orientation(partner)"
-						   tal:repeat="partner row"><a tal:attributes="href partner/absolute_url"><img
+               tal:attributes="cls python:view.css_by_orientation(partner)"
+               tal:repeat="partner row"><a tal:attributes="href partner/absolute_url"><img
                         tal:define="scales partner/@@images" tal:replace="structure python: scales.tag('logo', scale='logo_preview')" /></a></div>
                   </div>
                 </div>
