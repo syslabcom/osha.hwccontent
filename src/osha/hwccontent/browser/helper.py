@@ -36,7 +36,7 @@ from osha.hwccontent.behaviors.moreabout import (
 log = logging.getLogger(__name__)
 
 EMAIL_FILTER = [
-    "egassuncao@isq.pt",
+    "noam.arad@intel.com",
 ]
 
 
