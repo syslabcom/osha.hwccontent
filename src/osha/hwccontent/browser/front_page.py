@@ -3,6 +3,7 @@
 from osha.hwccontent.browser.event import EventListing
 from osha.hwccontent.browser.newsitem import NewsItemListing
 from osha.hwccontent.browser.utils import get_partners, css_by_orientation
+from plone import api
 
 import random
 
@@ -30,3 +31,11 @@ class FrontPageView(NewsItemListing, EventListing):
 
     def get_partner_start(self):
         return random.randint(1, 6)
+
+    def hashtag_link(self):
+        properties = api.portal.get_tool('portal_properties')
+        return getattr(
+            properties.site_properties,
+            'osha_twitter_hashtag_url',
+            'https://twitter.com/intent/tweet?text=+%23EUmanagestress'
+        )
