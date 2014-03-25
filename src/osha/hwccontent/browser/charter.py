@@ -1,5 +1,6 @@
 from Acquisition import aq_inner
 from osha.hwccontent import _
+from osha.hwccontent.interfaces import IFullWidth
 from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFDefault.utils import checkEmailAddress
 from Products.CMFCore.utils import getToolByName
@@ -15,6 +16,7 @@ from logging import getLogger
 from plone import api
 from zope.annotation.interfaces import IAnnotations
 from zope.i18n import translate
+from zope.interface import implements
 
 import csv
 import json
@@ -74,6 +76,7 @@ def send_charter_email(context, pdf, to, sender, body, language):
 
 class NationalPartnerForm(BrowserView):
     """ """
+    implements(IFullWidth)
 
     def get_validation_messages(self):
         """ """
