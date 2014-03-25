@@ -18,6 +18,8 @@
     <object name="site_properties" meta_type="Plone Property Sheet">
         <property name="typesUseViewActionInListings" type="lines" purge="False">
             <element value="osha.hwccontent.organisation"/>
+            <element value="osha.hwccontent.focalpoint"/>
+            <element value="osha.hwccontent.mediapartner"/>
         </property>
         <property name="osha_twitter_hashtag_url" type="string">https://twitter.com/intent/tweet?source=webclient&amp;text=+%23EUmanagestress+http%3A%2F%2Fwww.healthy-workplaces.eu%2F</property>
     </object>
