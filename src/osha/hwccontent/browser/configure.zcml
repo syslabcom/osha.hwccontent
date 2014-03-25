@@ -240,4 +240,18 @@
     layer="..interfaces.IOSHAHWCContentLayer"
     />
 
+  <!-- Override atct_album_view to create language fallback -->
+
+  <browser:page
+    name="atct_album_view"
+    for="osha.hwccontent.interfaces.IHWFolder"
+    layer="osha.hwccontent.interfaces.IOSHAHWCContentLayer"
+    class=".album.HWAlbumView"
+    template="templates/atct_album_view.pt"
+    permission="zope2.View"
+    menu="plone_displayviews"
+    title="Album"
+    />
+
+
 </configure>

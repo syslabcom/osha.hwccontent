@@ -11,6 +11,11 @@ class IOrganisationFolder(IFolder):
     """
 
 
+class IHWFolder(IFolder):
+    """ Marker interface for all Folders, more specific than IFolder
+    """
+
+
 class IOSHAHWCContentLayer(IPloneAppContenttypesLayer):
     """A layer specific to this product. Is registered using browserlayer.xml
     """

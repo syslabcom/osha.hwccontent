@@ -34,6 +34,11 @@
   <interface interface=".interfaces.IFullWidth" />
   <interface interface=".interfaces.ITwoImages" />
   <interface interface=".interfaces.ISectionIntro" />
+  <interface interface=".interfaces.IHWFolder" />
+
+  <class class="plone.app.contenttypes.content.Folder">
+    <implements interface=".interfaces.IHWFolder" />
+  </class>
 
   <!-- indexers -->
   <adapter name="location" factory=".indexers.location" />
