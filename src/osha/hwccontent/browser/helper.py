@@ -35,10 +35,6 @@ from osha.hwccontent.behaviors.moreabout import (
 
 log = logging.getLogger(__name__)
 
-EMAIL_FILTER = [
-    "noam.arad@intel.com",
-]
-
 
 def get_path_to_icon(obj=None, content_type=None):
     if IImage.providedBy(obj):
@@ -181,12 +177,20 @@ class CreateFocalpointUsers(grok.View):
         cat = getToolByName(self.context, 'portal_catalog')
         gt = getToolByName(self.context, 'portal_groups')
         rt = getToolByName(self.context, 'portal_registration')
+        properties = api.portal.get_tool('portal_properties')
+        EMAIL_FILTER_FOP = getattr(
+            properties.site_properties,
+            'EMAIL_FILTER_FOP',
+            []
+        )
         created_users = []
         existed_users = []
         failed = []
         send_email = bool(self.request.get('send_email', False))
         for fp in cat(portal_type=['osha.hwccontent.focalpoint']):
             obj = fp.getObject()
+            if len(EMAIL_FILTER_FOP) and obj.key_email not in EMAIL_FILTER_FOP:
+                continue
             username, created = utils.create_key_user_if_not_exists(obj)
             if username is not None:
                 group = gt.getGroupById(FOP_GROUP_NAME)
@@ -230,12 +234,18 @@ class ResetOCPAccounts(grok.View):
         cat = getToolByName(self.context, 'portal_catalog')
         gt = getToolByName(self.context, 'portal_groups')
         rt = getToolByName(self.context, 'portal_registration')
+        properties = api.portal.get_tool('portal_properties')
+        EMAIL_FILTER_OCP = getattr(
+            properties.site_properties,
+            'EMAIL_FILTER_OCP',
+            []
+        )
         created_users = []
         existed_users = []
         failed = []
         for fp in cat(portal_type=['osha.hwccontent.organisation']):
             obj = fp.getObject()
-            if len(EMAIL_FILTER) and obj.key_email not in EMAIL_FILTER:
+            if len(EMAIL_FILTER_OCP) and obj.key_email not in EMAIL_FILTER_OCP:
                 continue
             username, created = utils.create_key_user_if_not_exists(obj)
             if username is not None:
