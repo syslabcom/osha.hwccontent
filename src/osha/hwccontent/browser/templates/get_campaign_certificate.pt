@@ -25,7 +25,8 @@
                   class="row-fluid"
                   action="get-campaign-certificate"
                   method="post"
-                  tal:define="form view/form" >
+                  tal:define="form view/form;
+                  errors view/errors" >
 
               <fieldset>
                 <label for="organisation" class="horizontal">
@@ -119,7 +120,7 @@
                     <label>
                       <input type="checkbox" id="checkboxlist4"  name="checkboxlist:list" value="3_advertising"
                              tal:attributes="checked python:'checked' if '3_advertising' in checkboxlist else ''"/>
-                      <span i18n:translate="checkboxlist4">
+                      <span tal:omit-tag="" i18n:translate="checkboxlist4">
                         Advertising and promotion campaigns
                       </span>
                     </label>
@@ -171,6 +172,13 @@
                   </fieldset>
                 </fieldset>
                 <fieldset class="buttonBar">
+                  <div tal:define="error python:errors.get('privacy', '')" tal:attributes="class python:error and 'field error' or 'field'">
+                    <div tal:condition="error" class="fieldErrorBox" tal:content="error">error</div>
+                    <label tal:define="privacy_accepted request/privacy|python:0"><input type="checkbox" id="privacy" tal:attributes="checked python:'checked' if privacy_accepted else ''">&nbsp;
+                      <a href="#" target="_new" tal:attributes="href view/get_privacy_link" i18n:translate="label_accept_privacy">I confirm that I have read and accept the terms of privacy conditions and I authorise the treatment of my personal data.</a>
+                      <span class="required horizontal" title="Required"> </span>
+                    </label>
+                  </div>
                   <button type="submit" i18n:domain="plone" i18n:translate="submit">Submit</button>
                 </fieldset>
                 <input type="hidden" name="set_language" value="en"

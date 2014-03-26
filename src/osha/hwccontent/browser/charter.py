@@ -14,6 +14,7 @@ from email.Utils import formatdate
 from generate_pdf import generatePDF
 from logging import getLogger
 from plone import api
+from plone.app.layout.navigation.root import getNavigationRootObject
 from zope.annotation.interfaces import IAnnotations
 from zope.i18n import translate
 from zope.interface import implements
@@ -22,7 +23,9 @@ import csv
 import json
 import time
 
-log = getLogger('osha.hw2014.browser.charter')
+PRIVACY_POLICY_NAME = "privacy-policy-certificate-of-participation"
+
+log = getLogger(__name__)
 
 # consider translating the strings
 email_template = _(u"""<p>Thank you for actively supporting the Healthy Workplaces Campaign!</p>
@@ -83,6 +86,17 @@ class NationalPartnerForm(BrowserView):
         data = self.get_translated_validation_messages()
         return json.dumps(data)
 
+    def get_privacy_link(self):
+        portal = api.portal.get()
+        root = getNavigationRootObject(self.context, portal)
+        document = root.restrictedTraverse(PRIVACY_POLICY_NAME, None)
+        if document:
+            return document.absolute_url()
+        else:
+            log.error('Privacy policy document "{0}" not found under {1}'.format(
+                PRIVACY_POLICY_NAME, root.absolute_url()))
+            return ""
+
     def get_translated_validation_messages(self):
         context = aq_inner(self.context)
         request = context.REQUEST
@@ -97,6 +111,7 @@ class NationalPartnerForm(BrowserView):
             'sector': translate(_('Sector')),
             'email': translate(_('Email')),
             'telephone': translate(_('Telephone')),
+            'privacy': translate(_(u'Privacy')),
         }
         messages = {}
 
@@ -133,8 +148,9 @@ class NationalPartnerForm(BrowserView):
         key = time.time()
         storage[key] = details
 
-    def __call__(self, form=None):
+    def __call__(self, form=None, errors={}):
         self.form = form
+        self.errors = errors
         request = self.context.REQUEST
         if 'form.submitted' not in request.form:
             return super(
@@ -159,6 +175,7 @@ class NationalPartnerForm(BrowserView):
         telephone = request.get('telephone', '')
         checkboxlist = request.get('checkboxlist', [])
         other = request.get('other_activities_text', '')
+        privacy = request.get('privacy', False)
 
         required_fields = {
             "organisation": organisation,
@@ -170,13 +187,15 @@ class NationalPartnerForm(BrowserView):
             "lastname": lastname,
             "sector": sector,
             "email": email,
-            "telephone": telephone
+            "telephone": telephone,
+            "privacy": privacy,
         }
 
         error_messages = self.get_translated_validation_messages()["messages"]
         has_errors = False
+        errors = {}
         for required_field in required_fields.keys():
-            if (required_field == "email"):
+            if required_field == "email":
                 try:
                     checkEmailAddress(required_fields.get(required_field, ""))
                 except EmailAddressInvalid:
@@ -184,11 +203,20 @@ class NationalPartnerForm(BrowserView):
                     messages.add(
                         error_messages[required_field]["email"],
                         type=u"error")
+                    errors[required_field] = error_messages[required_field]["email"]
+            elif required_field == 'privacy':
+                if not required_fields.get(required_field, False):
+                    has_errors = True
+                    messages.add(
+                        error_messages[required_field]["required"],
+                        type=u"error")
+                    errors[required_field] = error_messages[required_field]["required"]
             elif required_fields[required_field].strip() == "":
                 has_errors = True
                 messages.add(
                     error_messages[required_field]["required"],
                     type=u"error")
+                errors[required_field] = error_messages[required_field]["required"]
         if has_errors:
             if 'form.submitted' in request.form:
                 del request.form['form.submitted']
@@ -196,7 +224,7 @@ class NationalPartnerForm(BrowserView):
                 "%s/@@get-campaign-certificate"
                 % "/".join(self.context.getPhysicalPath()))
             return self.context.restrictedTraverse(
-                form_path)(form=request.form)
+                form_path)(form=request.form, errors=errors)
 
         checkboxes = {}
         for c in checkboxlist:
