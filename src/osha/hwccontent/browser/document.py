@@ -42,6 +42,7 @@ class FocalPointsView(BrowserView):
         catalog = api.portal.get_tool(name='portal_catalog')
         results = catalog(
             portal_type="osha.hwccontent.focalpoint",
+            Language='all',
             review_state='published')
 
         letters = {}
@@ -66,6 +67,7 @@ class MediaPartnersView(BrowserView):
         catalog = api.portal.get_tool(name='portal_catalog')
         results = catalog(
             portal_type="osha.hwccontent.mediapartner",
+            Language='all',
             review_state='published')
 
         letters = {}

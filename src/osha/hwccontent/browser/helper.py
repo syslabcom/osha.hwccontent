@@ -122,6 +122,7 @@ class HelperView(BrowserView):
         user = ms.getAuthenticatedMember()
         profiles = cat(portal_type=[
             'osha.hwccontent.organisation', 'osha.hwccontent.focalpoint', 'osha.hwccontent.mediapartner'],
+            Language='all',
             key_email=user.getProperty('email'),
             sort_on='modified',
             sort_order='descending')
