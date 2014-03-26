@@ -8,6 +8,8 @@ from Products.Five.browser import BrowserView
 from osha.hwccontent.browser.utils import get_partners, css_by_orientation
 from osha.hwccontent.interfaces import IFullWidth
 
+import random
+
 
 class FilesView(BrowserView):
 
@@ -23,6 +25,9 @@ class OrganisationsView(BrowserView):
 
     def partners(self):
         return get_partners()
+
+    def get_partner_start(self):
+        return random.randint(1, 6)
 
     def css_by_orientation(self, partner):
         """ This is a helper to determine logo orientation for a partner.
