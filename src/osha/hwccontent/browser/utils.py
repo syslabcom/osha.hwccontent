@@ -1,4 +1,5 @@
-from datetime import datetime
+# -*- coding: utf-8 -*-
+
 from plone import api
 from osha.hwccontent import vocabularies
 
@@ -7,15 +8,17 @@ try:
 except ImportError:
     from ordereddict import OrderedDict
 
+
 def get_partners():
     catalog = api.portal.get_tool(name='portal_catalog')
     results = catalog(
         portal_type="osha.hwccontent.organisation",
+        Language='all',
         review_state='published')
     partners = OrderedDict()
     for term in vocabularies.organisation_types:
         partners[term.token] = [[]]
-    
+
     for result in results:
         try:
             partner = result.getObject()
