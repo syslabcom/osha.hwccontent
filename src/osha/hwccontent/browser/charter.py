@@ -28,7 +28,7 @@ PRIVACY_POLICY_NAME = "privacy-policy-certificate-of-participation"
 log = getLogger(__name__)
 
 # consider translating the strings
-email_template = _(u"""<p>Thank you for actively supporting the Healthy Workplaces Campaign!</p>
+email_template = _(u"charter_feedback_email_text", default=u"""<p>Thank you for actively supporting the Healthy Workplaces Campaign!</p>
 
 <p>Please find a PDF version of the Campaign certificate attached to this email, which you may print.</p>
 
@@ -61,7 +61,8 @@ def send_charter_email(context, pdf, to, sender, body, language):
     msg['Date'] = formatdate(localtime=True)
     msg.preamble = 'You will not see this in a MIME-aware mail reader.\n'
 
-    part = MIMEBase('text', 'html')
+    params = dict(charset='utf-8')
+    part = MIMEBase('text', 'html', **params)
     part.set_payload(body)
     msg.attach(part)
 
@@ -283,7 +284,7 @@ class NationalPartnerForm(BrowserView):
                 pdf=pdf,
                 to=email,
                 sender="Healthy Workplaces <%s>" % from_address,
-                body=translate(email_template, target_language=language,),
+                body=translate(email_template, target_language=language,).encode('utf-8'),
                 language=language,
             )
         #XXX Too many things could possibly go wrong. So we catch all.
