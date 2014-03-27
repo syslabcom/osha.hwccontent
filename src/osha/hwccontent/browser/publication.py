@@ -21,7 +21,7 @@ class PublicationListing(ListingView):
             'stress,hw2014'
         )
 
-    @ram.cache(ListingView.cache_for_minutes(10))
+    @ram.cache(ListingView.cache_for_minutes(10, 'publication'))
     def get_remote_publications(self):
         """ Queries the OSHA corporate site for news items.
             Items returned in JSON format.

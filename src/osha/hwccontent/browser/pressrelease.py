@@ -15,9 +15,9 @@ from zope.interface import implements
 
 import base64
 
+
 class PressReleaseListing(ListingView):
     implements(IFullWidth)
-
 
     def __init__(self, context, request):
         super(PressReleaseListing, self).__init__(context, request)
@@ -51,8 +51,8 @@ class PressReleaseListing(ListingView):
             sort_on=sort_on, sort_order=sort_order,
             limit=limit, brains=brains
         )
-    
-    @ram.cache(ListingView.cache_for_minutes(10))
+
+    @ram.cache(ListingView.cache_for_minutes(10, 'pressrelease'))
     def get_remote_press_releases(self):
         """ Queries the OSHA corporate site for press releases.
             Items returned in JSON format.
@@ -74,11 +74,11 @@ class PressReleaseListing(ListingView):
                     'image_base64': item.get('image'),
                     'image_content_type': item.get('image_type'),
                     'text': self.make_intro(self.make_plain_text(item)),
-                    
+
                 })
         return items
 
-    @ram.cache(ListingView.cache_for_minutes(1))
+    @ram.cache(ListingView.cache_for_minutes(10, 'pressrelease'))
     def get_local_press_releases(self):
         """ Looks in the current folder for Collection objects and then queries
             them for items.
@@ -123,7 +123,7 @@ class PressReleaseListing(ListingView):
                     'obj': obj,
                     'text': self.make_intro(plain_text),
                 }
-            else: 
+            else:
                 items[i]['Date'] = DateTime(items[i]['Date']).utcdatetime()
         return Batch(items, b_size, b_start, orphan=1)
 
@@ -135,10 +135,10 @@ class PressReleaseListing(ListingView):
         transformer = ITransformer(self.context)
         value = RichTextValue(text, mimeType=item.get('_text_mime_type', 'text/html'))
         return transformer(value, 'text/plain')
-        
+
     def make_intro(self, text):
         if len(text) < 200:
             return text
-        
+
         text = text[:200].rsplit(None, 1)[0]
         return text + u'...'

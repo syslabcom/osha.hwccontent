@@ -3,10 +3,13 @@ import random
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
+from zope.annotation import IAnnotations
 from zope.component.hooks import getSite
 from zope.component import getMultiAdapter
 
 from osha.hwccontent import OCP_GROUP_NAME
+from plone import api
+from time import time
 
 import logging
 log = logging.getLogger(__name__)
@@ -112,3 +115,31 @@ def validate_userid_pwreset(context, userid, randomstring):
     if not member:
         return False
     return True
+
+
+def get_storage_cachekey(for_type, context=None):
+    """ The for_type parameter is used to distinguish between different caching
+    use cases.
+    """
+    if context:
+        root = api.portal.get_navigation_root(context)
+    else:
+        root = api.portal.get()
+    ann = IAnnotations(root)
+    key = ann.get(for_type)
+    if not key:
+        key = time()
+        ann[for_type] = key
+
+    return key
+
+
+def invalidate_storage_cachekey(for_type, context=None):
+    if context:
+        root = api.portal.get_navigation_root(context)
+    else:
+        root = api.portal.get()
+    ann = IAnnotations(root)
+    now = time()
+    ann[for_type] = now
+    log.info("Invalidated storage cachekey for %s: %s" % (for_type, now))

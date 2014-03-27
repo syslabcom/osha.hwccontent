@@ -1,6 +1,7 @@
 from plone import api
 from Products.Five.browser import BrowserView
 from plone.dexterity.interfaces import IDexterityContent
+from osha.hwccontent.utils import get_storage_cachekey
 from osha.hwccontent.browser.helper import get_path_to_icon
 from time import time
 
@@ -31,12 +32,13 @@ class ListingView(BrowserView):
         return get_path_to_icon(obj, content_type)
 
     @staticmethod
-    def cache_for_minutes(minutes):
+    def cache_for_minutes(minutes, for_type):
         """ Generates a cachekey which won't change for $minutes amount of time
             as well as the preferred language.
         """
 
         def _cachekey(method, self, batch=True):
-            return time() // (60 * minutes), self.lang, batch
+            key = get_storage_cachekey(for_type), time() // (60 * minutes), self.lang, batch
+            return key
 
         return _cachekey

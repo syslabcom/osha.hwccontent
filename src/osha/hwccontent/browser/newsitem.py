@@ -66,7 +66,7 @@ class NewsItemListing(ListingView):
         )
         return results
 
-    @ram.cache(ListingView.cache_for_minutes(10))
+    @ram.cache(ListingView.cache_for_minutes(10, 'newsitem'))
     def get_all_news_items(self):
         items = sorted(
             self.get_remote_news_items() + list(self.get_local_news_items()),

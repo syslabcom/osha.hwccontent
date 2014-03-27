@@ -20,6 +20,7 @@ from plone.app.contenttypes.interfaces import (
     INewsItem,
 )
 from plone.dexterity.interfaces import IDexterityContent
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 import logging
 
 log = logging.getLogger(__name__)
@@ -249,7 +250,6 @@ def handle_organisation_created(obj, event):
 
 @grok.subscribe(IMediaPartner, IObjectAddedEvent)
 def handle_mediapartner_added(obj, event):
-    # utils._send_notification(obj, "mail_organisation_created_creator")
     utils._send_notification(obj, "mail_mediapartner_created_siteowner")
 
 
@@ -262,3 +262,15 @@ def handle_wf_transition_partners(obj, event):
         parent = aq_parent(obj)
         if IOrganisation.providedBy(parent) or IFocalPoint.providedBy(parent) or IMediaPartner.providedBy(parent):
             utils._send_notification(obj, 'mail_content_submitted', parent)
+
+
+@grok.subscribe(IEvent, IBeforeTransitionEvent)
+@grok.subscribe(IEvent, IObjectModifiedEvent)
+def handle_event_edited(obj, event):
+    utils.invalidate_storage_cachekey('event')
+
+
+@grok.subscribe(INewsItem, IBeforeTransitionEvent)
+@grok.subscribe(INewsItem, IObjectModifiedEvent)
+def handle_newsitem_edited(obj, event):
+    utils.invalidate_storage_cachekey('newsitem')

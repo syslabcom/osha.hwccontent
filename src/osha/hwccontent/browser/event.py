@@ -145,7 +145,7 @@ class EventListing(ListingView, EventListing):
             'stress'
         )
 
-    @ram.cache(ListingView.cache_for_minutes(10))
+    @ram.cache(ListingView.cache_for_minutes(10, 'event'))
     def get_all_events(self, batch=True):
         # Fall back to default language for local events
         kw = {}
