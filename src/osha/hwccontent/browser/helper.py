@@ -467,3 +467,22 @@ class GetOCPEmails(grok.View):
                     u'"{0}", "{1}", "{2}", "{3}"'.format(
                         obj.title, obj.absolute_url(), obj.key_name, obj.key_email))
         return "\n".join(out)
+
+
+class GetProfileFor(grok.View):
+    """Helper View to fetch all profiles for a given email address"""
+    grok.name('get-profile-for')
+    grok.require('cmf.ManagePortal')
+    grok.context(ISiteRoot)
+
+    def render(self):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        email = self.request.get('email', '')
+        if not email:
+            return ""
+        profiles = catalog(
+            portal_type=['osha.hwccontent.organisation', 'osha.hwccontent.focalpoint',
+                         'osha.hwccontent.mediapartner'],
+            key_email=email,
+            Language='all')
+        return "\n".join([x.getPath() for x in profiles])
