@@ -426,13 +426,20 @@ class GetFOPEmails(grok.View):
 
     def render(self):
         catalog = getToolByName(self.context, 'portal_catalog')
-        fops = catalog(portal_type='osha.hwccontent.focalpoint')
-        out = ['"FOP name", "Link", "Contact person", "Contact Email"']
+        fops = catalog(portal_type='osha.hwccontent.focalpoint', Language='all')
+        emails_only = "emails_only" in self.request.form or False
+        if emails_only:
+            out = []
+        else:
+            out = ['"FOP name", "Link", "Contact person", "Contact Email"']
         for fop in fops:
             obj = fop.getObject()
-            out.append(
-                u'"{0}", "{1}", "{2}", "{3}"'.format(
-                    obj.title, obj.absolute_url(), obj.key_name, obj.key_email))
+            if emails_only:
+                out.append(obj.key_email)
+            else:
+                out.append(
+                    u'"{0}", "{1}", "{2}", "{3}"'.format(
+                        obj.title, obj.absolute_url(), obj.key_name, obj.key_email))
         return "\n".join(out)
 
 
@@ -445,11 +452,18 @@ class GetOCPEmails(grok.View):
 
     def render(self):
         catalog = getToolByName(self.context, 'portal_catalog')
-        fops = catalog(portal_type='osha.hwccontent.organisation')
-        out = ['"OCP name", "Link", "Contact person", "Contact Email"']
+        fops = catalog(portal_type='osha.hwccontent.organisation', Language='all')
+        emails_only = "emails_only" in self.request.form or False
+        if emails_only:
+            out = []
+        else:
+            out = ['"OCP name", "Link", "Contact person", "Contact Email"']
         for fop in fops:
             obj = fop.getObject()
-            out.append(
-                u'"{0}", "{1}", "{2}", "{3}"'.format(
-                    obj.title, obj.absolute_url(), obj.key_name, obj.key_email))
+            if emails_only:
+                out.append(obj.key_email)
+            else:
+                out.append(
+                    u'"{0}", "{1}", "{2}", "{3}"'.format(
+                        obj.title, obj.absolute_url(), obj.key_name, obj.key_email))
         return "\n".join(out)
