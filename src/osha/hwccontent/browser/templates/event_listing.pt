@@ -79,7 +79,8 @@
     <section>
     <tal:items repeat="data batch">
       <article itemscope itemtype="http://data-vocabulary.org/Event" class="vevent"
-          tal:define="startf python:view.date_speller(data.start)">
+          tal:define="startf python:view.date_speller(data.start);
+          attachment data/attachment|nothing">
 
         <ul class="hCalendar-hidden">
           <li itemprop="startDate" class="dtstart" tal:content="data/start/isoformat">end</li>
@@ -165,8 +166,17 @@
                 <span i18n:translate="label_add_to_ical">iCal</span>
               </a>
             </li> -->
-
           </ul>
+
+          <span tal:condition="attachment">
+              <p tal:define="content_type data/attachment_content_type;">
+                  <a tal:attributes="href string:${data/url}/at_download/attachment">
+                      <img tal:attributes="src data/attachment_icon;
+                                           alt content_type;" border="0"  />
+                      <tal:name tal:content="data/attachment_filename" >Filename</tal:name>
+                  </a>
+              </p>
+          </span>
 
         </div>
         <div class="visualClear"/>

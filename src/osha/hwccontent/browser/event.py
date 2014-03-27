@@ -1,5 +1,7 @@
 from Acquisition import ImplicitAcquisitionWrapper
 from Products.CMFPlone.PloneBatch import Batch
+from Products.CMFCore.utils import getToolByName
+from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from datetime import datetime, timedelta
 from json import load
 from osha.hwccontent.browser.mixin import ListingView
@@ -84,6 +86,25 @@ class JSONEventAccessor(object):
         self.subjects = kw['subject']
         self.text = kw['text']
         self.organiser = u''
+
+        if kw.get('attachment', None):
+            self.attachment = True
+            self.attachment_content_type = kw.get('_attachment_content_type')
+            self.attachment_filename = kw.get('_attachment_filename')
+            mtr = getToolByName(context, "mimetypes_registry")
+            mime = list(mtr.lookup(self.attachment_content_type))
+            mime.append(mtr.lookupExtension(self.attachment_filename))
+            mime.append(mtr.lookup("application/octet-stream")[0])
+
+            portal_url = api.portal.get().absolute_url()
+            icon_paths = [m.icon_path for m in mime if m.icon_path]
+            if icon_paths:
+                self.attachment_icon = portal_url + "/" + icon_paths[0]
+            else:
+
+                self.attachment_icon = portal_url + "/" + guess_icon_path(mime[0])
+        else:
+            self.attachment = False
 
     # Unified create method via Accessor
     @classmethod
