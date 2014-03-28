@@ -9,7 +9,8 @@
 
   <metal:content-core fill-slot="content-core"
     tal:define="portal_url context/@@plone_portal_state/portal_url;
-                context_url context/absolute_url;">
+                context_url context/absolute_url;
+                language here/portal_languages/getPreferredLanguage;">
 
   <metal:content-core define-macro="content-core">
     <div id="introtext"
@@ -22,7 +23,8 @@
                    tabs python:sorted(focalpoints);">
 
 
-    <h2 i18n:translate="title_focal_points">National Focal Points</h2>
+    <h2><span tal:omit-tag="" i18n:translate="title_focal_points">National Focal Points</span>
+        <span tal:condition="python: language!='en'" class="discreet">(<span tal:omit-tag="" i18n:translate="profiles_english_only">Profiles are in English only</span>)</span></h2>
     <div class="focalpoints-menu">
       <div class="row-fluid">
         <ul>

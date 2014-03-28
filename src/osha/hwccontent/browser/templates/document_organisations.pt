@@ -7,7 +7,8 @@
       i18n:domain="osha.hwc">
   <body>
 
-    <metal:content-core fill-slot="content-core" tal:define="portal_url context/@@plone_portal_state/portal_url">
+    <metal:content-core fill-slot="content-core" tal:define="portal_url context/@@plone_portal_state/portal_url;
+        language here/portal_languages/getPreferredLanguage;">
 
       <metal:content-core define-macro="content-core">
 	<div id="introtext"
@@ -17,7 +18,9 @@
 
       <metal:block define-macro="partnerstab">
       <div class="row-fluid partners" id="frontpage-partners" tal:define="partners view/partners; get_partner_start view/get_partner_start">
-        <h2 i18n:translate="Partners">Partners</h2>
+
+      <h2><span tal:omit-tag="" i18n:translate="Partners">Partners</span>
+          <span tal:condition="python: language!='en'" class="discreet">(<span tal:omit-tag="" i18n:translate="profiles_english_only">Profiles are in English only</span>)</span></h2>
         <div class="partners-menu tabbable">
             <ul class="nav nav-tabs nav-justified row-fluid">
                 <span tal:repeat="category partners/keys" tal:omit-tag="">
