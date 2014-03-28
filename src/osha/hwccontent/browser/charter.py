@@ -55,7 +55,7 @@ def send_charter_email(context, pdf, to, sender, body, language):
     mailhost = context.MailHost
     msg = MIMEMultipart()
 
-    msg['Subject'] = "Healthy Workplaces Campaign Certificate"
+    msg['Subject'] = translate(_(u"campaign_name", default=u"Healthy Workplaces"), target_language=language)
     msg['From'] = sender
     msg['To'] = to
     msg['Date'] = formatdate(localtime=True)
