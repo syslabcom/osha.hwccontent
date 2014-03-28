@@ -4,6 +4,8 @@ from Products.CMFCore.utils import getToolByName
 from collective.z3cform.datagridfield import DataGridField
 from collective.z3cform.datagridfield import DictRow
 from five import grok
+from plone.app.textfield import RichText
+from plone.app.textfield.value import RichTextValue
 from osha.hwccontent import vocabularies
 from osha.hwccontent.utils import _send_notification
 from plone.supermodel import model
@@ -35,6 +37,7 @@ from osha.hwccontent.organisation import (
     EMAIL_HINT_MANAGER,
     IOrganisationBase,
     isEmail,
+    isTicked,
     _,
 )
 
@@ -83,6 +86,7 @@ class IMediaPartner(IOrganisationBase):
             'key_name', 'key_position', 'key_email',
             'editor_in_chief', 'url', 'social_media',
             'street', 'address_extra', 'city', 'zip_code', 'phone',
+            'privacy_policy_text', 'privacy_policy',
         ],
     )
 
@@ -136,6 +140,24 @@ class IMediaPartner(IOrganisationBase):
     )
     form.widget(social_media=CustomTableWidgetFactory)
 
+    privacy_policy_text = RichText(
+        title=u"",
+        required=False,
+    )
+    formdirectives.omitted('privacy_policy_text')
+    formdirectives.no_omit(IAddForm, 'privacy_policy_text')
+
+    privacy_policy = schema.Bool(
+        title=_(
+            u"label_accept_privacy", default=
+            u"I confirm that I have read and accept the terms of privacy "
+            u"conditions and I authorise the treatment of my personal data."),
+        required=True,
+        constraint=isTicked,
+    )
+    formdirectives.omitted('privacy_policy')
+    formdirectives.no_omit(IAddForm, 'privacy_policy')
+
 
 class FormBase(object):
 
@@ -166,6 +188,24 @@ class AddForm(dexterity.AddForm, FormBase):
     @property
     def label(self):
         return u"Apply to become a media partner"
+
+    def updateActions(self):
+        """ BEWARE - Dirty Hack (tm)
+        uppdateActions() is called _after_ update() in z3c.form.group.GroupForm
+        This is important, since we need to manipulate the already set-up
+        groups and be sure that our changes don't get overwritten again.
+        """
+
+        portal = api.portal.get()
+        link = "{0}/en/privacy-policy-for-the-official-campaign-partners-form".format(
+            portal.absolute_url())
+        privacy_policy_text = u"<p>Please <a href='{link}' target='_new'>read the privacy " \
+            u"policy</a> and tick the checkbox below to accept it.</p>"
+        self.groups[0].widgets['privacy_policy_text'].value = RichTextValue(
+            privacy_policy_text.format(link=link), "text/html", "text/html")
+        self.groups[0].widgets['privacy_policy_text'].mode = 'display'
+
+        super(AddForm, self).updateActions()
 
 
 class EditForm(dexterity.EditForm, FormBase):

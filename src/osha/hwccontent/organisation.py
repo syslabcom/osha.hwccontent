@@ -39,8 +39,9 @@ INTRO_TEXT_PHASE_1 = _(
     u"with a red dot.</p><p>You might want to take a look at the OCP of "
     u"the 2012-13 Healthy workplaces campaign: "
     u"<a href='http://www.healthy-workplaces.eu/en/about/campaign-partners'>"
-    u"http://www.healthy-workplaces.eu/en/about/campaign-partners</a></p><p>"
-    u""
+    u"http://www.healthy-workplaces.eu/en/about/campaign-partners</a></p>"
+    u"<p>Please <a href='{link}' target='_new'>read the privacy policy</a> "
+    u"and tick the checkbox below to accept it.</p>"
 )
 
 
@@ -73,6 +74,10 @@ class EmptyURIError(schema.ValidationError):
     __doc__ = (u"Please enter a non-empty homepage URI.")
 
 
+class NotTickedError(schema.ValidationError):
+    __doc__ = (u"Please accept the privacy policy.")
+
+
 def isEmail(value):
     if re.match('^' + EMAIL_RE, value):
         return True
@@ -95,6 +100,12 @@ def isNonEmptyURI(value):
     if re.match(r"[a-zA-z0-9+.-]+://.+$", value):
         return True
     raise EmptyURIError
+
+
+def isTicked(value):
+    if bool(value):
+        return True
+    raise NotTickedError
 
 
 class NonMissingSelectWidget(select.SelectWidget):
@@ -253,6 +264,17 @@ class IOrganisationExtra(model.Schema):
     )
     formdirectives.omitted('phase_1_intro')
     formdirectives.no_omit(IAddForm, 'phase_1_intro')
+
+    privacy_policy = schema.Bool(
+        title=_(
+            u"label_accept_privacy", default=
+            u"I confirm that I have read and accept the terms of privacy "
+            u"conditions and I authorise the treatment of my personal data."),
+        required=True,
+        constraint=isTicked,
+    )
+    formdirectives.omitted('privacy_policy')
+    formdirectives.no_omit(IAddForm, 'privacy_policy')
 
     countries = schema.List(
         title=_(u"Countries of activity"),
@@ -541,12 +563,15 @@ class AddForm(dexterity.AddForm):
         return u"Apply to become an official partner"
 
     fields = field.Fields(IOrganisation).select(
-        'phase_1_intro')
+        'phase_1_intro', 'privacy_policy')
 
     def updateWidgets(self):
         super(AddForm, self).updateWidgets()
+        portal = api.portal.get()
+        link = "{0}/en/privacy-policy-for-the-official-campaign-partners-form".format(
+            portal.absolute_url())
         self.widgets['phase_1_intro'].value = RichTextValue(
-            INTRO_TEXT_PHASE_1, "text/html", "text/html")
+            INTRO_TEXT_PHASE_1.format(link=link), "text/html", "text/html")
         self.widgets['phase_1_intro'].mode = 'display'
         # In the AddForm we want a different discription for the key email
         # than in the EditForm
