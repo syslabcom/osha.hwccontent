@@ -7,7 +7,7 @@ COUNTRIES = [
     'France', 'Germany', 'Greece', 'Hungary', 'Iceland',
     'Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania',
     'Luxembourg', 'Malta', 'Netherlands', 'Norway', 'Poland',
-    'Portugal', 'Romania', 'Slovak Republic', 'Slovenia',
+    'Portugal', 'Romania', 'Slovakia', 'Slovenia',
     'Spain', 'Sweden', 'Switzerland', 'United Kingdom',
 ]
 
