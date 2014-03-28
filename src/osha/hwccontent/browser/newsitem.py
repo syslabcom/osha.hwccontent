@@ -85,7 +85,8 @@ class NewsItemListing(ListingView):
                     'Description': item.Description,
                     'text': obj.text and obj.text.output or "",
                     'image': blob and base64.encodestring(blob.open().read()) or None,
-                    'obj': obj
+                    'obj': obj,
+                    'is_local': True,
                 }
             else:
                 items[i]['Date'] = DateTime(items[i]['Date']).utcdatetime()
