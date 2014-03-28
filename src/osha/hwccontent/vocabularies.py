@@ -8,7 +8,7 @@ COUNTRIES = [
     'Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania',
     'Luxembourg', 'Malta', 'Netherlands', 'Norway', 'Poland',
     'Portugal', 'Romania', 'Slovak Republic', 'Slovenia',
-    'Spain', 'Sweden', 'Switzerland', 'United Kingdom', 'Utopia',
+    'Spain', 'Sweden', 'Switzerland', 'United Kingdom',
 ]
 
 countries = SimpleVocabulary(
