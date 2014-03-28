@@ -40,8 +40,6 @@ INTRO_TEXT_PHASE_1 = _(
     u"the 2012-13 Healthy workplaces campaign: "
     u"<a href='http://www.healthy-workplaces.eu/en/about/campaign-partners'>"
     u"http://www.healthy-workplaces.eu/en/about/campaign-partners</a></p>"
-    u"<p>Please <a href='{link}' target='_new'>read the privacy policy</a> "
-    u"and tick the checkbox below to accept it.</p>"
 )
 
 
@@ -264,6 +262,13 @@ class IOrganisationExtra(model.Schema):
     )
     formdirectives.omitted('phase_1_intro')
     formdirectives.no_omit(IAddForm, 'phase_1_intro')
+
+    privacy_policy_text = RichText(
+        title=u"",
+        required=False,
+    )
+    formdirectives.omitted('privacy_policy_text')
+    formdirectives.no_omit(IAddForm, 'privacy_policy_text')
 
     privacy_policy = schema.Bool(
         title=_(
@@ -534,6 +539,7 @@ class IOrganisation(IOrganisationBase, IOrganisationExtra):
             'promotion_check', 'promotion_description',
             'bestpractice_check', 'bestpractice_description',
             'otheractivities_check', 'otheractivities_description',
+            'privacy_policy_text', 'privacy_policy',
         ]
     )
 
@@ -563,7 +569,7 @@ class AddForm(dexterity.AddForm):
         return u"Apply to become an official partner"
 
     fields = field.Fields(IOrganisation).select(
-        'phase_1_intro', 'privacy_policy')
+        'phase_1_intro')
 
     def updateWidgets(self):
         super(AddForm, self).updateWidgets()
@@ -580,6 +586,24 @@ class AddForm(dexterity.AddForm):
             u'can be used for logging in to the campaign site once your ' \
             u'application has been approved.'
         tmp_fields['key_email'].field.constraint = isEmailAvailable
+
+    def updateActions(self):
+        """ BEWARE - Dirty Hack (tm)
+        uppdateActions() is called _after_ update() in z3c.form.group.GroupForm
+        This is important, since we need to manipulate the already set-up
+        groups and be sure that our changes don't get overwritten again.
+        """
+
+        portal = api.portal.get()
+        link = "{0}/en/privacy-policy-for-the-official-campaign-partners-form".format(
+            portal.absolute_url())
+        privacy_policy_text = u"<p>Please <a href='{link}' target='_new'>read the privacy " \
+            u"policy</a> and tick the checkbox below to accept it.</p>"
+        self.groups[-1].widgets['privacy_policy_text'].value = RichTextValue(
+            privacy_policy_text.format(link=link), "text/html", "text/html")
+        self.groups[-1].widgets['privacy_policy_text'].mode = 'display'
+
+        super(AddForm, self).updateActions()
 
 
 class EditForm(dexterity.EditForm):
