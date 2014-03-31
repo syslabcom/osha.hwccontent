@@ -536,18 +536,24 @@ class ImportRelatedSites(grok.View):
         if not doc:
             return "{0} not found on portal".format(fname)
         links = json.loads(doc.raw)
+        count = 0
+        c_count = 0
         for path, rsl in links.items():
             obj = portal.restrictedTraverse(str(path))
             if obj.Language() == "en":
                 print "skipping EN"
+            count += 1
             existing_rsl = IRelatedSites(obj).related_sites_links
-            changed = False
-            for existing in existing_rsl:
-                for imported in rsl:
-                    if existing['url'] == imported['url'] and existing['label'] != imported['label']:
-                        existing['label'] = imported['label']
-                        changed = True
-            if changed:
-                IRelatedSites(obj).related_sites_links = existing_rsl
+            # changed = False
+            if len(rsl) == len(existing_rsl):
 
-        return "ok"
+            # for existing in existing_rsl:
+            #     for imported in rsl:
+            #         if existing['url'] == imported['url'] and existing['label'] != imported['label']:
+            #             existing['label'] = imported['label']
+            #             changed = True
+            # if changed:
+                IRelatedSites(obj).related_sites_links = rsl
+                c_count += 1
+
+        return "{0} total objects, {1} changed".format(count, c_count)
