@@ -32,7 +32,7 @@ from osha.hwccontent.behaviors.moreabout import (
     IRelatedSites,
     ISectionImage,
 )
-
+import json
 log = logging.getLogger(__name__)
 
 
@@ -486,3 +486,68 @@ class GetProfileFor(grok.View):
             key_email=email,
             Language='all')
         return "\n".join([x.getPath() for x in profiles])
+
+
+class ExportRelatedSites(grok.View):
+    """Helper View to export all titles for related sites in all translations"""
+    grok.name("export-related-sites")
+    grok.require('cmf.ManagePortal')
+    grok.context(ISiteRoot)
+
+    def render(self):
+        cat = getToolByName(self.context, 'portal_catalog')
+        query = dict(portal_type='Folder', Language='en')
+        res = cat(query)
+        log.info('Total no. of folders found: {0}'.format(len(res)))
+        links = dict()
+        for r in res:
+            if r.getPath().split('/')[2] != 'en':
+                log.warning("Found a folder with lang EN not under /en: {0}".format(
+                    r.getPath()))
+                continue
+            obj = r.getObject()
+            if not ITranslatable.providedBy(obj):
+                log.warning('Found a folder that is not translatable, WTF: {0}'.format(
+                    r.getPath()))
+                continue
+            tm = ITranslationManager(obj)
+            log.info('Handling folder {0}.'.format('/'.join(obj.getPhysicalPath())))
+            for lang, trans in tm.get_translations().items():
+                if lang == 'en':
+                    continue
+                # Copy "Exclude from navigation", section images and related sites
+                trans.exclude_from_nav = obj.exclude_from_nav
+                rsl = IRelatedSites(trans).related_sites_links
+                if len(rsl):
+                    links['/'.join(trans.getPhysicalPath())] = rsl
+        return json.dumps(links)
+
+
+class ImportRelatedSites(grok.View):
+    """Import related sites..."""
+    grok.name("import-related-sites")
+    grok.require('cmf.ManagePortal')
+    grok.context(ISiteRoot)
+
+    def render(self):
+        portal = api.portal.get()
+        fname = 'related-sites-links'
+        doc = portal.restrictedTraverse(fname, None)
+        if not doc:
+            return "{0} not found on portal".format(fname)
+        links = json.loads(doc.raw)
+        for path, rsl in links.items():
+            obj = portal.restrictedTraverse(str(path))
+            if obj.Language() == "en":
+                print "skipping EN"
+            existing_rsl = IRelatedSites(obj).related_sites_links
+            changed = False
+            for existing in existing_rsl:
+                for imported in rsl:
+                    if existing['url'] == imported['url'] and existing['label'] != imported['label']:
+                        existing['label'] = imported['label']
+                        changed = True
+            if changed:
+                IRelatedSites(obj).related_sites_links = existing_rsl
+
+        return "ok"
