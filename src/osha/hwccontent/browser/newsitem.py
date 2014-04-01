@@ -81,7 +81,7 @@ class NewsItemListing(ListingView):
                 items[i] = {
                     'Title': item.Title,
                     'Date': DateTime(item.Date).utcdatetime(),
-                    'getURL': item.getPath(),
+                    'getURL': item.getURL(),
                     'Description': item.Description,
                     'text': obj.text and obj.text.output or "",
                     'image': blob and base64.encodestring(blob.open().read()) or None,

@@ -14,7 +14,7 @@
           <metal:block use-macro="context/folder_listing/macros/entries">
             <metal:entry fill-slot="entry"
                          tal:condition="python: obj.portal_type in ('File', 'Image')"
-                         tal:define="item_url item/getPath;
+                         tal:define="item_url item/getURL;
                                      obj item/getObject;">
               <div class="material-item row-fluid">
                 <div class="span6" tal:define="scales obj/@@images; has_image python:getattr(obj, 'image', None)">
