@@ -253,7 +253,7 @@ class RejectView(grok.View):
         msg = 'The media partner profile "{0}" has been rejected'.format(
             self.context.Title())
         api.portal.show_message(message=msg, request=self.request)
-        _send_notification(self.context, "mail_mediapartner_rejected")
+        # _send_notification(self.context, "mail_mediapartner_rejected")
         id = self.context.id
         container = aq_parent(self.context)
         url = container.absolute_url()
