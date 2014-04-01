@@ -5,6 +5,7 @@ from zExceptions import NotFound
 
 # See also https://github.com/plone/plone.app.multilingual/issues/102
 
+
 def uuidToURL(uuid):
     """Resolves a UUID to a URL via the UID catalog index.
     """
@@ -24,6 +25,27 @@ def uuidToURL(uuid):
             if t_res:
                 return t_res[0].getURL()
         return res[0].getURL()
+
+
+def uuidToObject(uuid):
+    """Resolves a UUID to an object via the UID catalog index.
+    """
+    site = getSite()
+    catalog = getToolByName(getSite(), 'portal_catalog')
+    res = catalog.unrestrictedSearchResults(UID=uuid)
+    if res:
+        plt = getToolByName(site, 'portal_languages')
+        # Check if a translation in the requested language exists
+        # XXX Could be made optional via a Control Panel setting
+        # "Resolve UIDs to translation of target"
+        lang = plt.getPreferredLanguage()
+        tg = getattr(res[0], 'TranslationGroup', None)
+        if res[0].Language != lang and tg:
+            t_res = catalog.unrestrictedSearchResults(
+                Language=lang, TranslationGroup=tg)
+            if t_res:
+                return t_res[0]._unrestrictedGetObject()
+        return res[0]._unrestrictedGetObject()
 
 
 class ResolveUIDView(BaseView):
