@@ -117,7 +117,7 @@ class PressReleaseListing(ListingView):
                 items[i] = {
                     'Title': item.Title,
                     'Date': DateTime(item.Date).utcdatetime(),
-                    'getURL': item.getPath(),
+                    'getURL': item.getURL(),
                     'Description': item.Description,
                     'image': blob and base64.encodestring(blob.open().read()) or None,
                     'obj': obj,
