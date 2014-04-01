@@ -56,7 +56,7 @@ class ApprovePhase1MailTemplate(MailTemplateBase):
 
     def render(self, username, created):
         self.username = username
-        self.subject = 'Profile approved'
+        self.subject = 'Registration Phase 1 approved'
         self.template = grok.PageTemplateFile(
             'templates/mail_approve_phase_1.pt')
         self.created = created
