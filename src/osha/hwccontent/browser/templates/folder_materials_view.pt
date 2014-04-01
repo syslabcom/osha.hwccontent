@@ -47,14 +47,14 @@
                   </tal:comment>
                 </div>
 
-                <div class="span1" tal:define="icon_path python:view.get_icon_path(obj)" tal:condition="icon_path">
+<!--                 <div class="span1" tal:define="icon_path python:view.get_icon_path(obj)" tal:condition="icon_path">
                   <p class="material-icon">
                     <a tal:attributes="href string:${item_url}/download">
                       <img height="50" width="50px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-pdf.gif"
                            tal:attributes="src icon_path; title string:Download ${obj/file/filename}"  alt="file type icon" title="" />
                     </a>
                   </p>
-                </div>
+                </div> -->
 
               </div>
 
