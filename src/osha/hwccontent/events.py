@@ -19,6 +19,7 @@ from plone.app.contenttypes.interfaces import (
     IEvent,
     INewsItem,
 )
+from plone import api
 from plone.dexterity.interfaces import IDexterityContent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 import logging
@@ -215,9 +216,18 @@ class OrganisationContentSubmittedMailTemplate(MailTemplateBase):
 
 
 def add_user_and_send_notifications(obj, groupname, template_name):
+    current_user = api.user.get_current()
+    portal = api.portal.get()
+    grant_roles = False
+    if 'Reviewer' not in portal.get_local_roles_for_userid(
+            current_user.getId()):
+        api.user.grant_roles(user=current_user, obj=portal, roles=[u'Reviewer'])
+        grant_roles = True
     username, created = utils.create_key_user_if_not_exists(obj)
     group = utils.create_group_if_not_exists(groupname)
     group.addMember(username)
+    if grant_roles:
+        api.user.revoke_roles(user=current_user, obj=portal, roles=[u'Reviewer'])
     utils._send_notification(obj, template_name, username, created)
 
 
