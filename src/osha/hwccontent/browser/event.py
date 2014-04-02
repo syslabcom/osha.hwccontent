@@ -169,7 +169,7 @@ class EventListing(ListingView, EventListing):
             sort_reverse = True
         expand = True
         local_events = get_events(
-            self.context, start=start, end=end, sort=sort,
+            self.context, start=start, end=end, sort=sort, review_state='published',
             sort_reverse=sort_reverse, ret_mode=RET_MODE_ACCESSORS,
             expand=expand, **kw)
 

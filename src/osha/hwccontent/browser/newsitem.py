@@ -65,6 +65,7 @@ class NewsItemListing(ListingView):
             portal_type="News Item",
             sort_on="effective",
             sort_order="descending",
+            review_state='published',
             Language=[default_lang, ''],
         )
         return results
