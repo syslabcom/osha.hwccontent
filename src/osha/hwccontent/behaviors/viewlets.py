@@ -30,6 +30,8 @@ class SeeAlsoViewlet(ViewletBase):
                 'portal_languages').getPreferredLanguage()
             items = list()
             for relation in self.context.see_also:
+                if relation.isBroken():
+                    continue
                 obj = relation.to_object
                 if ITranslatable.providedBy(obj):
                     obj = ITranslationManager(obj).get_restricted_translation(
