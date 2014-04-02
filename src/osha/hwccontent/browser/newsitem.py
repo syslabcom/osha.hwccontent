@@ -1,9 +1,12 @@
 from DateTime import DateTime
 from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCatalog.interfaces import ICatalogBrain
+from five import grok
 from json import load
 from osha.hwccontent.browser.mixin import ListingView
 from osha.hwccontent.interfaces import IFullWidth
+from plone.app.contenttypes.interfaces import INewsItem
+from plone.directives import dexterity
 from plone import api
 from plone.memoize import ram
 from urllib import urlopen
@@ -96,3 +99,25 @@ class NewsItemListing(ListingView):
         b_size = int(self.request.get('b_size', 20))
         b_start = int(self.request.get('b_start', 0))
         return Batch(self.get_all_news_items(), b_size, b_start, orphan=1)
+
+
+class AddForm(dexterity.AddForm):
+    grok.name('News Item')
+    grok.require('plone.app.contenttypes.addNewsItem')
+
+    def updateWidgets(self):
+        super(AddForm, self).updateWidgets()
+        fname = 'IDublinCore.description'
+        self.widgets[fname].field.description = u"Write a short summary. "\
+            u"This will appear on the homepage of the campaign site."
+
+
+class EditForm(dexterity.EditForm):
+    grok.context(INewsItem)
+    grok.require("cmf.ModifyPortalContent")
+
+    def updateWidgets(self):
+        super(EditForm, self).updateWidgets()
+        fname = 'IDublinCore.description'
+        self.widgets[fname].field.description = u"Write a short summary. "\
+            u"This will appear on the homepage of the campaign site."

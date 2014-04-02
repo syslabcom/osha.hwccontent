@@ -3,12 +3,15 @@ from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFCore.utils import getToolByName
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from datetime import datetime, timedelta
+from five import grok
 from json import load
 from osha.hwccontent.browser.mixin import ListingView
 from osha.hwccontent.interfaces import IFullWidth
 from osha.hwccontent.behaviors.event import IEventOrganiser
 from plone import api
+from plone.directives import dexterity
 from plone.memoize import ram
+from plone.app.contenttypes.interfaces import IEvent
 from plone.app.event.browser.event_listing import EventListing
 from plone.app.event.base import (
     get_events,
@@ -210,3 +213,25 @@ class EventListing(ListingView, EventListing):
             return event.organiser
         data = IEventOrganiser(event.context)
         return data.organiser
+
+
+class AddForm(dexterity.AddForm):
+    grok.name('Event')
+    grok.require('plone.app.contenttypes.addEvent')
+
+    def updateWidgets(self):
+        super(AddForm, self).updateWidgets()
+        fname = 'IDublinCore.description'
+        self.widgets[fname].field.description = u"Write a short summary. "\
+            u"This will appear on the homepage of the campaign site."
+
+
+class EditForm(dexterity.EditForm):
+    grok.context(IEvent)
+    grok.require("cmf.ModifyPortalContent")
+
+    def updateWidgets(self):
+        super(EditForm, self).updateWidgets()
+        fname = 'IDublinCore.description'
+        self.widgets[fname].field.description = u"Write a short summary. "\
+            u"This will appear on the homepage of the campaign site."
