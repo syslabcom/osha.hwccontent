@@ -101,6 +101,20 @@ class OrganisationCreatedCreatorMailTemplate(MailTemplateBase):
         return self.template.render(self)
 
 
+class MediapartnerCreatedCreatorMailTemplate(MailTemplateBase):
+    """ """
+    grok.name('mail_mediapartner_created_creator')
+    grok.context(IMediaPartner)
+    grok.layer(IOSHAHWCContentLayer)
+    grok.require('cmf.ReviewPortalContent')
+
+    def render(self):
+        self.subject = 'Application to the Healthy Workplaces campaign'
+        self.template = grok.PageTemplateFile(
+            'templates/mail_organisation_created_creator.pt')
+        return self.template.render(self)
+
+
 class OrganisationCreatedSiteOwnerMailTemplate(MailTemplateBase):
     """ """
     grok.name('mail_organisation_created_siteowner')
@@ -260,6 +274,7 @@ def handle_organisation_created(obj, event):
 
 @grok.subscribe(IMediaPartner, IObjectAddedEvent)
 def handle_mediapartner_added(obj, event):
+    utils._send_notification(obj, "mail_mediapartner_created_creator")
     utils._send_notification(obj, "mail_mediapartner_created_siteowner")
 
 
