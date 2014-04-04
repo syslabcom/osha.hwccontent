@@ -39,10 +39,12 @@
             tal:define="obj nocall:news_item/obj|nothing;
             image nocall:news_item/image|nothing"
             tal:attributes="class python:'%s%s' %(attrs['class'], ' first' if repeat['news_item'].start else '')">
-          <div class="row-fluid" tal:define="has_image python:getattr(news_item, 'image', None)">
-            <h3><a href="news"
+          <div class="row-fluid" tal:define="has_image python:getattr(news_item, 'image', None);
+                number repeat/news_item/number;
+                link string:news#${number}">
+            <h3><a href="news" tal:attributes="href link"
                        tal:content="news_item/Title">Good health and safety is good for business</a></h3>
-                <a href="news" tal:attributes="title news_item/Title">
+                <a href="news" tal:attributes="title news_item/Title; href link">
                   <tal:if_local omit-tag="" condition="news_item/is_local|nothing">
                     <tal:if_blob tal:condition="image">
                         <img src="" alt=""
