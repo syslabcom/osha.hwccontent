@@ -24,7 +24,7 @@ from zope.component.hooks import getSite
 from zope.lifecycleevent import ObjectRemovedEvent
 
 from osha.hwccontent import vocabularies
-from osha.hwccontent.utils import _send_notification
+# from osha.hwccontent.utils import _send_notification
 
 from zope.i18nmessageid import MessageFactory
 
@@ -38,8 +38,9 @@ INTRO_TEXT_PHASE_1 = _(
     u"partnership offer.)</p><p>Required fields are marked "
     u"with a red dot.</p><p>You might want to take a look at the OCP of "
     u"the 2012-13 Healthy workplaces campaign: "
-    u"<a href='http://www.healthy-workplaces.eu/en/about/campaign-partners'>"
-    u"http://www.healthy-workplaces.eu/en/about/campaign-partners</a></p>"
+    u"<a href='http://hw2012.healthy-workplaces.eu/en/about/campaign-partners' "
+    u"target='_new'>"
+    u"http://hw2012.healthy-workplaces.eu/en/about/campaign-partners</a></p>"
 )
 
 
