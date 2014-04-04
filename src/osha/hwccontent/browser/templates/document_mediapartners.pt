@@ -9,6 +9,7 @@
 
   <metal:content-core fill-slot="content-core"
     tal:define="portal_url context/@@plone_portal_state/portal_url;
+                language here/portal_languages/getPreferredLanguage;
                 context_url context/absolute_url;">
 
   <metal:content-core define-macro="content-core">
@@ -17,11 +18,12 @@
          tal:content="structure context/text/output" />
   </metal:content-core>
 
-  <div class="row-fluid partners" id="frontpage-partners" tal:define="partners view/partners;
+  <div class="row-fluid partners" id="frontpage-focalpoints" tal:define="partners view/partners;
                    tabs python:sorted(partners);">
 
 
-    <h2 i18n:translate="title_media_partners">Media Partners</h2>
+    <h2><span i18n:translate="title_media_partners">Media Partners</span>
+      <span tal:condition="python: language!='en'" class="discreet">(<span tal:omit-tag="" i18n:translate="profiles_english_only">Profiles are in English only</span>)</span></h2>
     <div class="focalpoints-menu">
       <div class="row-fluid">
         <ul>
