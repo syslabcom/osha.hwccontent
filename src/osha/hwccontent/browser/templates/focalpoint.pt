@@ -45,7 +45,7 @@
             <dl class="row-fluid">
               <dt class="span4">URL:</dt>
               <dd class="span8">
-                <a tal:attributes="href context/campaign_url" tal:content="context/campaign_url">
+                <a tal:attributes="href context/campaign_url" tal:content="context/campaign_url" target="_new">
                   http://www.acciona-energia.com/sustainability/quality-prevention.aspx
                 </a>
               </dd>
