@@ -38,7 +38,8 @@ class ListingView(BrowserView):
         """
 
         def _cachekey(method, self, batch=True):
-            key = get_storage_cachekey(for_type), time() // (60 * minutes), self.lang, batch
+            mode = self.request.get('mode', '')
+            key = get_storage_cachekey(for_type), time() // (60 * minutes), self.lang, batch, mode
             return key
 
         return _cachekey
