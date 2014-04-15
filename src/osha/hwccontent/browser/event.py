@@ -54,7 +54,7 @@ class JSONEventAccessor(object):
         self.last_modified = kw['modification_date']
         self.url = kw['_url']
         self.title = kw['title']
-        self.description = kw['description']
+        self.description = u''
 
         tz = kw['startDate'][-6:]
         minutes = tz[-2:]
@@ -88,7 +88,7 @@ class JSONEventAccessor(object):
         self.event_url = kw['eventUrl']
         self.subjects = kw['subject']
         self.text = kw['text']
-        self.organiser = u''
+        self.organiser = kw['description']
 
         if kw.get('attachment', None):
             self.attachment = True
