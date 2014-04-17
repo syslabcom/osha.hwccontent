@@ -1,7 +1,9 @@
 # _+- coding: utf-8 -*-
 
 from plone import api
+from zope.component import getMultiAdapter
 from zope.interface import implements
+
 from Acquisition import aq_parent
 from Products.Five.browser import BrowserView
 
@@ -81,7 +83,10 @@ class MediaPartnersView(BrowserView):
             letter = title[0].lower()
             if letter not in letters:
                 letters[letter] = {}
-            letters[letter][title] = fop.absolute_url()
+            scaling = getMultiAdapter((fop, self.request), name='images')
+            letters[letter][title] = dict(
+                url=fop.absolute_url(), scaling=scaling)
+
         return letters
 
     def css_by_orientation(self, partner):
