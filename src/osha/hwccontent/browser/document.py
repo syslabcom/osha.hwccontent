@@ -84,6 +84,8 @@ class MediaPartnersView(BrowserView):
             if letter not in letters:
                 letters[letter] = {}
             scaling = getMultiAdapter((fop, self.request), name='images')
+            if scaling.getImageSize('logo') == (-1, -1):
+                scaling = None
             letters[letter][title] = dict(
                 url=fop.absolute_url(), scaling=scaling)
 

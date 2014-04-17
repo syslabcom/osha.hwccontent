@@ -41,9 +41,9 @@
       <tal:block repeat="tab tabs">
         <div id="tab1" class="row-fluid" tal:attributes="id string:tab-${tab}">
           <div class="span2 letter" tal:content="tab">A</div>
-          <div class="span8">
+          <div class="span8 logos">
             <div class="mediapartner span2" tal:repeat="partner python:partners[tab]">
-              <a tal:attributes="href python:partners[tab][partner]['url']"><img
+              <a tal:attributes="href python:partners[tab][partner]['url']"><img tal:condition="python: partners[tab][partner]['scaling'] is not None"
                         tal:replace="structure python: partners[tab][partner]['scaling'].tag('logo', scale='logo_preview')" /></a>
               <a tal:attributes="href python:partners[tab][partner]['url']" tal:content="partner">Austria</a>
             </div>
