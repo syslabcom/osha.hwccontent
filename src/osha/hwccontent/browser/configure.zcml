@@ -254,4 +254,11 @@
     />
 
 
+  <browser:page
+    for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+    name="activity-report"
+    class=".activity_report.ActivityReportView"
+    permission="cmf.ManagePortal"
+    />
+      
 </configure>
