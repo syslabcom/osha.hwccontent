@@ -118,6 +118,14 @@ class ActivityReportView(BrowserView):
 
         for event in sorted(events, key=lambda x: x['Partner']):
             writer.writerow(event)
+
+        response = self.request.response
+        response.setHeader(
+            "Content-Disposition",
+            "attachment; filename=hwc2014-activity-report.csv",
+        )
+        response.setHeader(
+            "Content-Type", 'text/comma-separated-values;charset=utf-8')
             
         return csvfile.getvalue()
     
