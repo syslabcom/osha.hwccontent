@@ -52,11 +52,11 @@ class TestActivityReport(unittest.TestCase):
         login(self.portal, 'Site Administrator')
         test_document = api.content.create(container=self.portal.organisations,
                                            type='Document', id='test_document', 
-                                           title='Test Document')
+                                           title=u'Test D\xf6cument')
         test_organisation = api.content.create(container=self.portal.organisations,
                                                type='osha.hwccontent.organisation', 
                                                id='test_organisation', 
-                                               title='Test Organisation')
+                                               title=u'Test Org\xe4nisation')
         
         api.content.transition(test_document, 'submit')
         #login(self.portal, 'Admin')
@@ -73,5 +73,5 @@ class TestActivityReport(unittest.TestCase):
         self.assertIn(',http://nohost/plone/organisations/test_document,admin', result)
         
         # The organisation:
-        self.assertIn('Test Organisation,New Organisation,', result) # Here we have a partner
+        self.assertIn('Test Org\xc3\xa4nisation,New Organisation,', result) # Here we have a partner
         self.assertIn(',http://nohost/plone/organisations/test_organisation,Site Administrator', result)

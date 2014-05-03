@@ -6,7 +6,8 @@ import csv
 
 def fullname_from_userid(userid):
     user = api.user.get(userid)
-    return user.fullname or userid
+    name = user.fullname or userid
+    return name.encode('UTF8')
     
 class ActivityReportView(BrowserView):
     '''@@activity-report lists all document activity since last report run.'''
@@ -33,6 +34,7 @@ class ActivityReportView(BrowserView):
                                  'News Item',
                                  ],
                  'path': paths,
+                 'Language': 'all',
                  }
         
         last_report = site_properties.getProperty('last_activity_report')
@@ -65,7 +67,8 @@ class ActivityReportView(BrowserView):
                     # We are outside the site now.
                     partner = ''
                     break
-                
+            
+            partner = partner.encode('UTF8')
             # URL
             url = ob.absolute_url()
             
@@ -88,16 +91,14 @@ class ActivityReportView(BrowserView):
                             'Author': fullname_from_userid(change['actor']),
                         })
             
-            if ob.created > last_report_time:
+            if ob.created() > last_report_time:
                 action = 'New'
                 user = ob.Creator()
             else:
-                import pdb;pdb.set_trace()
                 action = 'Modified'
                 creators = ob.listCreators()
-                if len(creators) > 1:
-                    # More than one. Let's assume that the last author was not the creator:
-                    creators.remove(doc.Creator())
+                # There may be more than one. Let's assume that the last
+                # author added was the last to modify:
                 user = creators[-1]
 
             events.append({
@@ -105,7 +106,7 @@ class ActivityReportView(BrowserView):
                 'Event': action + ' ' + portal_type,
                 'Date': ob.modified().strftime('%Y-%m-%d %H:%M'),
                 'URL': url,
-                'Author': fullname_from_userid(user),
+                'Author': fullname_from_userid(user).encode('UTF8'),
             })
         
         # Update the last report time
