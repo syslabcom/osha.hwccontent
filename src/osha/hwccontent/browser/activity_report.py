@@ -36,6 +36,7 @@ class ActivityReportView(BrowserView):
                                  ],
                  'path': paths,
                  'Language': 'all',
+                 'sort_on': 'modified',
                  }
 
         last_report = site_properties.getProperty('last_activity_report')
