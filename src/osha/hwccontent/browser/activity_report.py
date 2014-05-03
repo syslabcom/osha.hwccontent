@@ -32,10 +32,7 @@ class ActivityReportView(BrowserView):
         query = {'portal_type': ['osha.hwccontent.organisation',
                                  'osha.hwccontent.focalpoint',
                                  'osha.hwccontent.mediapartner',
-                                 'Event', 'Document',
-                                 'Folder',
-                                 'File',
-                                 'News Item',
+                                 'Event', 'News Item',
                                  ],
                  'path': paths,
                  'Language': 'all',
@@ -63,7 +60,10 @@ class ActivityReportView(BrowserView):
             # Find the partner:
             maybe_partner = ob
             while True:
-                if maybe_partner.portal_type == 'osha.hwccontent.organisation':
+                if maybe_partner.portal_type in (
+                        'osha.hwccontent.organisation',
+                        'osha.hwccontent.focalpoint',
+                        'osha.hwccontent.mediapartner',):
                     partner = maybe_partner.title_or_id()
                     break
                 maybe_partner = maybe_partner.aq_parent
