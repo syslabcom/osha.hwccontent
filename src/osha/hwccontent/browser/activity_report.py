@@ -77,16 +77,18 @@ class ActivityReportView(BrowserView):
             # URL
             url = ob.absolute_url()
 
+            has_workflow_action = False
             # Find transitions since last report:
             if hasattr(ob, 'workflow_history'):
                 for wfname, changes in ob.workflow_history.items():
                     transitions = workflow.getWorkflowById(wfname).transitions
                     for change in changes:
-                        if change['time'] < last_report_time:
-                            continue
                         action = change['action']
                         if not action:
                             # Initial transition
+                            continue
+                        has_workflow_action = True
+                        if change['time'] < last_report_time:
                             continue
                         events.append({
                             'Partner': partner,
@@ -97,6 +99,9 @@ class ActivityReportView(BrowserView):
                         })
 
             if ob.created() > last_report_time:
+                # if there is any previous workflow action, the object is not new
+                if has_workflow_action:
+                    continue
                 action = 'New'
                 user = ob.Creator()
             else:
