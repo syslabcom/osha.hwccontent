@@ -5,6 +5,7 @@ import re
 from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from Products.validation.validators.BaseValidators import EMAIL_RE
+from Products.statusmessages.interfaces import IStatusMessage
 from five import grok
 from plone import api
 from plone.app.textfield import RichText
@@ -15,7 +16,7 @@ from plone.directives import dexterity
 from plone.multilingualbehavior import directives
 from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
-from z3c.form import field
+from z3c.form import field, button
 from z3c.form.browser import select
 from z3c.form.interfaces import IAddForm, IEditForm, NO_VALUE
 from zope.event import notify
@@ -34,13 +35,16 @@ _ = MessageFactory('will-not-be-translated')
 INTRO_TEXT_PHASE_1 = _(
     u"<p>Please fill in the 2-pages form to apply to become an Official "
     u"Campaign Partner (OCP) of the Healthy Workplaces Campaign 2014-15 on "
-    u"‘Healthy workplaces manage stress’. (Learn about the current campaign "
-    u"partnership offer.)</p><p>Required fields are marked "
-    u"with a red dot.</p><p>You might want to take a look at the OCP of "
-    u"the 2012-13 Healthy workplaces campaign: "
-    u"<a href='http://hw2012.healthy-workplaces.eu/en/about/campaign-partners' "
-    u"target='_new'>"
-    u"http://hw2012.healthy-workplaces.eu/en/about/campaign-partners</a></p>"
+    u"‘Healthy workplaces manage stress’.</p>"
+    u"<p style='color: red;font-weight: bold;'>Only Pan-European or "
+    u"international organisations / companies are eligible for the "
+    u"European Campaign Partnership.</p>"
+    u"<p>Fill in ALL required fields (they are marked with a red dot).</p>"
+    u"<p><a href='https://www.healthy-workplaces.eu/en/get-involved/"
+    u"become-an-official-campaign-partner/campaign-partnership-offer.pdf' "
+    u"target='_new'>More information on the campaign partnership offer</a></p>"
+    u"<p><a href='https://www.healthy-workplaces.eu/en/campaign-partners/"
+    u"official-campaign-partners' target='_new'>Current campaign partners</a></p>"
 )
 
 
@@ -564,6 +568,22 @@ class AddForm(dexterity.AddForm):
     grok.require("osha.hwccontent.AddOrganisation")
 
     default_fieldset_label = u'Introduction'
+
+    @button.buttonAndHandler(_('Save'), name='save')
+    def handleAdd(self, action):
+        data, errors = self.extractData()
+        if errors:
+            if any(isinstance(x.error, schema.interfaces.RequiredMissing) for x in errors):
+                # Missing fields
+                self.status = _("Not all fields were filled in. Please check all tabs for errors.")
+            else:
+                self.status = _("Some fields were not correctly filled in. Please check all tabs for errors.")
+            return
+        obj = self.createAndAdd(data)
+        if obj is not None:
+            # mark only as finished if we get the new object
+            self._finishedAdd = True
+            IStatusMessage(self.request).addStatusMessage(_(u"Item created"), "info")
 
     @property
     def label(self):
