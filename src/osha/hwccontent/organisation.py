@@ -585,9 +585,9 @@ class AddForm(dexterity.AddForm):
         if errors:
             if any(isinstance(x.error, schema.interfaces.RequiredMissing) for x in errors):
                 # Missing fields
-                self.status = _("Not all fields were filled in. Please check all tabs for errors.")
+                self.status = _("Not all fields were filled in. Please check all tabs of this form for errors.")
             else:
-                self.status = _("Some fields were not correctly filled in. Please check all tabs for errors.")
+                self.status = _("Some fields were not correctly filled in. Please check all of this form tabs for errors.")
             return
         obj = self.createAndAdd(data)
         if obj is not None:
