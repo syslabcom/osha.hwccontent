@@ -3,7 +3,7 @@ from osha.hwccontent import _
 
 COUNTRIES = [
     'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus',
-    'Czech Republic', 'Denmark', 'Estonia', 'Finland',
+    'Czech Republic', 'Denmark', 'Estonia', 'Europe', 'Finland',
     'France', 'Germany', 'Greece', 'Hungary', 'Iceland',
     'Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania',
     'Luxembourg', 'Malta', 'Netherlands', 'Norway', 'Poland',
