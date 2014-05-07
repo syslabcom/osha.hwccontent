@@ -63,6 +63,7 @@ EMAIL_HINT_MANAGER = u"Hint for the Manager: Beware - if you change this " \
     u"email address, you must also update the user's account with the new " \
     u"email address, otherwise the user will not find their profile any more."
 
+MIN_COUNTRIES_OF_ACTIVITY = 3
 
 class InvalidEmailError(schema.ValidationError):
     __doc__ = u'Please enter a valid e-mail address.'
@@ -80,6 +81,9 @@ class EmptyURIError(schema.ValidationError):
 class NotTickedError(schema.ValidationError):
     __doc__ = (u"Please accept the privacy policy.")
 
+
+class NotEnoughCountries(schema.ValidationError):
+    __doc__ = (u"You need to have activity in at least %s countries" % MIN_COUNTRIES_OF_ACTIVITY)
 
 def isEmail(value):
     if re.match('^' + EMAIL_RE, value):
@@ -109,6 +113,12 @@ def isTicked(value):
     if bool(value):
         return True
     raise NotTickedError
+
+
+def isActiveInMultipleCountries(value):
+    if len(value) >= MIN_COUNTRIES_OF_ACTIVITY:
+        return True
+    raise NotEnoughCountries
 
 
 class NonMissingSelectWidget(select.SelectWidget):
@@ -296,8 +306,8 @@ class IOrganisationExtra(model.Schema):
         value_type=schema.Choice(
             vocabulary=vocabularies.countries,
         ),
-        required=False,
-        # min_length=1,
+        required=True,
+        constraint=isActiveInMultipleCountries,
     )
     directives.languageindependent('countries')
 
