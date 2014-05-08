@@ -2,8 +2,9 @@ from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from osha.hwccontent import _
 
 COUNTRIES = [
+    'Pan-European',
     'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus',
-    'Czech Republic', 'Denmark', 'Estonia', 'Europe', 'Finland',
+    'Czech Republic', 'Denmark', 'Estonia', 'Finland',
     'France', 'Germany', 'Greece', 'Hungary', 'Iceland',
     'Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania',
     'Luxembourg', 'Malta', 'Netherlands', 'Norway', 'Poland',

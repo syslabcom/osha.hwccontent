@@ -65,6 +65,7 @@ EMAIL_HINT_MANAGER = u"Hint for the Manager: Beware - if you change this " \
 
 MIN_COUNTRIES_OF_ACTIVITY = 3
 
+
 class InvalidEmailError(schema.ValidationError):
     __doc__ = u'Please enter a valid e-mail address.'
 
@@ -84,6 +85,7 @@ class NotTickedError(schema.ValidationError):
 
 class NotEnoughCountries(schema.ValidationError):
     __doc__ = (u"You need to have activity in at least %s countries" % MIN_COUNTRIES_OF_ACTIVITY)
+
 
 def isEmail(value):
     if re.match('^' + EMAIL_RE, value):
@@ -117,6 +119,8 @@ def isTicked(value):
 
 def isActiveInMultipleCountries(value):
     if len(value) >= MIN_COUNTRIES_OF_ACTIVITY:
+        return True
+    if "Pan-European" in value:
         return True
     raise NotEnoughCountries
 
@@ -299,10 +303,9 @@ class IOrganisationExtra(model.Schema):
     countries = schema.List(
         title=_(u"Countries of activity"),
         description=_(
-            u"Only Pan-European or international organisations / "
-            "companies are eligible for the European Campaign Partnership; "
-            "please indicate the countries your company is represented through"
-            " branches / representative offices / network members"),
+            u"Please indicate at least 3 countries in which your company is "
+            u"represented through branches / representative offices / "
+            u"network members"),
         value_type=schema.Choice(
             vocabulary=vocabularies.countries,
         ),
