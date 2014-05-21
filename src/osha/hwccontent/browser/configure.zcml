@@ -260,5 +260,12 @@
     class=".activity_report.ActivityReportView"
     permission="cmf.ManagePortal"
     />
+
+  <browser:page
+    for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+    name="partner-report"
+    class=".partner_report.PartnerReportView"
+    permission="cmf.ManagePortal"
+    />
       
 </configure>
