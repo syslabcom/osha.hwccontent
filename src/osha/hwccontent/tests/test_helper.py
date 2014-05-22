@@ -47,4 +47,5 @@ class TestHelper(unittest.TestCase):
         self.assertEquals(self.hw_view.get_my_profiles(),
                           [{'url': self.org.absolute_url(),
                             'Title': self.org.Title(),
+                            'portal_type': self.org.portal_type,
                             'review_state': 'approved_phase_1'}])

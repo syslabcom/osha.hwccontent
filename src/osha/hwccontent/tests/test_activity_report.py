@@ -29,10 +29,8 @@ class TestActivityReport(unittest.TestCase):
         login(self.app, SITE_OWNER_NAME)
         activity_report = self.portal.restrictedTraverse('@@activity-report')
         
-        # First make a report that we discard that includes any content already
-        # created.
+        # First make a report that we discard to set up properties.
         result = activity_report()
-        self.assertGreater(len(result.splitlines()), 1) # More than one line
         
         # Now set the last report date to the future, and make the report
         # again, and make sure it is empty:
@@ -59,18 +57,11 @@ class TestActivityReport(unittest.TestCase):
                                                title=u'Test Org\xe4nisation')
         
         api.content.transition(test_document, 'submit')
-        #login(self.portal, 'Admin')
         login(self.app, SITE_OWNER_NAME)
         api.content.transition(test_document, 'publish')
         
         activity_report = self.portal.restrictedTraverse('@@activity-report')
         result = activity_report()
-        
-        # The document:
-        self.assertIn(',New Page,', result) # Note that there is no partner
-        self.assertIn(',http://nohost/plone/organisations/test_document,Site Administrator', result)
-        self.assertIn(',Submit for publication Page,', result)
-        self.assertIn(',http://nohost/plone/organisations/test_document,admin', result)
         
         # The organisation:
         self.assertIn('Test Org\xc3\xa4nisation,New Organisation,', result) # Here we have a partner
