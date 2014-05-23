@@ -18,7 +18,7 @@
          tal:content="structure context/text/output" />
   </metal:content-core>
 
-  <div class="row-fluid partners" id="frontpage-partners" tal:define="partners view/partners;
+  <div class="row-fluid partners" id="frontpage-focalpoints" tal:define="partners view/partners;
                    tabs python:sorted(partners);">
 
 
@@ -47,7 +47,7 @@
                         tal:replace="structure python: partners[tab][partner]['scaling'].tag('logo', scale='logo_preview')" /></a>
               <a tal:attributes="href python:partners[tab][partner]['url']" tal:content="partner">Austria</a>
             </div>
-            <a class="flagsup" href="#frontpage-partners" tal:attributes="href string:${context_url}#frontpage-partners">Up</a>
+            <a class="flagsup" href="#frontpage-partners" tal:attributes="href string:${context_url}#frontpage-focalpoints">Up</a>
           </div>
         </div>
 
