@@ -339,7 +339,7 @@ class ParticipantsCSV(BrowserView):
             buffer,
             fieldnames=fieldnames,
             delimiter=',',
-            quotechar='|',
+            quotechar='"',
             quoting=csv.QUOTE_MINIMAL,
         )
         writer.writerow(dict((fn, fn) for fn in fieldnames))
