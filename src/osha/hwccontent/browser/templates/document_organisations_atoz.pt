@@ -22,9 +22,9 @@
                    tabs python:sorted(partners);">
 
 
-    <h2><span i18n:translate="title_media_partners">Media Partners</span>
-      <span tal:condition="python: language!='en'" class="discreet">(<span tal:omit-tag="" i18n:translate="profiles_english_only">Profiles are in English only</span>)</span></h2>
-    <div class="focalpoints-menu">
+    <h2><span tal:omit-tag="" i18n:translate="Partners">Partners</span>
+          <span tal:condition="python: language!='en'" class="discreet">(<span tal:omit-tag="" i18n:translate="profiles_english_only">Profiles are in English only</span>)</span></h2>
+      <div class="focalpoints-menu">
       <div class="row-fluid">
         <ul>
           <li tal:repeat="tab tabs">

@@ -37,6 +37,41 @@ class OrganisationsView(BrowserView):
         return css_by_orientation(partner)
 
 
+class OrganisationsAtozView(BrowserView):
+    implements(IFullWidth)
+
+    def partners(self):
+        catalog = api.portal.get_tool(name='portal_catalog')
+        results = catalog(
+            portal_type="osha.hwccontent.organisation",
+            Language='all',
+            review_state='published')
+
+        letters = {}
+
+        for result in results:
+            try:
+                fop = result.getObject()
+            except:
+                continue
+            title = fop.title
+            letter = title[0].lower()
+            if letter not in letters:
+                letters[letter] = {}
+            scaling = getMultiAdapter((fop, self.request), name='images')
+            if scaling.getImageSize('logo') == (-1, -1):
+                scaling = None
+            letters[letter][title] = dict(
+                url=fop.absolute_url(), scaling=scaling)
+
+        return letters
+
+    def css_by_orientation(self, partner):
+        """ This is a helper to determine logo orientation for a partner.
+        """
+        return css_by_orientation(partner)
+
+
 class FocalPointsView(BrowserView):
     implements(IFullWidth)
 

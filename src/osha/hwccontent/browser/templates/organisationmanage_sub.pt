@@ -17,7 +17,7 @@
             <a tal:attributes="href string:$here_url/delete_confirmation"><img src="delete_icon.png" /></a>&nbsp;<a tal:attributes="href string:$here_url/delete_confirmation" i18n:translate="">Click here to delete this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype></a><br />
         </p>
 
-        <ul tal:condition="python:view.owner or view.can_review">
+        <ul tal:condition="python:view.owner or view.can_edit">
             <li tal:repeat="wfaction view/wfactions/values">
             <a tal:attributes="href wfaction/url"><tal:action i18n:translate="" tal:content="wfaction/name">Reject</tal:action></a>. <tal:desc tal:content="wfaction/transition/description" i18n:translate="" /><br />
             </li>
