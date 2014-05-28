@@ -7,9 +7,13 @@
   i18n:domain="osha.hwc">
 <body>
 
+<metal:custom_title fill-slot="content-title" tal:define="language here/portal_languages/getPreferredLanguage">
+  <h1 class="documentFirstHeading"><span tal:replace="here/Title" />
+  <span tal:condition="python: language!='en'" class="discreet">(<span tal:omit-tag="" i18n:translate="profiles_english_only">Profiles are in English only</span>)</span></h1>
+</metal:custom_title>
+
   <metal:content-core fill-slot="content-core"
     tal:define="portal_url context/@@plone_portal_state/portal_url;
-                language here/portal_languages/getPreferredLanguage;
                 context_url context/absolute_url;">
 
   <metal:content-core define-macro="content-core">
@@ -22,8 +26,6 @@
                    tabs python:sorted(partners);">
 
 
-    <h2><span tal:omit-tag="" i18n:translate="Partners">Partners</span>
-          <span tal:condition="python: language!='en'" class="discreet">(<span tal:omit-tag="" i18n:translate="profiles_english_only">Profiles are in English only</span>)</span></h2>
       <div class="focalpoints-menu">
       <div class="row-fluid">
         <ul>
