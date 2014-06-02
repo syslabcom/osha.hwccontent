@@ -22,6 +22,7 @@ from zope.interface import implements
 import csv
 import json
 import time
+import xlwt
 
 PRIVACY_POLICY_NAME = "privacy-policy-certificate-of-participation"
 
@@ -335,20 +336,25 @@ class ParticipantsCSV(BrowserView):
             'initiatives',
             'other',
         ]
-        writer = csv.DictWriter(
-            buffer,
-            fieldnames=fieldnames,
-            delimiter=',',
-            quotechar='"',
-            quoting=csv.QUOTE_MINIMAL,
-        )
-        writer.writerow(dict((fn, fn) for fn in fieldnames))
-        for key in participant_details:
-            writer.writerow(participant_details[key])
-        csv_data = buffer.getvalue()
-        buffer.close()
+        
+        wb = xlwt.Workbook(encoding='utf8')
+        ws = wb.add_sheet('Participants')
+        for col, fn in enumerate(fieldnames):
+            ws.write(0, col, fn)
 
-        return csv_data
+        row = 1
+        for key in participant_details:
+            data = participant_details[key]
+            for col, fn in enumerate(fieldnames):
+                ws.write(row, col, data[fn])
+            row += 1
+        
+        wb.save(buffer)
+
+        result = buffer.getvalue()
+        buffer.close()
+        return result
+        
 
     def set_response_headers(self, response):
         response.setHeader(
