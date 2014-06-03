@@ -336,7 +336,7 @@ class ParticipantsCSV(BrowserView):
             'initiatives',
             'other',
         ]
-        
+
         wb = xlwt.Workbook(encoding='utf8')
         ws = wb.add_sheet('Participants')
         for col, fn in enumerate(fieldnames):
@@ -348,18 +348,17 @@ class ParticipantsCSV(BrowserView):
             for col, fn in enumerate(fieldnames):
                 ws.write(row, col, data[fn])
             row += 1
-        
+
         wb.save(buffer)
 
         result = buffer.getvalue()
         buffer.close()
         return result
-        
 
     def set_response_headers(self, response):
         response.setHeader(
             "Content-Disposition",
-            "attachment; filename=hwc2014-participants.csv",
+            "attachment; filename=hwc2014-participants.xls",
         )
         response.setHeader(
-            "Content-Type", 'text/comma-separated-values;charset=utf-8')
+            "Content-Type", 'application/vnd.ms-excel;charset=utf-8')
