@@ -169,7 +169,7 @@
 
         <tal:albumsimages tal:condition="albums" tal:repeat="row python:range((len(albums)+2)/3)">
             <ul tal:condition="python:albums and len(albums)>=row*3+1" class="thumbnails">
-                <tal:albums tal:repeat="album albums">
+                <tal:albums tal:repeat="album python:albums[(row*3):(row*3+3)]">
 
                     <li class="photoAlbumEntry span4"
                          tal:define="image_brains_in_album python:view.getAlbumContent(subimages=1, container=album)['subimages'];
