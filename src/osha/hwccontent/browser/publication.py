@@ -27,8 +27,8 @@ class PublicationListing(ListingView):
             Items returned in JSON format.
         """
         items = []
-        qurl = '%s/%s/jsonfeed?portal_type=File&Subject=%s&path=/osha/portal' \
-                '/%s&Language=%s&object_provides=slc.publications.interfaces' \
+        qurl = '%s/%s/jsonfeed?portal_type=File&Subject=%s&path=/%s' \
+                '&Language=%s&object_provides=slc.publications.interfaces' \
                 '.IPublicationEnhanced' % (
                     self.osha_json_url,
                     self.lang,
