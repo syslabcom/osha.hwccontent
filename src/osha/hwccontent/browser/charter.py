@@ -19,9 +19,10 @@ from zope.annotation.interfaces import IAnnotations
 from zope.i18n import translate
 from zope.interface import implements
 
-import csv
+# import csv
 import json
 import time
+import xlrd
 import xlwt
 
 PRIVACY_POLICY_NAME = "privacy-policy-certificate-of-participation"
@@ -338,21 +339,44 @@ class ParticipantsCSV(BrowserView):
         ]
 
         wb = xlwt.Workbook(encoding='utf8')
+        top_xf = xlwt.easyxf('font: bold on; align: wrap on, vert centre, horiz center')
+        normal_xf = xlwt.easyxf('align: wrap off, vert top, horiz left')
         ws = wb.add_sheet('Participants')
         for col, fn in enumerate(fieldnames):
-            ws.write(0, col, fn)
+            ws.write(0, col, fn, top_xf)
 
         row = 1
         for key in participant_details:
             data = participant_details[key]
             for col, fn in enumerate(fieldnames):
-                ws.write(row, col, data[fn])
+                ws.write(row, col, data[fn], normal_xf)
             row += 1
 
         wb.save(buffer)
 
-        result = buffer.getvalue()
+        read_book = xlrd.open_workbook(file_contents=buffer.getvalue(), formatting_info=True)
+        read_sheet = read_book.sheet_by_index(0)
+        col = list()
+        for i in range(read_sheet.nrows):
+            col.append(len(read_sheet.cell(i, 0).value))
+        size = max(col)
+        ws.col(0).width = size * 240
+        for i in range(read_sheet.ncols):
+            if i > 0:
+                size = len(read_sheet.cell(0, i).value)
+                ws.col(i).width = size * 512
+
+        ws.set_remove_splits(True)  # if user does unfreeze, don't leave a split there
+        ws.set_horz_split_pos(1)
+        ws.set_vert_split_pos(0)
+        ws.set_panes_frozen(1)
+
+        retval = StringIO()
+        wb.save(retval)
+
+        result = retval.getvalue()
         buffer.close()
+        retval.close()
         return result
 
     def set_response_headers(self, response):
