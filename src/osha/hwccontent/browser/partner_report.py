@@ -4,8 +4,9 @@ from StringIO import StringIO
 from osha.hwccontent.organisation import IOrganisation
 from osha.hwccontent.focalpoint import IFocalPoint
 from osha.hwccontent.mediapartner import IMediaPartner
+from plone.app.textfield.value import RichTextValue
 from zope.schema import getFieldsInOrder
-import csv
+import xlwt
 
 
 def fullname_from_userid(userid):
@@ -41,37 +42,69 @@ class PartnerReportView(BrowserView):
             'osha.hwccontent.mediapartner': getFieldsInOrder(IMediaPartner),
             }
         
+        skip_fields = {'phase_1_intro', 'phase_2_intro', 'privacy_policy_text', 'logo', 'ceo_image'}
         fieldnames = []
+        fieldtitles = []
+        
         for fields in field_lists.values():
             for fieldid, field in fields:
+                if fieldid in skip_fields:
+                    continue
                 if fieldid not in fieldnames:
                     fieldnames.append(fieldid)
+                    fieldtitles.append(field.title.encode('utf8'))
                     
         results = []
         for partner in catalog(**query):
             ob = partner.getObject()
             p = {}
             for fieldid, field in field_lists[ob.portal_type]:
+                if fieldid in skip_fields:
+                    continue
+
                 v = field.get(ob)
+                
+                if fieldid == 'social_media':
+                    v = ', '.join('%s: %s' % (x['label'], x['url']) for x in v)
+                elif v is None:
+                    v = ''
+                elif isinstance(v, (list, tuple, set)):
+                    v = ', '.join(v)
+                elif isinstance(v, RichTextValue):
+                    v = v.output
+                elif isinstance(v, bool):
+                    v = str(v)
+
                 if isinstance(v, unicode):
                     v = v.encode('utf8')
+
                 p[fieldid] = v
 
             results.append(p)
 
-        # Dump to CSV
-        csvfile = StringIO()
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        for result in sorted(results, key=lambda x: x['title']):
-            writer.writerow(result)
+        # Dump to XLS                
+        wb = xlwt.Workbook(encoding='utf8')
+        ws = wb.add_sheet('Participants')
+        for col, fn in enumerate(fieldtitles):
+            ws.write(0, col, fn)
 
+        row = 1
+        for data in sorted(results, key=lambda x: x['title']):
+            for col, fn in enumerate(fieldnames):
+                ws.write(row, col, data.get(fn, ''))
+            row += 1
+
+        xlsfile = StringIO()        
+        wb.save(xlsfile)
+        result = xlsfile.getvalue()
+        xlsfile.close()
+        
         response = self.request.response
         response.setHeader(
             "Content-Disposition",
-            "attachment; filename=hwc2014-partner-report.csv",
+            "attachment; filename=hwc2014-partner-report.xls",
         )
         response.setHeader(
-            "Content-Type", 'text/comma-separated-values;charset=utf-8')
+            "Content-Type", 'application/vnd.ms-excel')
 
-        return csvfile.getvalue()
+        return result
