@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-
+from Products.CMFCore.interfaces import ISiteRoot
+from StringIO import StringIO
+from five import grok
 from plone import api
 from osha.hwccontent import vocabularies
 
@@ -49,3 +51,32 @@ def css_by_orientation(partner):
         return "span2 logovertical"
 
     return 'span2'
+
+
+class PDFContentTypeFixxxer(grok.View):
+    """Some PDFs don't have application/pdf as content type. Fixxx this!"""
+    grok.name('fix_pdfs')
+    grok.require('cmf.ManagePortal')
+    grok.context(ISiteRoot)
+
+    content_type = "application/pdf"
+
+    def render(self):
+        out = StringIO()
+        out.write('Fix PDFs\n\n')
+        catalog = api.portal.get_tool(name='portal_catalog')
+        results = catalog(portal_type="File", Language="all")
+        for res in results:
+            obj = res.getObject()
+            if obj.file.filename.endswith('pdf'):
+                if obj.file.contentType != self.content_type:
+                    out.write(
+                        'On {url} with filename {name} we had old type'
+                        ' {old_type}. Now fixxxed.\n'.format(
+                            url=obj.absolute_url(), name=obj.file.filename,
+                            old_type=obj.file.contentType))
+                    obj.file.contentType = self.content_type
+                    obj._p_changed = 1
+                    obj.reindexObject()
+
+        return out.getvalue()
