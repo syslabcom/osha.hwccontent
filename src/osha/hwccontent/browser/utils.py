@@ -77,5 +77,6 @@ class PDFContentTypeFixxxer(grok.View):
                             old_type=obj.file.contentType))
                     obj.file.contentType = self.content_type
                     obj._p_changed = 1
+                    obj.reindexObjex()
 
         return out.getvalue()
