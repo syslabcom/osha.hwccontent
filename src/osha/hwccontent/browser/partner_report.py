@@ -22,6 +22,7 @@ class PartnerReportView(BrowserView):
 
     def __call__(self):
         catalog = api.portal.get_tool('portal_catalog')
+        workflow = api.portal.get_tool('portal_workflow')
 
         # Find all the organisation folders
         folders = catalog(portal_type='osha.hwccontent.organisationfolder')
@@ -53,6 +54,9 @@ class PartnerReportView(BrowserView):
                 if fieldid not in fieldnames:
                     fieldnames.append(fieldid)
                     fieldtitles.append(field.title.encode('utf8'))
+        
+        fieldnames.append('workflow_status')
+        fieldtitles.append('Workflow Status')
                     
         results = []
         for partner in catalog(**query):
@@ -80,6 +84,8 @@ class PartnerReportView(BrowserView):
 
                 p[fieldid] = v
 
+            state = api.content.get_state(ob)
+            p['workflow_status'] = workflow.getTitleForStateOnType(state, ob.portal_type)
             results.append(p)
 
         # Dump to XLS                
