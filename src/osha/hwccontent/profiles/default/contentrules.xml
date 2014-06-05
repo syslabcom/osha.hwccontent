@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<contentrules>
+ <rule name="rule-1" title="Partners email notification"
+    description="When members of the MOSTRA group adds news/events this rules send an email alert to the partners list.
+"
+    enabled="True" event="zope.lifecycleevent.interfaces.IObjectAddedEvent"
+    stop-after="False">
+  <conditions>
+   <condition type="plone.conditions.Group">
+    <property name="group_names">
+     <element>mostra</element>
+    </property>
+   </condition>
+  </conditions>
+  <actions>
+   <action type="plone.actions.Mail">
+    <property name="source"/>
+    <property name="message">${user_fullname} added a new ${type} "${title}"
+     
+     You can see the new ${type} here:
+     ${url}</property>
+    <property
+       name="subject">[healthy-workplaces.eu] New ${type} added</property>
+    <property name="recipients">partners@healthy-workplaces.eu</property>
+    <property name="exclude_actor">False</property>
+   </action>
+  </actions>
+ </rule>
+ <assignment name="rule-1" bubbles="True" enabled="True" location="/en/news"/>
+ <assignment name="rule-1" bubbles="True" enabled="True" location="/en/events"/>
+</contentrules>

@@ -13,3 +13,12 @@ def migrate_from_pa_event(context):
     )
     portal = context.getParentNode()
     migrate(portal, DXEventMigrator)
+    
+    
+    
+def install_content_rules(context):
+    # install content rules
+    context.runImportStepFromProfile(
+        'profile-osha.hwccontent:default',
+        'contentrules',
+    )

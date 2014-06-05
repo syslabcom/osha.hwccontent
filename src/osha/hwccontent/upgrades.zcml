@@ -11,4 +11,13 @@
       handler=".upgrades.migrate_from_pa_event"
       />
 
+  <genericsetup:upgradeStep
+      source="2"
+      destination="3"
+      title="Install content rules"
+      description=""
+      profile="osha.hwccontent:default"
+      handler=".upgrades.install_content_rules"
+      />
+
 </configure>
