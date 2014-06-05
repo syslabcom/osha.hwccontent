@@ -17,8 +17,10 @@ def fullname_from_userid(userid):
     return name.encode('UTF8')
 
 
-class PartnerReportView(BrowserView):
-    '''@@activity-report lists all document activity since last report run.'''
+class OFMReportViewBase(BrowserView):
+    
+    portal_types = []
+    report_name ='base'
 
     def __call__(self):
         catalog = api.portal.get_tool('portal_catalog')
@@ -28,10 +30,7 @@ class PartnerReportView(BrowserView):
         folders = catalog(portal_type='osha.hwccontent.organisationfolder')
         paths = [x.getPath() for x in folders]
 
-        query = {'portal_type': ['osha.hwccontent.organisation',
-                                 'osha.hwccontent.focalpoint',
-                                 'osha.hwccontent.mediapartner',
-                                 ],
+        query = {'portal_type': self.portal_types,
                  'path': paths,
                  'Language': 'all',
                  'sort_on': 'modified',
@@ -108,9 +107,25 @@ class PartnerReportView(BrowserView):
         response = self.request.response
         response.setHeader(
             "Content-Disposition",
-            "attachment; filename=hwc2014-partner-report.xls",
+            "attachment; filename=hwc2014-%s-report.xls" % self.report_name,
         )
         response.setHeader(
             "Content-Type", 'application/vnd.ms-excel')
 
         return result
+
+
+class PartnerReportView(OFMReportViewBase):
+    
+    portal_types =  ['osha.hwccontent.mediapartner',
+                     ]
+    report_name ='mediapartner'
+    
+
+class OrgFocReportView(OFMReportViewBase):
+
+    portal_types =  ['osha.hwccontent.organisation',
+                     'osha.hwccontent.focalpoint',
+                     ]
+    report_name ='organisation-focalpoint'
+    

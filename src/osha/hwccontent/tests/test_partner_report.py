@@ -39,7 +39,7 @@ class TestPartnerReport(unittest.TestCase):
         login(self.app, SITE_OWNER_NAME)
         api.content.transition(test_document, 'publish')
         
-        activity_report = self.portal.restrictedTraverse('@@partner-report')
+        activity_report = self.portal.restrictedTraverse('@@organisation-focalpoint-report')
         result = activity_report()
-        self.assertIn('Test Org\xc3\xa4nisation', result) # Here we have a partner
+        self.assertIn('Test Org\xe4nisation', result) # Here we have a partner
         
