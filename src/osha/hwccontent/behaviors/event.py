@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from plone.app.event.dx.behaviors import IEventLocation as IBaseEventLocation
 from plone.supermodel import model
 from plone.autoform.interfaces import IFormFieldProvider
 from zope import schema
@@ -16,3 +17,12 @@ class IEventOrganiser(model.Schema):
     )
 
 alsoProvides(IEventOrganiser, IFormFieldProvider)
+
+
+class IEventLocation(IBaseEventLocation):
+    location = schema.TextLine(
+        title=u'Location',
+        description=u'OSHA Location of the event.',
+        required=True,
+    )
+alsoProvides(IEventLocation, IFormFieldProvider)

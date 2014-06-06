@@ -2,10 +2,12 @@
 <object name="Event" meta_type="Dexterity FTI" i18n:domain="plone"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
+  <property name="description" i18n:translate=""></property>
+
   <property name="behaviors">
   <element value="plone.app.event.dx.behaviors.IEventBasic"/>
   <element value="plone.app.event.dx.behaviors.IEventRecurrence"/>
-  <element value="plone.app.event.dx.behaviors.IEventLocation"/>
+  <element value="osha.hwccontent.behaviors.event.IEventLocation"/>
   <element value="osha.hwccontent.behaviors.event.IEventOrganiser"/>
   <element value="plone.app.event.dx.behaviors.IEventAttendees"/>
   <element value="plone.app.event.dx.behaviors.IEventContact"/>

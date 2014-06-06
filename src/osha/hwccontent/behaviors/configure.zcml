@@ -98,4 +98,13 @@
         for="plone.dexterity.interfaces.IDexterityContent"
         />
 
+    <!-- Override location behavior to make the field required -->
+    <plone:behavior
+        title="Location"
+        description="Location"
+        provides=".event.IEventLocation"
+        factory="plone.behavior.AnnotationStorage"
+        for="plone.dexterity.interfaces.IDexterityContent"
+        />
+
 </configure>

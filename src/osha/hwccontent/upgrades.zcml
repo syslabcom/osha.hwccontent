@@ -11,13 +11,24 @@
       handler=".upgrades.migrate_from_pa_event"
       />
 
-  <genericsetup:upgradeStep
-      source="2"
-      destination="3"
-      title="Install content rules"
-      description=""
-      profile="osha.hwccontent:default"
-      handler=".upgrades.install_content_rules"
-      />
+
+  <genericsetup:upgradeSteps
+        source="2"
+        destination="3"
+        profile="osha.hwccontent:default">
+
+    <genericsetup:upgradeStep
+        title="Install content rules"
+        description=""
+        handler=".upgrades.install_content_rules"
+        />
+
+    <genericsetup:upgradeStep
+        title="Update event location to make it required (#10217)"
+        description=""
+        handler=".upgrades.update_event_location"
+        />
+
+  </genericsetup:upgradeSteps>
 
 </configure>
