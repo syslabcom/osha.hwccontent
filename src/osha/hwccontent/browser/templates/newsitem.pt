@@ -25,7 +25,7 @@
           tal:define="templateId template/getId;
                       attachment nocall:context/attachment|nothing;
                       scale_func context/@@images;
-                      scaled_image python: context.image and scale_func.scale('image', scale='mini')">
+                      scaled_image python: context.image and scale_func.scale('image', scale='preview')">
 
         <div class="newsImageContainer"
              tal:condition="python: scaled_image">

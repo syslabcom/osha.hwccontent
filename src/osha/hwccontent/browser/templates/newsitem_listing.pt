@@ -26,8 +26,12 @@
                     <tal:if_blob tal:condition="item/image|nothing">
                         <img src="" alt=""
                             tal:define="scales obj/@@images;
-                                        scale python:scales.scale('image', 'thumb')"
+                                        scale python:scales.scale('image', 'large')"
                             tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
+              <p class="discreet"
+                 tal:condition="item/image_caption|nothing"
+                 tal:content="structure item/image_caption" >
+              </p>
                     </tal:if_blob>
 
                     <tal:if_base64 tal:condition="item/image_base64|nothing">

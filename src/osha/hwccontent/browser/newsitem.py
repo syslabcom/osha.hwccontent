@@ -89,6 +89,7 @@ class NewsItemListing(ListingView):
                     'Description': item.Description,
                     'text': obj.text and obj.text.output or "",
                     'image': blob and base64.encodestring(blob.open().read()) or None,
+                    'image_caption': blob and obj.image_caption or '',
                     'obj': obj,
                     'is_local': True,
                 }
