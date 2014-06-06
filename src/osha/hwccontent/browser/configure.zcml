@@ -277,15 +277,15 @@
   <browser:page
     for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
     name="mediapartner-report"
-    class=".partner_report.PartnerReportView"
+    class=".partner_report.MediapartnerReportView"
     permission="cmf.ManagePortal"
     />
 
   <browser:page
     for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
-    name="organisation-focalpoint-report"
-    class=".partner_report.OrgFocReportView"
+    name="organisation-report"
+    class=".partner_report.OrganisationReportView"
     permission="cmf.ManagePortal"
     />
-      
+
 </configure>
