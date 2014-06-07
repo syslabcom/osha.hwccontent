@@ -19,7 +19,7 @@ def fullname_from_userid(userid):
 
 class OFMReportViewBase(BrowserView):
 
-    portal_types = []
+    portal_type = ''
     report_name = 'base'
 
     def __call__(self):
@@ -41,10 +41,16 @@ class OFMReportViewBase(BrowserView):
             'osha.hwccontent.mediapartner': getFieldsInOrder(IMediaPartner),
         }
 
-        skip_fields = [
+        general_skip_fields = [
             'phase_1_intro', 'phase_2_intro', 'privacy_policy_text', 'logo',
             'ceo_image', 'Description', 'privacy_policy',
         ]
+        type_skip_fields = {
+            'osha.hwccontent.organisation': [],
+            'osha.hwccontent.mediapartner': [
+                'email', 'fax', 'campaign_url', 'key_phone', 'campaign_pledge']
+        }
+        skip_fields = general_skip_fields + type_skip_fields[self.portal_type]
         fieldnames = []
         fieldtitles = []
 
@@ -57,6 +63,8 @@ class OFMReportViewBase(BrowserView):
 
         fieldnames.append('workflow_status')
         fieldtitles.append('Workflow Status')
+        fieldnames.append('hwc_url')
+        fieldtitles.append('URL in the campagin site')
 
         results = []
         for partner in catalog(**query):
@@ -86,6 +94,7 @@ class OFMReportViewBase(BrowserView):
 
             state = api.content.get_state(ob)
             p['workflow_status'] = workflow.getTitleForStateOnType(state, ob.portal_type)
+            p['hwc_url'] = ob.absolute_url()
             results.append(p)
 
         # Dump to XLS

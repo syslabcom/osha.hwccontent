@@ -152,6 +152,13 @@ class IOrganisationBase(model.Schema):
         title=_(u"Company / Organisation name")
     )
 
+    organisation_type = schema.Choice(
+        title=_(u"Organisation type"),
+        vocabulary=vocabularies.organisation_types,
+    )
+    directives.languageindependent('organisation_type')
+    formdirectives.widget('organisation_type', NonMissingSelectWidget)
+
     street = schema.TextLine(
         title=_(u"Address"),
         description=_(u"Street or PO-box")
@@ -484,13 +491,6 @@ class IOrganisationExtra(model.Schema):
     directives.languageindependent('description')
     formdirectives.omitted('description')
     formdirectives.no_omit(IEditForm, 'description')
-
-    organisation_type = schema.Choice(
-        title=_(u"Organisation type"),
-        vocabulary=vocabularies.organisation_types,
-    )
-    directives.languageindependent('organisation_type')
-    formdirectives.widget('organisation_type', NonMissingSelectWidget)
 
     key_position = schema.TextLine(
         title=_(u"Position of the main contact person."),

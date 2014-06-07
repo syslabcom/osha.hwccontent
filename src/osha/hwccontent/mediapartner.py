@@ -97,7 +97,6 @@ class IMediaPartner(IOrganisationBase):
     formdirectives.no_omit(IEditForm, 'street')
     formdirectives.omitted('fax')
     formdirectives.omitted('campaign_url')
-    formdirectives.omitted('street')
     formdirectives.omitted('email')
     formdirectives.omitted('key_phone')
 
