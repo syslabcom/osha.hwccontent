@@ -22,7 +22,7 @@ alsoProvides(IEventOrganiser, IFormFieldProvider)
 class IEventLocation(IBaseEventLocation):
     location = schema.TextLine(
         title=u'Location',
-        description=u'OSHA Location of the event.',
+        description=u'Location of the event.',
         required=True,
     )
 alsoProvides(IEventLocation, IFormFieldProvider)
