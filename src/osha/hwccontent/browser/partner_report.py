@@ -48,7 +48,8 @@ class OFMReportViewBase(BrowserView):
         type_skip_fields = {
             'osha.hwccontent.organisation': [],
             'osha.hwccontent.mediapartner': [
-                'email', 'fax', 'campaign_url', 'key_phone', 'campaign_pledge']
+                'email', 'fax', 'campaign_url', 'key_phone', 'campaign_pledge',
+                'organisation_type']
         }
         skip_fields = general_skip_fields + type_skip_fields[self.portal_type]
         fieldnames = []

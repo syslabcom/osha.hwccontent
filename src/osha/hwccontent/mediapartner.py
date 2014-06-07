@@ -99,6 +99,7 @@ class IMediaPartner(IOrganisationBase):
     formdirectives.omitted('campaign_url')
     formdirectives.omitted('email')
     formdirectives.omitted('key_phone')
+    formdirectives.omitted('organisation_type')
 
     form.widget(publication_type=CheckBoxFieldWidget)
     publication_type = schema.List(
