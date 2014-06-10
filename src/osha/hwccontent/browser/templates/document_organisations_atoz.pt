@@ -46,7 +46,7 @@
           <div class="span8 logos">
             <div class="mediapartner span2" tal:repeat="partner python:partners[tab]">
               <a tal:attributes="href python:partners[tab][partner]['url']"><img tal:condition="python: partners[tab][partner]['scaling'] is not None"
-                        tal:replace="structure python: partners[tab][partner]['scaling'].tag('logo', scale='logo_preview')" /></a>
+                        tal:replace="structure python: partners[tab][partner]['scaling'].tag('logo', scale='logo_preview')" /></a><br />
               <a tal:attributes="href python:partners[tab][partner]['url']" tal:content="partner">Austria</a>
             </div>
             <a class="flagsup" href="#frontpage-partners" tal:attributes="href string:${context_url}#frontpage-focalpoints">Up</a>
