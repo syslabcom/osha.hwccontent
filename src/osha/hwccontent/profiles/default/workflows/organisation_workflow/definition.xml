@@ -218,6 +218,7 @@
   </guard>
  </transition>
  <transition transition_id="make_inactive" title="Make the profile inactive" new_state="inactive" trigger="USER" before_script="" after_script="">
+  <description>Marks the profile as inactive. Can be re-activated at a later stage</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=make_inactive" category="workflow" icon="">Make inactive</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
@@ -237,6 +238,7 @@
   </guard>
  </transition>
  <transition transition_id="reject" title="Reject" new_state="rejected" trigger="USER" before_script="" after_script="">
+  <description>Marks the profile as rejected. Can be re-activated at a later stage</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=reject" category="workflow" icon="">Reject</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
