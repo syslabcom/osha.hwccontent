@@ -39,6 +39,8 @@ INTRO_TEXT_PHASE_1 = _(
     u"<p style='color: red;font-weight: bold;'>Only Pan-European or "
     u"international organisations / companies are eligible for the "
     u"European Campaign Partnership.</p>"
+    u"<p style='color: red'>DEADLINE TO APPLY FOR THE NEXT AND FINAL ROUND: 31 "
+    u"OCTOBER 2014</p>"
     u"<p>Fill in ALL required fields (they are marked with a red dot).</p>"
     u"<p><a href='https://www.healthy-workplaces.eu/en/get-involved/"
     u"become-an-official-campaign-partner/campaign-partnership-offer.pdf' "
