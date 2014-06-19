@@ -24,8 +24,8 @@
                   <h4 tal:content="item/Title">Foo</h4>
                   <span class="description"><p tal:replace="structure item/Description">Description</p></span>
                   <p tal:content="structure item/text">Text</p>
-                  <a href="" tal:attributes="href item/getURL" target="_blank"><span tal:omit-tag="" i18n:translate="alert_label_more">More</span>&hellip;
-                    (<span tal:omit-tag="" i18n:translate="on_osha_website">on EU-OSHA website</span>)</a>
+                  <p class="readmore"><a href="" tal:attributes="href item/getURL" target="_blank"><span tal:omit-tag="" i18n:translate="alert_label_more">More</span>&hellip;
+                    (<span tal:omit-tag="" i18n:translate="on_osha_website">on EU-OSHA website</span>)</a></p>
 
             </tal:item>
         </div>
