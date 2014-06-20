@@ -107,7 +107,7 @@ class OrganisationManage(ViewletBase):
         self.wfstate = workflow.getInfoFor(self.context, 'review_state')
         self.wfstatetitle = workflow.getTitleForStateOnType(
             self.wfstate, self.context.portal_type)
-        self.owner = getattr(self.context, 'key_email', None) == user_email
+        self.owner = getattr(self.context, 'key_email', '') == user_email
 
         self.available = self.can_review or self.can_edit or self.owner
         self.completed = (
