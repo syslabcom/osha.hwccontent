@@ -1,6 +1,8 @@
-Note:  place names and roles of the people who contribute to this package
-       in this file, one to a line, like so:
+- Jan-Carel Brand, Syslab.com
+- Cillian de Roiste, Syslab.com
+- Mikel Larreategi, CodeSyntax
+- Alexander Pilz, Syslab.com
+- Lennart Regebro, Syslab.com
+- Manuel Reinhardt, Syslab.com
+- Wolfgang Thomas, Syslab.com
 
-- Joe Schmoe, Original Author
-- Bob Slob, contributed monkey patches
-- Jane Main, wrote flibberty module
