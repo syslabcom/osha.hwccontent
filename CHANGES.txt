@@ -4,7 +4,10 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make sure browsing events by day/week/month view works too
+  #10476 [pysailor]
+- Order partners within a letter-group also alphabetically
+  #10477 [pysailor]
 
 
 1.0.1 (2014-07-10)

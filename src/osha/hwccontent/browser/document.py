@@ -12,6 +12,11 @@ from osha.hwccontent.interfaces import IFullWidth
 
 import random
 
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
+
 
 class FilesView(BrowserView):
 
@@ -64,6 +69,10 @@ class OrganisationsAtozView(BrowserView):
             letters[letter][title] = dict(
                 url=fop.absolute_url(), scaling=scaling)
 
+        for letter in letters:
+            letters[letter] = OrderedDict(sorted(
+                letters[letter].items(), key=lambda t: t[0].lower()))
+
         return letters
 
     def css_by_orientation(self, partner):
@@ -94,6 +103,11 @@ class FocalPointsView(BrowserView):
             if letter not in letters:
                 letters[letter] = {}
             letters[letter][country] = fop.absolute_url()
+
+        for letter in letters:
+            letters[letter] = OrderedDict(sorted(
+                letters[letter].items(), key=lambda t: t[0].lower()))
+
         return letters
 
 
@@ -123,6 +137,10 @@ class MediaPartnersView(BrowserView):
                 scaling = None
             letters[letter][title] = dict(
                 url=fop.absolute_url(), scaling=scaling)
+
+        for letter in letters:
+            letters[letter] = OrderedDict(sorted(
+                letters[letter].items(), key=lambda t: t[0].lower()))
 
         return letters
 
