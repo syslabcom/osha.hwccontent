@@ -28,6 +28,13 @@ class ListingView(BrowserView):
             IDexterityContent.providedBy(obj) and self.user.checkPermission(
                 'Modify portal content', obj)
 
+    def show_remote_url(self, obj):
+        """ helper view to determine if the the object was syndicated
+        and the current user should see the remote url"""
+        return not api.user.is_anonymous() and \
+            not IDexterityContent.providedBy(obj) and \
+            'Manager' in api.user.get_roles()
+
     def get_icon_path(self, obj=None, content_type=None):
         return get_path_to_icon(obj, content_type)
 

@@ -109,6 +109,7 @@
           </h2>
           <div class="documentByLine">
             <span tal:condition="python:view.can_edit(data.context)">[<a tal:attributes="href string:${data/url}/edit">Edit</a>]</span>
+            <span tal:condition="python:view.show_remote_url(data.context)"><p class="discreet">Remote URL: <a href="#" tal:attributes="href data/context/url" tal:content="data/context/url">URL</a></p></span>
             <tal:date tal:replace="structure python:view.formatted_date(data)"/>
             <div itemprop="location" class="location"
                 tal:define="location python:view.get_location(data)"
