@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.2 (unreleased)
+1.0.2 (2014-07-22)
 ------------------
 
 - Make sure browsing events by day/week/month view works too
