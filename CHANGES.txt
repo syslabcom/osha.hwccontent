@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.3 (unreleased)
+1.0.3 (2014-08-25)
 ------------------
 
 - Enable normal editor (not only owner) to update a profile in
