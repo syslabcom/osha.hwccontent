@@ -39,7 +39,7 @@
         <p>Optionally, you can <a tal:attributes="href string:${here_url}/edit">continue to update your profile.</a></p>
      </span>
 
-     <span tal:condition="python:not view.can_review and 'submit' in view.wfactions and not view.completed" tal:omit-tag="">
+     <span tal:condition="python:not view.can_review and ('submit' in view.wfactions and not view.completed) or ('submit' not in view.wfactions and view.can_edit)" tal:omit-tag="">
         <p class="callout">
                 Please <a tal:attributes="href string:${here_url}/edit">click here to update your profile.</a></p>
      </span>
