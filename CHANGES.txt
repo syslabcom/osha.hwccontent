@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.4 (unreleased)
+1.0.4 (2014-09-05)
 ------------------
 
 - don't export partner in rejected state: #10643 [pysailor]
