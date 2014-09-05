@@ -71,6 +71,7 @@ class OFMReportViewBase(BrowserView):
         for partner in catalog(**query):
             ob = partner.getObject()
             state = api.content.get_state(ob)
+            # don't export partner in rejected state: 10643
             if state in ['rejected']:
                 continue
             p = {}
