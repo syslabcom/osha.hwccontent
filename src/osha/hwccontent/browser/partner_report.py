@@ -70,6 +70,9 @@ class OFMReportViewBase(BrowserView):
         results = []
         for partner in catalog(**query):
             ob = partner.getObject()
+            state = api.content.get_state(ob)
+            if state in ['rejected']:
+                continue
             p = {}
             for fieldid, field in field_lists[ob.portal_type]:
                 if fieldid in skip_fields:
@@ -93,7 +96,6 @@ class OFMReportViewBase(BrowserView):
 
                 p[fieldid] = v
 
-            state = api.content.get_state(ob)
             p['workflow_status'] = workflow.getTitleForStateOnType(state, ob.portal_type)
             p['hwc_url'] = ob.absolute_url()
             results.append(p)
