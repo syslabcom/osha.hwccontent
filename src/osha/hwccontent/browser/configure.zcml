@@ -268,21 +268,21 @@
 
 
   <browser:page
-    for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+    for="*"
     name="activity-report"
     class=".activity_report.ActivityReportView"
     permission="cmf.ModifyPortalContent"
     />
 
   <browser:page
-    for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+    for="*"
     name="mediapartner-report"
     class=".partner_report.MediapartnerReportView"
     permission="cmf.ModifyPortalContent"
     />
 
   <browser:page
-    for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+    for="*"
     name="organisation-report"
     class=".partner_report.OrganisationReportView"
     permission="cmf.ModifyPortalContent"
