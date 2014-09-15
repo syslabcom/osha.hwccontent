@@ -4,7 +4,7 @@ Changelog
 1.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Lower the permission required to view the XLS reports #10680
 
 
 1.0.4 (2014-09-05)
