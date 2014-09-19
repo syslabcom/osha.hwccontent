@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.7 (unreleased)
+1.0.7 (2014-09-19)
 ------------------
 
 - Event location fetcher also needs to be able to handle JSON results #10682
