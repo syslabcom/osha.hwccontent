@@ -43,4 +43,7 @@
   <!-- indexers -->
   <adapter name="location" factory=".indexers.location" />
 
+      <utility name="osha.languages"
+             factory=".vocabularies.LanguagesVocabulary" />
+
 </configure>

@@ -1,8 +1,13 @@
-from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+# -*- coding: utf-8 -*-
 from osha.hwccontent import _
+from Products.CMFCore.utils import getToolByName
+from zope.component.hooks import getSite
+from zope.interface import implementer
+from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
-COUNTRIES = [
-    'Pan-European',
+
+BASE_COUNTRIES = [
     'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus',
     'Czech Republic', 'Denmark', 'Estonia', 'Finland',
     'France', 'Germany', 'Greece', 'Hungary', 'Iceland',
@@ -12,9 +17,14 @@ COUNTRIES = [
     'Spain', 'Sweden', 'Switzerland', 'United Kingdom',
 ]
 
+COUNTRIES = ['Pan-European'] + BASE_COUNTRIES
+
 countries = SimpleVocabulary(
     [SimpleTerm(value=item, title=_(item)) for item in COUNTRIES]
 )
+
+countries_no_pan_euro = SimpleVocabulary(
+    [SimpleTerm(value=item, title=_(item)) for item in BASE_COUNTRIES])
 
 ORG_TYPES = [
     'Enterprises', 'Trade unions', 'Employer organisations',
@@ -59,3 +69,14 @@ MEDIA_READERSHIP = [
 
 media_readership = SimpleVocabulary(
     [SimpleTerm(value=item, title=item) for item in MEDIA_READERSHIP])
+
+
+@implementer(IVocabularyFactory)
+class LanguagesVocabulary(object):
+    """ """
+
+    def __call__(self, context):
+        site = getSite()
+        plt = getToolByName(site, "portal_languages")
+        return SimpleVocabulary(
+            [SimpleTerm(value=lang, title=name) for (lang, name) in plt.listSupportedLanguages()])
