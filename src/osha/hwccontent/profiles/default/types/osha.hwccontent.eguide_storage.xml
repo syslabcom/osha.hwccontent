@@ -9,15 +9,16 @@
  <property name="allow_discussion">True</property>
  <property name="immediate_view">view</property>
  <property name="global_allow">False</property>
- <property name="filter_content_types">False</property>
+ <property name="filter_content_types">True</property>
  <property name="allowed_content_types">
+     <element value="File" />
  </property>
 
  <!-- schema interface -->
  <property name="schema">osha.hwccontent.eguide_storage.IEguideStorage</property>
 
  <!-- class used for content items -->
- <property name="klass">plone.dexterity.content.DexterityContent</property>
+ <property name="klass">plone.dexterity.content.Container</property>
 
  <!-- add permission -->
  <property name="add_permission">osha.hwccontent.AddOrganisation</property>
