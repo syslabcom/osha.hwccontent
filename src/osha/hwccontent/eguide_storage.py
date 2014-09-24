@@ -84,6 +84,6 @@ class LocalFilesVocabulary(object):
                 x for x in storage.objectItems() if IFile.providedBy(x[1])]
 
         return SimpleVocabulary(
-            [SimpleTerm(value=item[1].UID(), title=item[0]) for item in files])
+            [SimpleTerm(value=item[0], title=item[1].Title) for item in files])
 
 grok.global_utility(LocalFilesVocabulary, name='osha.eguides')
