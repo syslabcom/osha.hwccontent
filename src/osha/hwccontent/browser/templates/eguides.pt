@@ -30,22 +30,34 @@
             </div>
             </div>
 
-            <div id="content-filters">
-                HERE BE FILTERS
-            </div>
+            <form id="content-filters" tal:define="eguides view/eguides">
+                <select name="language">
+                    <option value="all">All</option>
+                    <option tal:repeat="lang python:view.get_languages().items()"
+                        tal:content="python:lang[1]"
+                        tal:attributes="value python:lang[0]"></option>
+                </select>
+                <select name="country">
+                    <option value="all">All</option>
+                    <option tal:repeat="eguide eguides"
+                        tal:content="eguide/country"
+                        tal:attributes="value eguide/country"></option>
+                </select>
+                <ul>
+                    <li tal:repeat="eguide eguides"
+                        class="pat-depends"
+                        tal:attributes="data-pat-depends string:action:show;; condition:(country='${eguide/country}' or country=all) and (language=${eguide/language} or language=all)">
+                        <div class="country">
+                            <img src="#" tal:attributes="src python:'%s/++theme++osha.hwctheme/HWManageStress_files/flags/%s.png' % (portal_url, eguide['flagname'])" />
+                            <span tal:replace="eguide/country">country</span>
+                        </div>
+                        <span class="language" tal:content="eguide/language">language</span>
+                        <a class="download" tal:attributes="href eguide/download">Download</a>
+                        <a class="external" tal:attributes="href eguide/url">Online version</a>
+                    </li>
+                </ul>
+            </form>
 
-            <div id="eguides" tal:define="eguides view/eguides">
-                <div tal:repeat="eguide eguides">
-                    <div class="country">
-                        <img src="#"
-                            tal:attributes="src python:'%s/++theme++osha.hwctheme/HWManageStress_files/flags/%s.png' % (portal_url, eguide['flagname'])" />
-                        <span tal:replace="eguide/country">country</span>
-                    </div>
-                    <span class="language" tal:content="eguide/language">language</span>
-                    <a class="download" tal:attributes="href eguide/download">Download</a>
-                    <a class="external" tal:attributes="href eguide/url">Online version</a>
-                </div>
-            </div>
         </tal:block>
     </metal:block>
 </body>

@@ -1,8 +1,8 @@
 # _+- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
 from five import grok
-from plone.directives import dexterity
 from osha.hwccontent.eguide_storage import IEguideStorage
+from plone.directives import dexterity
+from plone import api
 import logging
 
 log = logging.getLogger(__name__)
@@ -26,5 +26,13 @@ class View(dexterity.DisplayForm):
             item['download'] = guide.absolute_url()
             item['flagname'] = item['country'].lower().replace(" ", "_")
             eguides.append(item)
-
         return eguides
+
+    def get_languages(self):
+        ldict = {}
+        langtool = api.portal.get_tool('portal_languages')
+        for item in self.eguides:
+            if not ldict.get(item['language']):
+                ldict[item['language']] = \
+                        langtool.getNameForLanguageCode(item['language'])
+        return ldict
