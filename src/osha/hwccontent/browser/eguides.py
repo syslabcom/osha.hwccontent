@@ -3,6 +3,7 @@ from five import grok
 from osha.hwccontent.eguide_storage import IEguideStorage
 from plone.directives import dexterity
 from plone import api
+from zope import component
 import logging
 
 log = logging.getLogger(__name__)
@@ -36,3 +37,10 @@ class View(dexterity.DisplayForm):
                 ldict[item['language']] = \
                         langtool.getNameForLanguageCode(item['language'])
         return ldict
+
+    def get_current_language(self):
+        """ @return: Two-letter string, the active language code
+        """
+        return component.getMultiAdapter(
+                (self.context, self.request),
+                name=u'plone_portal_state').language()

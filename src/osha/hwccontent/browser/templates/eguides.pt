@@ -30,12 +30,15 @@
             </div>
             </div>
 
-            <form id="content-filters" tal:define="eguides view/eguides">
+            <form id="content-filters"
+                  tal:define="eguides view/eguides;
+                              current_language view/get_current_language">
                 <select name="language">
                     <option value="all">All</option>
                     <option tal:repeat="lang python:view.get_languages().items()"
                         tal:content="python:lang[1]"
-                        tal:attributes="value python:lang[0]"></option>
+                        tal:attributes="value python:lang[0];
+                                        selected python:lang[0] == current_language"></option>
                 </select>
                 <select name="country">
                     <option value="all">All</option>
