@@ -2,6 +2,7 @@
 from five import grok
 from osha.hwccontent.interfaces import IFullWidth
 from osha.hwccontent.eguide_storage import IEguideStorage
+from plone.multilingual.interfaces import ITranslationManager
 from plone.directives import dexterity
 from plone import api
 from zope import component
@@ -23,6 +24,8 @@ class View(dexterity.DisplayForm):
     def eguides(self):
         obj = self.context
         eguides = []
+        if len(obj.eguides) == 0 and obj.Language() != 'en':
+            obj = ITranslationManager(obj).get_translation('en')
         for item in obj.eguides:
             guide = getattr(obj, item['attachment'], None)
             if not guide:
@@ -38,12 +41,12 @@ class View(dexterity.DisplayForm):
         for item in self.eguides:
             if not ldict.get(item['language']):
                 ldict[item['language']] = \
-                        langtool.getNameForLanguageCode(item['language'])
+                    langtool.getNameForLanguageCode(item['language'])
         return ldict
 
     def get_current_language(self):
         """ @return: Two-letter string, the active language code
         """
         return component.getMultiAdapter(
-                (self.context, self.request),
-                name=u'plone_portal_state').language()
+            (self.context, self.request),
+            name=u'plone_portal_state').language()
