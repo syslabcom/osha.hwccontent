@@ -9,6 +9,11 @@ from zope import component
 from zope.interface import implements
 import logging
 
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
+
 log = logging.getLogger(__name__)
 
 grok.templatedir("templates")
@@ -42,7 +47,16 @@ class View(dexterity.DisplayForm):
             if not ldict.get(item['language']):
                 ldict[item['language']] = \
                     langtool.getNameForLanguageCode(item['language'])
-        return ldict
+        return OrderedDict(sorted(
+            ldict.items(), key=lambda t: t[1].lower()))
+
+    def get_countries(self):
+        countries = set()
+        for item in self.eguides:
+            countries.add(item['country'])
+        countries = list(countries)
+        countries.sort()
+        return countries
 
     def get_current_language(self):
         """ @return: Two-letter string, the active language code

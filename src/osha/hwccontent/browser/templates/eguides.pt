@@ -39,9 +39,9 @@
                 </select>
                 <select name="country">
                     <option value="all">All</option>
-                    <option tal:repeat="eguide eguides"
-                        tal:content="eguide/country"
-                        tal:attributes="value eguide/country"></option>
+                    <option tal:repeat="country view/get_countries"
+                        tal:content="country"
+                        tal:attributes="value country"></option>
                 </select>
                 <ul>
                     <li tal:repeat="eguide eguides"
