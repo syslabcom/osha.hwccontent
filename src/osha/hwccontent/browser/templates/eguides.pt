@@ -20,42 +20,46 @@
             <!-- <div id="campaign-partner-details"> -->
             <div id="sectionImage" class="span4"><!-- here be video ? --></div>
             <div id="content-core">
-                <dl class="row-fluid">
+
                     <div id="introtext"
                         tal:condition="context/text"
                         tal:content="structure context/text/output" />
-                </dl>
             <!-- </div> -->
 
             <form id="content-filters"
                   tal:define="eguides view/eguides;
                               current_language view/get_current_language">
                 <select name="language">
-                    <option value="all">All</option>
+                    <option value="all">All Languages</option>
                     <option tal:repeat="lang python:view.get_languages().items()"
                         tal:content="python:lang[1]"
                         tal:attributes="value python:lang[0];
                                         selected python:lang[0] == current_language"></option>
                 </select>
                 <select name="country">
-                    <option value="all">All</option>
+                    <option value="all">All Countries</option>
                     <option tal:repeat="country view/get_countries"
                         tal:content="country"
                         tal:attributes="value country"></option>
                 </select>
-                <ul>
-                    <li tal:repeat="eguide eguides"
+                <div class="visualClear"></div>
+                <!-- <ul> -->
+                    <div tal:repeat="eguide eguides"
                         class="pat-depends"
                         tal:attributes="data-pat-depends string:action:show;; condition:(country='${eguide/country}' or country=all) and (language=${eguide/language} or language=all)">
-                        <div class="country">
-                            <img src="#" tal:attributes="src python:'%s/++theme++osha.hwctheme/HWManageStress_files/flags/%s.png' % (portal_url, eguide['flagname'])" />
-                            <span tal:replace="eguide/country">country</span>
+                        <div class="country-lang">
+                            <img class="country" src="#" tal:attributes="src python:'%s/++theme++osha.hwctheme/HWManageStress_files/flags/%s.png' % (portal_url, eguide['flagname'])" />
+                            <nav class="tabs">
+                              <span class="country" tal:content="eguide/country">country</span>
+                              <span class="language" tal:content="eguide/language">language</span>
+                            </nav>
                         </div>
-                        <span class="language" tal:content="eguide/language">language</span>
-                        <a class="download" tal:attributes="href eguide/download">Download</a>
-                        <a class="external" tal:attributes="href eguide/url">Online version</a>
-                    </li>
-                </ul>
+                        <div class="links">
+                          <a class="download"tal:attributes="href eguide/download"><img height="50" width="50px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-pdf.gif">Download</a>
+                          <a class="external" tal:attributes="href eguide/url">Online version</a>
+                        </div>
+                    </div>
+                <!-- </ul> -->
             </form>
 
             </div>

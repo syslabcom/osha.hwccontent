@@ -38,15 +38,18 @@ class View(dexterity.DisplayForm):
             item['download'] = guide.absolute_url()
             item['flagname'] = item['country'].lower().replace(" ", "_")
             eguides.append(item)
+        eguides = sorted(eguides, key=lambda a: a['country'] + a['language'])
         return eguides
 
     def get_languages(self):
         ldict = {}
         langtool = api.portal.get_tool('portal_languages')
+        linfo = langtool.getAvailableLanguageInformation()
         for item in self.eguides:
-            if not ldict.get(item['language']):
-                ldict[item['language']] = \
-                    langtool.getNameForLanguageCode(item['language'])
+            lang = item['language']
+            if not ldict.get(lang):
+                ldict[lang] = \
+                    u"({0}) {1}".format(lang.upper(), linfo.get(lang)['native'])
         return OrderedDict(sorted(
             ldict.items(), key=lambda t: t[1].lower()))
 
