@@ -25,10 +25,11 @@
 
  <!-- enabled behaviors -->
  <property name="behaviors">
-<!--      <element value="plone.multilingualbehavior.interfaces.IDexterityTranslatable" />
+     <element value="plone.multilingualbehavior.interfaces.IDexterityTranslatable" />
      <element value="plone.app.content.interfaces.INameFromTitle" />
+     <!-- IReferenceable might not be available, but it will not break. -->
      <element value="plone.app.referenceablebehavior.referenceable.IReferenceable" />
- --> </property>
+ </property>
 
  <!-- View information -->
  <property name="default_view">view</property>

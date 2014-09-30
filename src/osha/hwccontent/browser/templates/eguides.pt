@@ -5,7 +5,7 @@
       lang="en"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="osha.hwc">
-<body>
+<body class="subsection">
     <metal:block fill-slot="main"
                  tal:define="id request/id|nothing;
                              toLocalizedTime nocall:context/@@plone/toLocalizedTime;
@@ -17,18 +17,15 @@
             <span id="parent-fieldname-title" tal:content="context/title">title</span>
             </h1>
             <div tal:replace="structure provider:plone.belowcontenttitle" />
-            <div id="campaign-partner-details">
-            <div id="sectionImage" class="span4">
-                <!-- here be video ? -->
-            </div>
+            <!-- <div id="campaign-partner-details"> -->
+            <div id="sectionImage" class="span4"><!-- here be video ? --></div>
             <div id="content-core">
                 <dl class="row-fluid">
                     <div id="introtext"
                         tal:condition="context/text"
                         tal:content="structure context/text/output" />
                 </dl>
-            </div>
-            </div>
+            <!-- </div> -->
 
             <form id="content-filters"
                   tal:define="eguides view/eguides;
@@ -61,6 +58,7 @@
                 </ul>
             </form>
 
+            </div>
         </tal:block>
     </metal:block>
 </body>

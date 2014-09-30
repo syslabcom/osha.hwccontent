@@ -1,9 +1,11 @@
 # _+- coding: utf-8 -*-
 from five import grok
+from osha.hwccontent.interfaces import IFullWidth
 from osha.hwccontent.eguide_storage import IEguideStorage
 from plone.directives import dexterity
 from plone import api
 from zope import component
+from zope.interface import implements
 import logging
 
 log = logging.getLogger(__name__)
@@ -15,6 +17,7 @@ class View(dexterity.DisplayForm):
     grok.context(IEguideStorage)
     grok.require('zope2.View')
     grok.template("eguides")
+    implements(IFullWidth)
 
     @property
     def eguides(self):
