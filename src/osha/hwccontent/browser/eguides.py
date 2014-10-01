@@ -35,11 +35,19 @@ class View(dexterity.DisplayForm):
             guide = getattr(obj, item['attachment'], None)
             if not guide:
                 continue
-            item['download'] = guide.absolute_url()
+            item['download'] = guide and guide.absolute_url() or ''
             item['flagname'] = item['country'].lower().replace(" ", "_")
             eguides.append(item)
         eguides = sorted(eguides, key=lambda a: a['country'] + a['language'])
         return eguides
+
+    @property
+    def generic_eguide(self):
+        obj = self.context
+        if obj.Language() != 'en':
+            obj = ITranslationManager(obj).get_translation('en')
+        guide = getattr(obj, obj.generic_guide_attachment, None)
+        return guide and guide.absolute_url() or ''
 
     def get_languages(self):
         ldict = {}

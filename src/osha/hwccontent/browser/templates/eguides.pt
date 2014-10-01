@@ -18,19 +18,42 @@
             </h1>
             <div tal:replace="structure provider:plone.belowcontenttitle" />
             <div id="content-core">
-              <div class="row-fluid" id="eguides_introtext">
+              <div class="row-fluid eguides_introtext">
                 <div class="span6">
                   <div class="video-container">
                     <iframe frameborder="0" height="270" src="https://www.youtube.com/embed/iBy4WaR14Bo" width="432"
                       tal:attributes="src string:https://www.youtube.com/embed/${context/film_id}"></iframe>
                   </div>
                 </div>
-                <div tal:condition="context/text" class="span6"
-                  tal:content="structure context/text/output">TEXT
+                <div class="span6" tal:condition="context/text"
+                  tal:content="structure context/text/output">
+                  TEXT
                 </div>
               </div>
 
-            <h2 i18n:translate="access_national_tools" id="eguides_filter_intro">Access to the national tools</h2>
+              <div class="row-fluid eguides_introtext">
+                <div class="span6">
+                  <div id="generic_eguide">
+                      <div class="country-lang">
+                          <img class="country" src="#" tal:attributes="src python:'%s/++theme++osha.hwctheme/HWManageStress_files/flags/europa.png' % portal_url" />
+                          <nav class="tabs">
+                            <span class="country">Generic guide</span>
+                            <span class="language">EN</span>
+                          </nav>
+                      </div>
+                      <div class="links">
+                        <a class="download"tal:attributes="href view/generic_eguide"><img height="50" width="50px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-pdf.gif">Download</a>
+                        <a class="external" tal:attributes="href context/generic_guide_url">Online version</a>
+                      </div>
+                  </div>
+                </div>
+                <div class="span6" tal:condition="context/generic_eguide_text"
+                  tal:content="structure context/generic_eguide_text/output">
+                  GENERIC EGUIDE TEXT
+                </div>
+              </div>
+
+            <h2 i18n:translate="access_national_tools" id="eguides_filter_intro" class="eguide_subheading">Access to the national tools</h2>
             <div class="row-fluid" id="eguides_filter">
               <p id="intro_filter" i18n:translate="filter_national_tools">Below, all available national tools are listed. Find the one(s) relevant for you by filtering by language and / or country.</p>
               <form id="content-filters"

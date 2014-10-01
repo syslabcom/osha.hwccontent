@@ -50,12 +50,28 @@ class IEguideStorage(model.Schema):
         title=u"Text",
         required=False,
     )
+    generic_eguide_text = RichText(
+        title=u"Text about the e-guide",
+        description=u"This text will appear next to the download box of the"
+        u"generic e-guide.",
+        required=False,
+    )
     film_id = schema.TextLine(
         title=u"YouTube film id",
         description=
         u"Paste here the ID of a film on YouTube to show. "
         u"Example: For a movie like http://www.youtube.com/watch?v=iBy4WaR14Bo"
         u" the ID is iBy4WaR14Bo",
+        required=False,
+    )
+
+    generic_guide_attachment = schema.Choice(
+        title=u"File (download)",
+        source="osha.eguides",
+    )
+
+    generic_guide_url = schema.URI(
+        title=u"Link (online)",
         required=False,
     )
 
