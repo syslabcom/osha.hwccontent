@@ -30,8 +30,8 @@
                 </div>
               </div>
 
-            <div class="row-fluid partners" id="eguides">
-              <h2 i18n:translate="access_national_tools">Access to the national tools</h2>
+            <h2 i18n:translate="access_national_tools" id="eguides_filter_intro">Access to the national tools</h2>
+            <div class="row-fluid" id="eguides_filter">
               <p id="intro_filter" i18n:translate="filter_national_tools">Below, all available national tools are listed. Find the one(s) relevant for you by filtering by language and / or country.</p>
               <form id="content-filters"
                     tal:define="eguides view/eguides;
