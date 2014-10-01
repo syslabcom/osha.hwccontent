@@ -50,6 +50,14 @@ class IEguideStorage(model.Schema):
         title=u"Text",
         required=False,
     )
+    film_id = schema.TextLine(
+        title=u"YouTube film id",
+        description=
+        u"Paste here the ID of a film on YouTube to show. "
+        u"Example: For a movie like http://www.youtube.com/watch?v=iBy4WaR14Bo"
+        u" the ID is iBy4WaR14Bo",
+        required=False,
+    )
 
     eguides = schema.List(
         title=u"Related sites",
