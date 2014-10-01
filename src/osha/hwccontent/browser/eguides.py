@@ -29,7 +29,7 @@ class View(dexterity.DisplayForm):
     def eguides(self):
         obj = self.context
         eguides = []
-        if len(obj.eguides) == 0 and obj.Language() != 'en':
+        if obj.Language() != 'en':
             obj = ITranslationManager(obj).get_translation('en')
         for item in obj.eguides:
             guide = getattr(obj, item['attachment'], None)
