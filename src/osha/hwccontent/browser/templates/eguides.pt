@@ -24,32 +24,14 @@
                     <iframe frameborder="0" height="270" src="https://www.youtube.com/embed/iBy4WaR14Bo" width="432"
                       tal:attributes="src string:https://www.youtube.com/embed/${context/film_id}"></iframe>
                   </div>
+                  <span tal:condition="context/generic_eguide_text" id="download_text"
+                    tal:content="structure context/generic_eguide_text/output">
+                    GENERIC EGUIDE TEXT
+                  </span>
                 </div>
                 <div class="span6" tal:condition="context/text"
                   tal:content="structure context/text/output">
                   TEXT
-                </div>
-              </div>
-
-              <div class="row-fluid eguides_introtext">
-                <div class="span6">
-                  <div id="generic_eguide">
-                      <div class="country-lang">
-                          <img class="country" src="#" tal:attributes="src python:'%s/++theme++osha.hwctheme/HWManageStress_files/flags/europa.png' % portal_url" />
-                          <nav class="tabs">
-                            <span class="country">Generic guide</span>
-                            <span class="language">EN</span>
-                          </nav>
-                      </div>
-                      <div class="links">
-                        <a class="download"tal:attributes="href view/generic_eguide"><img height="50" width="50px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-pdf.gif">Download</a>
-                        <a class="external" tal:attributes="href context/generic_guide_url">Online version</a>
-                      </div>
-                  </div>
-                </div>
-                <div class="span6" tal:condition="context/generic_eguide_text"
-                  tal:content="structure context/generic_eguide_text/output">
-                  GENERIC EGUIDE TEXT
                 </div>
               </div>
 
@@ -59,18 +41,18 @@
               <form id="content-filters"
                     tal:define="eguides view/eguides;
                                 current_language view/get_current_language">
+                  <select name="country">
+                      <option value="all">All Countries</option>
+                      <option tal:repeat="country view/get_countries"
+                          tal:content="country"
+                          tal:attributes="value country"></option>
+                  </select>
                   <select name="language">
                       <option value="all">All Languages</option>
                       <option tal:repeat="lang python:view.get_languages().items()"
                           tal:content="python:lang[1]"
                           tal:attributes="value python:lang[0];
                                           selected python:lang[0] == current_language"></option>
-                  </select>
-                  <select name="country">
-                      <option value="all">All Countries</option>
-                      <option tal:repeat="country view/get_countries"
-                          tal:content="country"
-                          tal:attributes="value country"></option>
                   </select>
                   <div class="visualClear"></div>
                   <div tal:repeat="eguide eguides"
