@@ -29,7 +29,7 @@
                       GENERIC EGUIDE TEXT
                     </span>
                      <p i18n:translate="eguide_link_instructions">
-                      You can find <a href="#" tal:attributes="href string:${here/absolute_url}#instructions" i18n:name="eguide_name_instructons">instructions on system requirements</a> etc. below.
+                      You can find <a href="#" tal:attributes="href string:${here/absolute_url}#instructions" i18n:name="link"><span i18n:translate="eguide_name_instructions" tal:omit-tag="">instructions on system requirements</span></a> etc. below.
                     </p>
                   </span>
                 </div>
