@@ -24,9 +24,13 @@
                     <iframe frameborder="0" height="270" src="https://www.youtube.com/embed/iBy4WaR14Bo" width="432"
                       tal:attributes="src string:https://www.youtube.com/embed/${context/film_id}"></iframe>
                   </div>
-                  <span tal:condition="context/generic_eguide_text" id="download_text"
-                    tal:content="structure context/generic_eguide_text/output">
-                    GENERIC EGUIDE TEXT
+                  <span id="download_text">
+                    <span tal:condition="context/generic_eguide_text" tal:content="structure context/generic_eguide_text/output">
+                      GENERIC EGUIDE TEXT
+                    </span>
+                     <p i18n:translate="eguide_link_instructions">
+                      You can find <a href="#" tal:attributes="href string:${here/absolute_url}#instructions" i18n:name="eguide_name_instructons">instructions on system requirements</a> etc. below.
+                    </p>
                   </span>
                 </div>
                 <div class="span6" tal:condition="context/text"
@@ -35,43 +39,51 @@
                 </div>
               </div>
 
-            <h2 i18n:translate="access_national_tools" id="eguides_filter_intro" class="eguide_subheading">Access to the national tools</h2>
-            <div class="row-fluid" id="eguides_filter">
-              <p id="intro_filter" i18n:translate="filter_national_tools">Below, all available national tools are listed. Find the one(s) relevant for you by filtering by language and / or country.</p>
-              <form id="content-filters"
-                    tal:define="eguides view/eguides;
-                                current_language view/get_current_language">
-                  <select name="country">
-                      <option value="all">All Countries</option>
-                      <option tal:repeat="country view/get_countries"
-                          tal:content="country"
-                          tal:attributes="value country"></option>
-                  </select>
-                  <select name="language">
-                      <option value="all">All Languages</option>
-                      <option tal:repeat="lang python:view.get_languages().items()"
-                          tal:content="python:lang[1]"
-                          tal:attributes="value python:lang[0];
-                                          selected python:lang[0] == current_language"></option>
-                  </select>
-                  <div class="visualClear"></div>
-                  <div tal:repeat="eguide eguides"
-                      class="pat-depends"
-                      tal:attributes="data-pat-depends string:action:show;; condition:(country='${eguide/country}' or country=all) and (language=${eguide/language} or language=all)">
-                      <div class="country-lang">
-                          <img class="country" src="#" tal:attributes="src python:'%s/++theme++osha.hwctheme/HWManageStress_files/flags/%s.png' % (portal_url, eguide['flagname'])" />
-                          <nav class="tabs">
-                            <span class="country" tal:content="eguide/country">country</span>
-                            <span class="language" tal:content="eguide/language">language</span>
-                          </nav>
-                      </div>
-                      <div class="links">
-                        <a class="download" tal:attributes="href eguide/download_url"><img height="50" width="50px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-pdf.gif" />Download</a>
-                        <a class="external" tal:attributes="href eguide/url">Online version</a>
-                      </div>
-                  </div>
-              </form>
-            </div>
+              <h2 i18n:translate="access_national_tools" id="eguides_filter_intro" class="eguide_subheading">Access to the national tools</h2>
+              <div class="row-fluid" id="eguides_filter">
+                <p id="intro_filter" i18n:translate="filter_national_tools">Below, all available national tools are listed. Find the one(s) relevant for you by filtering by language and / or country.</p>
+                <form id="content-filters"
+                      tal:define="eguides view/eguides;
+                                  current_language view/get_current_language">
+                    <select name="country">
+                        <option value="all">All Countries</option>
+                        <option tal:repeat="country view/get_countries"
+                            tal:content="country"
+                            tal:attributes="value country"></option>
+                    </select>
+                    <select name="language">
+                        <option value="all">All Languages</option>
+                        <option tal:repeat="lang python:view.get_languages().items()"
+                            tal:content="python:lang[1]"
+                            tal:attributes="value python:lang[0];
+                                            selected python:lang[0] == current_language"></option>
+                    </select>
+                    <div class="visualClear"></div>
+                    <div tal:repeat="eguide eguides"
+                        class="pat-depends"
+                        tal:attributes="data-pat-depends string:action:show;; condition:(country='${eguide/country}' or country=all) and (language=${eguide/language} or language=all)">
+                        <div class="country-lang">
+                            <img class="country" src="#" tal:attributes="src python:'%s/++theme++osha.hwctheme/HWManageStress_files/flags/%s.png' % (portal_url, eguide['flagname'])" />
+                            <nav class="tabs">
+                              <span class="country" tal:content="eguide/country">country</span>
+                              <span class="language" tal:content="eguide/language">language</span>
+                            </nav>
+                        </div>
+                        <div class="links">
+                          <a class="download" tal:attributes="href eguide/download_url"><img width="45px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-zip.gif" />Download</a>
+                          <a class="external" tal:attributes="href eguide/url">Online version</a>
+                        </div>
+                    </div>
+                </form>
+              </div>
+
+              <h2 id="eguides_instructions"><a name="instructions"></a><span i18n:translate="eguide_instructions" tal:omit-tag="">Instructions</span></h2>
+              <div class="row-fluid eguides_introtext">
+                <div class="span12" tal:condition="context/instructions_text"
+                  tal:content="structure context/instructions_text/output">
+                  INSTRUCTIONS
+                </div>
+              </div>
           </div>
         </tal:block>
     </metal:block>

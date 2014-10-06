@@ -47,6 +47,11 @@ class IEguideStorage(model.Schema):
         u"generic e-guide.",
         required=False,
     )
+    instructions_text = RichText(
+        title=u"Instructions",
+        description=u"These will be displayed at the bottom of the page.",
+        required=False,
+    )
     film_id = schema.TextLine(
         title=u"YouTube film id",
         description=
