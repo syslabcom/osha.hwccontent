@@ -1,5 +1,6 @@
 # _+- coding: utf-8 -*-
 from five import grok
+from osha.hwccontent import OrderedDict
 from osha.hwccontent.interfaces import IFullWidth
 from osha.hwccontent.eguide_storage import IEguideStorage
 from osha.hwccontent.vocabularies import COUNTRIES
@@ -9,11 +10,6 @@ from plone import api
 from zope import component
 from zope.interface import implements
 import logging
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from ordereddict import OrderedDict
 
 log = logging.getLogger(__name__)
 
