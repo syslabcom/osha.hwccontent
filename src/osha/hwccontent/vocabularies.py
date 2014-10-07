@@ -8,6 +8,8 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 
+# Note: I assign the fake id AA to Pan-European to make it appear at the top
+# when ordering by code.
 COUNTRIES = {
     'AA': 'Pan-European',
     'AT': 'Austria',
