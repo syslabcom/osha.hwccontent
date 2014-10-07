@@ -29,7 +29,7 @@
                       GENERIC EGUIDE TEXT
                     </span>
                      <p i18n:translate="eguide_link_instructions">
-                      You can find <a href="#" tal:attributes="href string:${here/absolute_url}#instructions" i18n:name="link"><span i18n:translate="eguide_name_instructions" tal:omit-tag="">instructions on system requirements</span></a> etc. below.
+                      Find <a href="#" tal:attributes="href string:${here/absolute_url}#instructions" i18n:name="link"><span i18n:translate="eguide_name_instructions" tal:omit-tag="">instructions on system requirements etc.</span></a> below.
                     </p>
                   </span>
                 </div>
@@ -41,7 +41,7 @@
 
               <h2 i18n:translate="access_national_tools" id="eguides_filter_intro" class="eguide_subheading">Access to the national tools</h2>
               <div class="row-fluid" id="eguides_filter">
-                <p id="intro_filter" i18n:translate="filter_national_tools">Below, all available national tools are listed. Find the one(s) relevant for you by filtering by country and / or language.</p>
+                <p id="intro_filter" i18n:translate="filter_national_tools">Find the tool version that is relevant for you by filtering by country and / or language.</p>
                 <form id="content-filters"
                       tal:define="eguides view/eguides;
                                   current_language view/get_current_language">
