@@ -12,22 +12,12 @@ from osha.hwccontent.behaviors.moreabout import CustomTableWidgetFactory
 class ITableRowSchema(form.Schema):
     country = schema.Choice(
         title=u"Country",
-        vocabulary=vocabularies.countries_no_pan_euro,
+        vocabulary=vocabularies.countries_with_ids,
     )
 
     language = schema.Choice(
         title=u"Language",
         vocabulary='osha.languages',
-    )
-
-    download_url = schema.URI(
-        title=u"Download (file)",
-        required=False,
-    )
-
-    url = schema.URI(
-        title=u"Link (online)",
-        required=False,
     )
 
 
@@ -61,9 +51,14 @@ class IEguideStorage(model.Schema):
         required=False,
     )
 
-    generic_guide_url = schema.URI(
-        title=u"Link (online)",
-        required=False,
+    online_version_url = schema.TextLine(
+        title=u"URL schema for online version",
+        default=u"http://eguides.osha.europa.eu/stress/eGuide-Stress-{country}-{language}",
+    )
+
+    offline_version_url = schema.TextLine(
+        title=u"URL schema for offline version",
+        default=u"http://eguides.osha.europa.eu/stress/eGuide-Stress-{country}-{language}.zip",
     )
 
     eguides = schema.List(

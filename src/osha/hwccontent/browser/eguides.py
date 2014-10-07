@@ -2,6 +2,7 @@
 from five import grok
 from osha.hwccontent.interfaces import IFullWidth
 from osha.hwccontent.eguide_storage import IEguideStorage
+from osha.hwccontent.vocabularies import COUNTRIES
 from plone.multilingual.interfaces import ITranslationManager
 from plone.directives import dexterity
 from plone import api
@@ -32,8 +33,15 @@ class View(dexterity.DisplayForm):
         if obj.Language() != 'en':
             obj = ITranslationManager(obj).get_translation('en')
         for item in obj.eguides:
-            item['flagname'] = item['country'].lower().replace(" ", "_")
-            eguides.append(item)
+            eguide = {}
+            eguide['country'] = COUNTRIES[item['country']]
+            eguide['flagname'] = eguide['country'].lower().replace(" ", "_")
+            eguide['online'] = obj.online_version_url.format(
+                country=item['country'], language=item['language'].upper())
+            eguide['offline'] = obj.offline_version_url.format(
+                country=item['country'], language=item['language'].upper())
+            eguide['language'] = item['language']
+            eguides.append(eguide)
         eguides = sorted(eguides, key=lambda a: a['country'] + a['language'])
         return eguides
 

@@ -7,24 +7,48 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 
-BASE_COUNTRIES = [
-    'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus',
-    'Czech Republic', 'Denmark', 'Estonia', 'Finland',
-    'France', 'Germany', 'Greece', 'Hungary', 'Iceland',
-    'Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania',
-    'Luxembourg', 'Malta', 'Netherlands', 'Norway', 'Poland',
-    'Portugal', 'Romania', 'Slovakia', 'Slovenia',
-    'Spain', 'Sweden', 'Switzerland', 'United Kingdom',
-]
-
-COUNTRIES = ['Pan-European'] + BASE_COUNTRIES
+COUNTRIES = {
+    'EU': 'Pan-European',
+    'AT': 'Austria',
+    'BE': 'Belgium',
+    'BG': 'Bulgaria',
+    'CH': 'Switzerland',
+    'CY': 'Cyprus',
+    'CZ': 'Czech Republic',
+    'DE': 'Germany',
+    'DK': 'Denmark',
+    'EE': 'Estonia',
+    'ES': 'Spain',
+    'FI': 'Finland',
+    'FR': 'France',
+    'GB': 'United Kingdom',
+    'GR': 'Greece',
+    'HR': 'Croatia',
+    'HU': 'Hungary',
+    'IE': 'Ireland',
+    'IS': 'Iceland',
+    'IT': 'Italy',
+    'LI': 'Liechtenstein',
+    'LT': 'Lithuania',
+    'LU': 'Luxembourg',
+    'LV': 'Latvia',
+    'MT': 'Malta',
+    'NL': 'Netherlands',
+    'NO': 'Norway',
+    'PO': 'Poland',
+    'PT': 'Portugal',
+    'RO': 'Romania',
+    'SE': 'Sweden',
+    'SI': 'Slovenia',
+    'SK': 'Slovakia',
+}
 
 countries = SimpleVocabulary(
-    [SimpleTerm(value=item, title=_(item)) for item in COUNTRIES]
+    [SimpleTerm(value=name, title=_(name)) for (code, name) in COUNTRIES.items()]
 )
 
-countries_no_pan_euro = SimpleVocabulary(
-    [SimpleTerm(value=item, title=_(item)) for item in BASE_COUNTRIES])
+countries_with_ids = SimpleVocabulary(
+    [SimpleTerm(value=code, title=_(name)) for (code, name) in COUNTRIES.items()])
 
 ORG_TYPES = [
     'Enterprises', 'Trade unions', 'Employer organisations',

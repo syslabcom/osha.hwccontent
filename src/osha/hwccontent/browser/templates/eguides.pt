@@ -70,8 +70,8 @@
                             </nav>
                         </div>
                         <div class="links">
-                          <a class="download" tal:attributes="href eguide/download_url"><img width="45px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-zip.gif" />Download</a>
-                          <a class="external" tal:attributes="href eguide/url">Online version</a>
+                          <a class="download" tal:attributes="href eguide/offline"><img width="45px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-zip.gif" />Download</a>
+                          <a class="external" tal:attributes="href eguide/online" target="_new">Online version</a>
                         </div>
                     </div>
                 </form>
