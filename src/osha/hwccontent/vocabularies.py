@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from osha.hwccontent import _
+from osha.hwccontent import OrderedDict
 from Products.CMFCore.utils import getToolByName
 from zope.component.hooks import getSite
 from zope.interface import implementer
@@ -8,7 +9,7 @@ from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 
 COUNTRIES = {
-    'EU': 'Pan-European',
+    'AA': 'Pan-European',
     'AT': 'Austria',
     'BE': 'Belgium',
     'BG': 'Bulgaria',
@@ -43,12 +44,14 @@ COUNTRIES = {
     'SK': 'Slovakia',
 }
 
+ORDERED_COUNTRIES = OrderedDict(sorted(COUNTRIES.items(), key=lambda t: t[0]))
+
 countries = SimpleVocabulary(
-    [SimpleTerm(value=name, title=_(name)) for (code, name) in COUNTRIES.items()]
+    [SimpleTerm(value=name, title=_(name)) for (code, name) in ORDERED_COUNTRIES.items()]
 )
 
 countries_with_ids = SimpleVocabulary(
-    [SimpleTerm(value=code, title=_(name)) for (code, name) in COUNTRIES.items()])
+    [SimpleTerm(value=code, title=_(name)) for (code, name) in ORDERED_COUNTRIES.items()])
 
 ORG_TYPES = [
     'Enterprises', 'Trade unions', 'Employer organisations',
