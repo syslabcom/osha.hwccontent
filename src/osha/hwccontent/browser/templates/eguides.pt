@@ -39,9 +39,9 @@
                 </div>
               </div>
 
-              <h2 i18n:translate="access_national_tools" id="eguides_filter_intro" class="eguide_subheading">Access to the national tools</h2>
+              <h2 i18n:translate="access_national_tools" id="eguides_filter_intro" class="eguide_subheading">Access to the national versions of the e-guide</h2>
               <div class="row-fluid" id="eguides_filter">
-                <p id="intro_filter" i18n:translate="filter_national_tools">Find the tool version that is relevant for you by filtering by country and / or language.</p>
+                <p id="intro_filter" i18n:translate="filter_national_tools">Find the e-guide version that is relevant for you by filtering by country and / or language.</p>
                 <form id="content-filters"
                       tal:define="eguides view/eguides;
                                   current_language view/get_current_language">
