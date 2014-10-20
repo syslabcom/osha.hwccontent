@@ -14,7 +14,7 @@
         <tal:block>
             <!-- <div tal:replace="structure provider:plone.abovecontenttitle" /> -->
             <h1 id="title" class="documentFirstHeading">
-            <span id="parent-fieldname-title" tal:content="context/title">title</span>
+            <span id="parent-fieldname-title" tal:content="context/title">TITLE</span>
             </h1>
             <div tal:replace="structure provider:plone.belowcontenttitle" />
             <div id="content-core">
@@ -29,7 +29,7 @@
                       GENERIC EGUIDE TEXT
                     </span>
                      <p i18n:translate="eguide_link_instructions">
-                      Find <a href="#" tal:attributes="href string:${here/absolute_url}#instructions" i18n:name="link"><span i18n:translate="eguide_name_instructions" tal:omit-tag="">instructions on system requirements etc.</span></a> below.
+                      Find <a href="#" tal:attributes="href string:${here/absolute_url}#instructions" i18n:name="eguide_label_instructions"><span i18n:translate="eguide_name_instructions" tal:omit-tag="">instructions on system requirements etc.</span></a> below.
                     </p>
                   </span>
                 </div>
@@ -46,13 +46,13 @@
                       tal:define="eguides view/eguides;
                                   current_language view/get_current_language">
                     <select name="country">
-                        <option value="all">All Countries</option>
+                        <option value="all" i18n:translate="label_all_countries">All Countries</option>
                         <option tal:repeat="country view/get_countries"
                             tal:content="country"
                             tal:attributes="value country"></option>
                     </select>
                     <select name="language">
-                        <option value="all">All Languages</option>
+                        <option value="all" i18n:translate="label_all_languages">All Languages</option>
                         <option tal:repeat="lang python:view.get_languages().items()"
                             tal:content="python:lang[1]"
                             tal:attributes="value python:lang[0];
@@ -70,8 +70,8 @@
                             </nav>
                         </div>
                         <div class="links">
-                          <a class="download" tal:attributes="href eguide/offline"><img width="45px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-zip.gif" />Download</a>
-                          <a class="external" tal:attributes="href eguide/online" target="_new">Online version</a>
+                          <a class="download" tal:attributes="href eguide/offline"><img width="45px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-zip.gif" /><span tal:omit-tag="" i18n:translate="label_download">Download</span></a>
+                          <a class="external" tal:attributes="href eguide/online" target="_new" i18n:translate="label_online_version">Online version</a>
                         </div>
                     </div>
                 </form>
