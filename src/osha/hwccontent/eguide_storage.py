@@ -7,6 +7,10 @@ from plone.supermodel import model
 from zope import schema
 from osha.hwccontent import vocabularies
 from osha.hwccontent.behaviors.moreabout import CustomTableWidgetFactory
+from slc.xliff.interfaces import IAttributeExtractor
+from slc.xliff.adapters.dx import BaseDXAttributeExtractor
+from zope.component import adapts
+from zope.interface import implements
 
 
 class ITableRowSchema(form.Schema):
@@ -70,3 +74,10 @@ class IEguideStorage(model.Schema):
             schema=ITableRowSchema,),
     )
     form.widget(eguides=CustomTableWidgetFactory)
+
+
+class EguideAttributeExtractor(BaseDXAttributeExtractor):
+    """ Adapter to retrieve attributes for the eguide storage"""
+    implements(IAttributeExtractor)
+    adapts(IEguideStorage)
+    attrs = ['title', 'text', 'generic_eguide_text', 'instructions_text']
