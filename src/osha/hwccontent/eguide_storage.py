@@ -57,7 +57,7 @@ class IEguideStorage(model.Schema):
 
     online_version_url = schema.TextLine(
         title=u"URL schema for online version",
-        default=u"http://eguides.osha.europa.eu/stress/eGuide-Stress-{country}-{language}",
+        default=u"http://eguides.osha.europa.eu/stress/{country}-{language}",
     )
 
     offline_version_url = schema.TextLine(
