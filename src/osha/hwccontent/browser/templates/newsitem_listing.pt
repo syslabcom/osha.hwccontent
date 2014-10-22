@@ -6,73 +6,73 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<body>
-<metal:block fill-slot="content-core" tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
+  <body>
+    <metal:block fill-slot="content-core" tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
 
-    <tal:batch define="batch view/get_batched_news_items">
+      <tal:batch define="batch view/get_batched_news_items">
         <div class="tileItem row-fluid visualIEFloatFix" tal:repeat="item batch">
-            <tal:item define="
-                    first repeat/item/start;
-                    number repeat/item/number;
-                    first python: ' first' if first else '';
-                    last repeat/item/end;
-                    last python: ' last' if last else '';
-                    obj nocall:item/obj|nothing;
-                    attachment nocall:obj/attachment|nothing"
-                tal:attributes="class python:('newsItem' + first + last)">
+          <tal:item define="
+                            first repeat/item/start;
+                            number repeat/item/number;
+                            first python: ' first' if first else '';
+                            last repeat/item/end;
+                            last python: ' last' if last else '';
+                            obj nocall:item/obj|nothing;
+                            attachment nocall:obj/attachment|nothing"
+                    tal:attributes="class python:('newsItem' + first + last)">
 
 
-                <div class="tileImage" tal:condition="item/image|item/image_base64|nothing">
-                    <tal:if_blob tal:condition="item/image|nothing">
-                        <img src="" alt=""
-                            tal:define="scales obj/@@images;
-                                        scale python:scales.scale('image', 'large')"
-                            tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
-              <p class="discreet"
-                 tal:condition="item/image_caption|nothing"
-                 tal:content="structure item/image_caption" >
-              </p>
-                    </tal:if_blob>
-
-                    <tal:if_base64 tal:condition="item/image_base64|nothing">
-                        <img src="" alt="" class="tileImage"
-                            tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
-                    </tal:if_base64>
-                </div>
-
-                <h2 class="tileHeadline"><a name="1" tal:attributes="name number"></a><span tal:replace="item/Title">Foo</span></h2>
-                <p class="metadata">
-                    <span tal:condition="python:view.can_edit(obj)">[<a tal:attributes="href string:${item/getURL}/edit">Edit</a>]</span>
-                    <em tal:define="date item/Date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
+            <div class="tileImage" tal:condition="item/image|item/image_base64|nothing">
+              <tal:if_blob tal:condition="item/image|nothing">
+                <img src="" alt=""
+                     tal:define="scales obj/@@images;
+                                 scale python:scales.scale('image', 'large')"
+                     tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
+                <p class="discreet"
+                   tal:condition="item/image_caption|nothing"
+                   tal:content="structure item/image_caption" >
                 </p>
-                <tal:if_remote condition="item/remote_item|nothing">
-                    <p class="description" tal:content="structure item/Description"></p>
-                </tal:if_remote>
+              </tal:if_blob>
 
-                <tal:if_local condition="not:item/remote_item|nothing">
-                    <p class="description" tal:content="item/Description|nothing"></p>
-                </tal:if_local>
-                <p tal:content="structure item/text">Text</p>
+              <tal:if_base64 tal:condition="item/image_base64|nothing">
+                <img src="" alt="" class="tileImage"
+                     tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
+              </tal:if_base64>
+            </div>
 
-                <span tal:condition="attachment">
-                    <p tal:define="content_type attachment/contentType|nothing;
-                                 v python:context.restrictedTraverse('contenttype_utils')">
-                        <a tal:attributes="href string:${obj/absolute_url}/@@download/attachment/${attachment/filename}">
-                            <img tal:attributes="src python: v.getMimeTypeIcon(attachment);
-                                                 alt content_type;" border="0"  />
-                            <tal:name tal:content="attachment/filename" >Filename</tal:name>
-                        </a>
-                        <span class="discreet"
-                              tal:define="size attachment/getSize;
-                                          kb python:size/1024">
-                              &mdash; <span tal:replace="kb" /> KB</span>
-                    </p>
-                </span>
+            <h2 class="tileHeadline"><a name="1" tal:attributes="name number"></a><span tal:replace="item/Title">Foo</span></h2>
+            <p class="metadata">
+              <span tal:condition="python:view.can_edit(obj)">[<a tal:attributes="href string:${item/getURL}/edit">Edit</a>]</span>
+              <em tal:define="date item/Date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
+            </p>
+            <tal:if_remote condition="item/remote_item|nothing">
+              <p class="description" tal:content="structure item/Description"></p>
+            </tal:if_remote>
 
-            </tal:item>
+            <tal:if_local condition="not:item/remote_item|nothing">
+              <p class="description" tal:content="item/Description|nothing"></p>
+            </tal:if_local>
+            <p tal:content="structure item/text">Text</p>
+
+            <span tal:condition="attachment">
+              <p tal:define="content_type attachment/contentType|nothing;
+                             v python:context.restrictedTraverse('contenttype_utils')">
+                <a tal:attributes="href string:${obj/absolute_url}/@@download/attachment/${attachment/filename}">
+                  <img tal:attributes="src python: v.getMimeTypeIcon(attachment);
+                                       alt content_type;" border="0"  />
+                  <tal:name tal:content="attachment/filename" >Filename</tal:name>
+                </a>
+                <span class="discreet"
+                      tal:define="size attachment/getSize;
+                                  kb python:size/1024">
+                &mdash; <span tal:replace="kb" /> KB</span>
+              </p>
+            </span>
+
+          </tal:item>
         </div>
         <div metal:use-macro="context/batch_macros/macros/navigation" />
-    </tal:batch>
-</metal:block>
-</body>
+      </tal:batch>
+    </metal:block>
+  </body>
 </html>
