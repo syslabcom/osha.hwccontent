@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+  <body>
+
+    <metal:title fill-slot="content-title"
+                 tal:define="global item python:view.get_remote_news_item(request.form.get('path'))">
+        <h1 class="documentFirstHeading" tal:content="item/Title|string: Error: No article found"></h1>
+    </metal:title>
+
+    <metal:content-core fill-slot="content-core">
+      <tal:item_exists condition="item">
+        <div class="newsImageContainer"
+             tal:condition="item/image_base64|nothing">
+          <a href="#"
+             tal:define="here_url context/@@plone_context_state/object_url"
+             tal:attributes="href string:${here_url}/images/image">
+            <img class='newsImage' tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
+
+            <p class="discreet"
+               tal:condition="context/image_caption|nothing"
+               tal:content="structure context/image_caption" >
+            </p>
+          </a>
+        </div>
+
+        <p class="documentDescription" tal:content="structure item/Description|nothing"></p>
+
+        <div id="parent-fieldname-text"
+             tal:condition="item/text"
+             tal:content="structure item/text" />
+      </tal:item_exists>
+    </metal:content-core>
+
+  </body>
+</html>
+
