@@ -91,6 +91,10 @@ class NotEnoughCountries(schema.ValidationError):
     __doc__ = (u"You need to have activity in at least %s countries" % MIN_COUNTRIES_OF_ACTIVITY)
 
 
+class NotImage(schema.ValidationError):
+    __doc__ = (u"The file doesn't seem to be an image, please try a JPEG, PNG or GIF instead.")
+
+
 def isEmail(value):
     if re.match('^' + EMAIL_RE, value):
         return True
@@ -127,6 +131,12 @@ def isActiveInMultipleCountries(value):
     if "Pan-European" in value:
         return True
     raise NotEnoughCountries
+
+
+def isImage(value):
+    if value.contentType.startswith("image"):
+        return True
+    raise NotImage
 
 
 class NonMissingSelectWidget(select.SelectWidget):
@@ -271,7 +281,8 @@ class IOrganisationBase(model.Schema):
         description=_(
             u"Please add an image with the company / organisation logo. "
             u"Please use a format suited for web display if possible (JPEG, "
-            u"PNG or GIF).")
+            u"PNG or GIF)."),
+        constraint=isImage,
     )
     directives.languageindependent('logo')
     formdirectives.omitted('logo')
@@ -279,6 +290,7 @@ class IOrganisationBase(model.Schema):
 
     ceo_image = NamedBlobImage(
         title=_(u"Photo of your CEO, President, General Director or other"),
+        constraint=isImage,
     )
     directives.languageindependent('ceo_image')
     formdirectives.omitted('ceo_image')
