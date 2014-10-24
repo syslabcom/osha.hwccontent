@@ -290,6 +290,7 @@ class IOrganisationBase(model.Schema):
 
     ceo_image = NamedBlobImage(
         title=_(u"Photo of your CEO, President, General Director or other"),
+        constraint=isImage,
     )
     directives.languageindependent('ceo_image')
     formdirectives.omitted('ceo_image')
