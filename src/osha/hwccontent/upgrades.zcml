@@ -31,4 +31,13 @@
 
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeStep
+      source="3"
+      destination="4"
+      title="Import the jsregistry"
+      description=""
+      profile="osha.hwccontent:default"
+      handler=".upgrades.install_jsregistry"
+      />
+
 </configure>

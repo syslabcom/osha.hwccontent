@@ -40,7 +40,9 @@
               </tal:if_base64>
             </div>
 
-            <h2 class="tileHeadline"><a name="1" tal:attributes="name number"></a><span tal:replace="item/Title">Foo</span></h2>
+            <tal:link define="url python:item.get('remote_item') and context.absolute_url_path()+'/remote-news-item?path='+item.get('path') or item.get('getURL')">
+              <h2 class="tileHeadline"><a name="1" tal:attributes="name number"></a><a tal:attributes="href url"><span tal:replace="item/Title">Foo</span></a></h2>
+            </tal:link>
             <p class="metadata">
               <span tal:condition="python:view.can_edit(obj)">[<a tal:attributes="href string:${item/getURL}/edit">Edit</a>]</span>
               <em tal:define="date item/Date" tal:content="python: toLocalizedTime(date)">2012-01-01</em>

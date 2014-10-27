@@ -1,0 +1,5 @@
+<div id="share">
+  <span class="fb-like" tal:attributes="data-href context/absolute_url"
+     data-layout="button_count" data-action="like" data-height="18" data-show-faces="true" data-share="true"></span>
+  <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+</div>

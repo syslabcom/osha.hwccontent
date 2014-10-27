@@ -40,3 +40,6 @@ def update_event_location(context):
         if not new.location:
             new.location = old.location
             event.reindexObject()
+
+def install_jsregistry(context):
+    context.runImportStepFromProfile('profile-osha.hwccontent:default', 'jsregistry',)
