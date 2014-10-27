@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="osha.hwc">
+<body class="subsection">
+    <metal:block fill-slot="main"
+                 tal:define="id request/id|nothing;
+                             toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                             folder python:here.aq_parent;">
+    <!-- <tal:set define="dummy python:request.RESPONSE.setHeader('X-Deliverance-Page-Class', 'general partner-detail')" /> -->
+        <tal:block>
+            <!-- <div tal:replace="structure provider:plone.abovecontenttitle" /> -->
+            <h1 id="title" class="documentFirstHeading">
+            <span id="parent-fieldname-title" tal:content="context/title">TITLE</span>
+            </h1>
+            <div tal:replace="structure provider:plone.belowcontenttitle" />
+            <div id="content-core">
+              <div class="row-fluid eguides_introtext">
+                <div class="span6">
+                  <div class="video-container">
+                    <iframe frameborder="0" height="270" src="https://www.youtube.com/embed/iBy4WaR14Bo" width="432"
+                      tal:attributes="src string:https://www.youtube.com/embed/${context/film_id}"></iframe>
+                  </div>
+                  <span id="download_text">
+                    <span tal:condition="context/generic_eguide_text" tal:content="structure context/generic_eguide_text/output">
+                      GENERIC EGUIDE TEXT
+                    </span>
+                     <p i18n:translate="eguide_link_instructions">
+                      Find <a href="#" tal:attributes="href string:${here/absolute_url}#instructions" i18n:name="eguide_label_instructions"><span i18n:translate="eguide_name_instructions" tal:omit-tag="">instructions on system requirements etc.</span></a> below.
+                    </p>
+                  </span>
+                </div>
+                <div class="span6" tal:condition="context/text"
+                  tal:content="structure context/text/output">
+                  TEXT
+                </div>
+              </div>
+
+              <h2 i18n:translate="access_national_tools" id="eguides_filter_intro" class="eguide_subheading">Access to the national versions of the e-guide</h2>
+              <div class="row-fluid" id="eguides_filter">
+                <p id="intro_filter" i18n:translate="filter_national_tools">Find the e-guide version that is relevant for you by filtering by country and / or language.</p>
+                <form id="content-filters"
+                      tal:define="eguides view/eguides;
+                                  current_language view/get_current_language">
+                    <select name="country">
+                        <option value="all" i18n:translate="label_all_countries">All Countries</option>
+                        <option tal:repeat="country view/get_countries"
+                            tal:content="country"
+                            tal:attributes="value country"></option>
+                    </select>
+                    <select name="language">
+                        <option value="all" i18n:translate="label_all_languages">All Languages</option>
+                        <option tal:repeat="lang python:view.get_languages().items()"
+                            tal:content="python:lang[1]"
+                            tal:attributes="value python:lang[0];
+                                            selected python:lang[0] == current_language"></option>
+                    </select>
+                    <div class="visualClear"></div>
+                    <div tal:repeat="eguide eguides"
+                        class="pat-depends"
+                        tal:attributes="data-pat-depends string:action:show;; condition:(country='${eguide/country}' or country=all) and (language=${eguide/language} or language=all)">
+                        <div class="country-lang">
+                            <img class="country" src="#" tal:attributes="src python:'%s/++theme++osha.hwctheme/HWManageStress_files/flags/%s.png' % (portal_url, eguide['flagname'])" />
+                            <nav class="tabs">
+                              <span class="country" tal:content="eguide/country">country</span>
+                              <span class="language" tal:content="eguide/language">language</span>
+                            </nav>
+                        </div>
+                        <div class="links">
+                          <a class="download" tal:attributes="href eguide/offline"><img width="45px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-zip.gif" /><span tal:omit-tag="" i18n:translate="label_download">Download</span></a>
+                          <a class="external" tal:attributes="href eguide/online" target="_new" i18n:translate="label_online_version">Online version</a>
+                        </div>
+                    </div>
+                </form>
+              </div>
+
+              <h2 id="eguides_instructions"><a name="instructions"></a><span i18n:translate="eguide_instructions" tal:omit-tag="">Instructions</span></h2>
+              <div class="row-fluid eguides_introtext">
+                <div class="span12" tal:condition="context/instructions_text"
+                  tal:content="structure context/instructions_text/output">
+                  INSTRUCTIONS
+                </div>
+              </div>
+          </div>
+        </tal:block>
+    </metal:block>
+  </body>
+</html>

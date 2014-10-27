@@ -3,12 +3,8 @@ from Products.CMFCore.interfaces import ISiteRoot
 from StringIO import StringIO
 from five import grok
 from plone import api
+from osha.hwccontent import OrderedDict
 from osha.hwccontent import vocabularies
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from ordereddict import OrderedDict
 
 
 def get_partners():

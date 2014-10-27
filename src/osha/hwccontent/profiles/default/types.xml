@@ -3,6 +3,7 @@
  <object name="osha.hwccontent.organisation" meta_type="Dexterity FTI" />
  <object name="osha.hwccontent.focalpoint" meta_type="Dexterity FTI" />
  <object name="osha.hwccontent.mediapartner" meta_type="Dexterity FTI" />
+ <object name="osha.hwccontent.eguide_storage" meta_type="Dexterity FTI" />
  <object name="Event" meta_type="Dexterity FTI" />
  <object name="Document" meta_type="Dexterity FTI" />
  <object name="Folder" meta_type="Dexterity FTI" />
