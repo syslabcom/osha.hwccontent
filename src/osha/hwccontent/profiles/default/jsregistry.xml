@@ -28,4 +28,13 @@
       inline="False"
       />
 
+  <javascript
+      cacheable="True"
+      compression="safe"
+      cookable="False"
+      enabled="True"
+      id="++resource++osha.hwccontent/share.js"
+      inline="False"
+      />
+
 </object>
