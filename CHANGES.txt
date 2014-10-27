@@ -1,11 +1,17 @@
 Changelog
 =========
 
-1.0.8 (unreleased)
+1.0.9 (unreleased)
 ------------------
 
 - Nothing changed yet.
 
+
+1.0.8 (2014-10-24)
+------------------
+
+- Add a constraint on Organisation to make sure only valid images are
+  added, refs #10831 [deroiste]
 
 1.0.7 (2014-09-19)
 ------------------
