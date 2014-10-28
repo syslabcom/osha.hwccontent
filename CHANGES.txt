@@ -4,7 +4,9 @@ Changelog
 1.0.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add e-guide section #10700 [jcbrand, pysailor]
+- Add individual news view #10811 [deroiste, pysailor]
+- Report real author's email in submission notification #10737 [pysailor]
 
 
 1.0.8 (2014-10-24)
