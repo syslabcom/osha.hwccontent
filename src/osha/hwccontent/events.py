@@ -22,6 +22,7 @@ from plone.app.contenttypes.interfaces import (
 from plone import api
 from plone.dexterity.interfaces import IDexterityContent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 import logging
 
 log = logging.getLogger(__name__)
@@ -296,11 +297,13 @@ def handle_wf_transition_partners(obj, event):
 
 @grok.subscribe(IEvent, IBeforeTransitionEvent)
 @grok.subscribe(IEvent, IObjectModifiedEvent)
+@grok.subscribe(IEvent, IObjectRemovedEvent)
 def handle_event_edited(obj, event):
     utils.invalidate_storage_cachekey('event')
 
 
 @grok.subscribe(INewsItem, IBeforeTransitionEvent)
 @grok.subscribe(INewsItem, IObjectModifiedEvent)
+@grok.subscribe(INewsItem, IObjectRemovedEvent)
 def handle_newsitem_edited(obj, event):
     utils.invalidate_storage_cachekey('newsitem')
