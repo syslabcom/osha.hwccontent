@@ -22,6 +22,7 @@ from plone.app.contenttypes.interfaces import (
 from plone import api
 from plone.dexterity.interfaces import IDexterityContent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 import logging
 
 log = logging.getLogger(__name__)
@@ -40,8 +41,13 @@ class MailTemplateBase(grok.View):
         self.creator_name = context.key_name
         self.organisation_type = getattr(context, 'organisation_type', '')
         self.content_type = context.Type()
-        self.creator_email = "%(name)s <%(email)s>" % dict(
-            name=context.key_name, email=context.key_email)
+        member = api.user.get_current()
+        email = member.getProperty('email')
+        fullname = member.getProperty('fullname')
+        warning = context.key_email != email and " (NOT the profile's key user %(name)s <%(email)s>)" % dict(
+            typ=self.content_type, name=context.key_name, email=context.key_email) or ""
+        self.creator_email = "%(name)s <%(email)s>%(warning)s" % dict(
+            name=fullname, email=email, warning=warning)
         self.from_addr = "%(name)s <%(email)s>" % dict(
             name=portal.getProperty('email_from_name', ''),
             email=portal.getProperty('email_from_address', ''))
@@ -291,11 +297,13 @@ def handle_wf_transition_partners(obj, event):
 
 @grok.subscribe(IEvent, IBeforeTransitionEvent)
 @grok.subscribe(IEvent, IObjectModifiedEvent)
+@grok.subscribe(IEvent, IObjectRemovedEvent)
 def handle_event_edited(obj, event):
     utils.invalidate_storage_cachekey('event')
 
 
 @grok.subscribe(INewsItem, IBeforeTransitionEvent)
 @grok.subscribe(INewsItem, IObjectModifiedEvent)
+@grok.subscribe(INewsItem, IObjectRemovedEvent)
 def handle_newsitem_edited(obj, event):
     utils.invalidate_storage_cachekey('newsitem')

@@ -56,6 +56,7 @@ class ListingView(BrowserView):
                 mode,
                 b_start,
                 date,
+                self.request.get('SERVER_URL', ''),
             )
             return key
 

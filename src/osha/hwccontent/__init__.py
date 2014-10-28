@@ -11,6 +11,12 @@ _ = MessageFactory("osha.hwc")
 # i18n messages that i18nextract misses for some reason can be listed here
 # Rather, use manual_translations.py for this
 
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
+
+
 # import monkey patches to make sure they are active
 import patch_event
 import patch_namedfil

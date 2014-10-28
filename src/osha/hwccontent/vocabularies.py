@@ -1,20 +1,59 @@
-from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+# -*- coding: utf-8 -*-
 from osha.hwccontent import _
+from osha.hwccontent import OrderedDict
+from Products.CMFCore.utils import getToolByName
+from zope.component.hooks import getSite
+from zope.interface import implementer
+from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
-COUNTRIES = [
-    'Pan-European',
-    'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus',
-    'Czech Republic', 'Denmark', 'Estonia', 'Finland',
-    'France', 'Germany', 'Greece', 'Hungary', 'Iceland',
-    'Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania',
-    'Luxembourg', 'Malta', 'Netherlands', 'Norway', 'Poland',
-    'Portugal', 'Romania', 'Slovakia', 'Slovenia',
-    'Spain', 'Sweden', 'Switzerland', 'United Kingdom',
-]
+
+# Note: I assign the fake id AA to Pan-European to make it appear at the top
+# when ordering by code.
+COUNTRIES = {
+    'AA': 'Pan-European',
+    'AT': 'Austria',
+    'BE': 'Belgium',
+    'BG': 'Bulgaria',
+    'CH': 'Switzerland',
+    'CY': 'Cyprus',
+    'CZ': 'Czech Republic',
+    'DE': 'Germany',
+    'DK': 'Denmark',
+    'EE': 'Estonia',
+    'ES': 'Spain',
+    'FI': 'Finland',
+    'FR': 'France',
+    'GB': 'United Kingdom',
+    'GR': 'Greece',
+    'HR': 'Croatia',
+    'HU': 'Hungary',
+    'IE': 'Ireland',
+    'IS': 'Iceland',
+    'IT': 'Italy',
+    'LI': 'Liechtenstein',
+    'LT': 'Lithuania',
+    'LU': 'Luxembourg',
+    'LV': 'Latvia',
+    'MT': 'Malta',
+    'NL': 'Netherlands',
+    'NO': 'Norway',
+    'PO': 'Poland',
+    'PT': 'Portugal',
+    'RO': 'Romania',
+    'SE': 'Sweden',
+    'SI': 'Slovenia',
+    'SK': 'Slovakia',
+}
+
+ORDERED_COUNTRIES = OrderedDict(sorted(COUNTRIES.items(), key=lambda t: t[0]))
 
 countries = SimpleVocabulary(
-    [SimpleTerm(value=item, title=_(item)) for item in COUNTRIES]
+    [SimpleTerm(value=name, title=_(name)) for (code, name) in ORDERED_COUNTRIES.items()]
 )
+
+countries_with_ids = SimpleVocabulary(
+    [SimpleTerm(value=code, title=_(name)) for (code, name) in ORDERED_COUNTRIES.items()])
 
 ORG_TYPES = [
     'Enterprises', 'Trade unions', 'Employer organisations',
@@ -59,3 +98,14 @@ MEDIA_READERSHIP = [
 
 media_readership = SimpleVocabulary(
     [SimpleTerm(value=item, title=item) for item in MEDIA_READERSHIP])
+
+
+@implementer(IVocabularyFactory)
+class LanguagesVocabulary(object):
+    """ """
+
+    def __call__(self, context):
+        site = getSite()
+        plt = getToolByName(site, "portal_languages")
+        return SimpleVocabulary(
+            [SimpleTerm(value=lang, title=name) for (lang, name) in plt.listSupportedLanguages()])

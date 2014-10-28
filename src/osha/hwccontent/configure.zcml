@@ -40,7 +40,21 @@
     <implements interface=".interfaces.IHWFolder" />
   </class>
 
+  <!-- xliff attribute extractor -->
+  <adapter factory=".eguide_storage.EguideAttributeExtractor" />
+
   <!-- indexers -->
   <adapter name="location" factory=".indexers.location" />
+
+  <browser:viewlet
+    name="share"
+    for="*"
+    manager="plone.app.layout.viewlets.interfaces.IBelowContentTitle"
+    template="templates/share.pt"
+    permission="zope2.View"
+    />
+
+      <utility name="osha.languages"
+             factory=".vocabularies.LanguagesVocabulary" />
 
 </configure>

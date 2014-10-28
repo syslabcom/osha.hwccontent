@@ -7,15 +7,11 @@ from zope.interface import implements
 from Acquisition import aq_parent
 from Products.Five.browser import BrowserView
 
+from osha.hwccontent import OrderedDict
 from osha.hwccontent.browser.utils import get_partners, css_by_orientation
 from osha.hwccontent.interfaces import IFullWidth
 
 import random
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from ordereddict import OrderedDict
 
 
 class FilesView(BrowserView):
