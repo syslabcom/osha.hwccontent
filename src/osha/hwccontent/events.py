@@ -40,8 +40,13 @@ class MailTemplateBase(grok.View):
         self.creator_name = context.key_name
         self.organisation_type = getattr(context, 'organisation_type', '')
         self.content_type = context.Type()
-        self.creator_email = "%(name)s <%(email)s>" % dict(
-            name=context.key_name, email=context.key_email)
+        member = api.user.get_current()
+        email = member.getProperty('email')
+        fullname = member.getProperty('fullname')
+        warning = context.key_email != email and " (NOT the profile's key user %(name)s <%(email)s>)" % dict(
+            typ=self.content_type, name=context.key_name, email=context.key_email) or ""
+        self.creator_email = "%(name)s <%(email)s>%(warning)s" % dict(
+            name=fullname, email=email, warning=warning)
         self.from_addr = "%(name)s <%(email)s>" % dict(
             name=portal.getProperty('email_from_name', ''),
             email=portal.getProperty('email_from_address', ''))
