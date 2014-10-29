@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.11 (unreleased)
+1.0.11 (2014-10-29)
 -------------------
 
 - Don't place a link around images in the remote_news_view, since it will be broken [pysailor]
