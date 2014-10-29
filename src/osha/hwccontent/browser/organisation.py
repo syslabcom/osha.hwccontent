@@ -108,6 +108,9 @@ class OrganisationManage(ViewletBase):
         self.wfstatetitle = workflow.getTitleForStateOnType(
             self.wfstate, self.context.portal_type)
         self.owner = getattr(self.context, 'key_email', '') == user_email
+        self.creator_email = self.context.Creator()
+        user = api.user.get(self.creator_email)
+        self.creator_name = user and user.getProperty('fullname') or ''
 
         self.available = self.can_review or self.can_edit or self.owner
         self.completed = (
