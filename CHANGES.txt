@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.10 (unreleased)
+1.0.10 (2014-10-29)
 -------------------
 
 - On News / Events, show the creator's name #10737 [pysailor]
