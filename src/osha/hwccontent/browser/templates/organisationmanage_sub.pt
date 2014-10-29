@@ -4,6 +4,7 @@
 
     <div tal:condition="python:view.can_edit or view.can_review or view.owner" id="plone-contentmenu-workflow">
         The current workflow state is: <em tal:attributes="class string:state-${view/wfstate}" tal:content="view/wfstatetitle">state</em><br/>
+        <tal:reviewer condition="view/can_review">Creator: <span tal:replace="view/creator_name"/> <a href="" tal:attributes="href string:${here_url}/author/${view/creator_email}" tal:content="view/creator_email">email</a><br /></tal:reviewer>
         <!--p tal:condition="python:view.can_edit and not view.can_review and view.wfstate=='private'" class="callout">
              <a tal:attributes="href view/wfactions/submit/url" i18n:translate="">Submit this <tal:contenttype i18n:name="contenttype" tal:content="view/contenttype">Event</tal:contenttype> for publication</a><br />
         </p-->
