@@ -33,16 +33,13 @@ _ = MessageFactory('will-not-be-translated')
 
 
 INTRO_TEXT_PHASE_1 = _(
+    u"<p style='color: red; font-weight:bold'>The deadline to apply for the HWC "
+    u"2014-15 partnership is over. Applications are not possible any more.</p>"
     u"<p>Please fill in the 2-pages form to apply to become an Official "
     u"Campaign Partner (OCP) of the Healthy Workplaces Campaign 2014-15 on "
     u"‘Healthy workplaces manage stress’.</p>"
     u"<p>Once your application is accepted, you will be notified and asked to "
     u"log in and complete an additional section of the application form.</p>"
-    u"<p style='color: red'>DEADLINE TO APPLY FOR THE NEXT AND FINAL ROUND: 31 "
-    u"OCTOBER 2014</p>"
-    u"<p style='color: red;font-weight: bold;'>Only Pan-European or "
-    u"international organisations / companies are eligible for the "
-    u"European Campaign Partnership.</p>"
     u"<p>Fill in ALL required fields (they are marked with a red dot).</p>"
     u"<p><a href='https://www.healthy-workplaces.eu/en/get-involved/"
     u"become-an-official-campaign-partner/campaign-partnership-offer.pdf' "
