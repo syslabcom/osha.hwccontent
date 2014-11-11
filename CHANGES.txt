@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.13 (unreleased)
+1.0.13 (2014-11-11)
 -------------------
 
 - Bugfix on eguide page #10700 for the ZIP icon [pysailor]
