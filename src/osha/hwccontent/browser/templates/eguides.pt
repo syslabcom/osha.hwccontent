@@ -70,7 +70,7 @@
                             </nav>
                         </div>
                         <div class="links">
-                          <a class="download" tal:attributes="href eguide/offline"><img width="45px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-zip.gif" /><span tal:omit-tag="" i18n:translate="label_download">Download</span></a>
+                          <a class="download" tal:attributes="href eguide/offline"><img width="45px" tal:attributes="src string:${portal_url}/++theme++osha.hwctheme/HWManageStress_files/images/mat-zip.gif" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-zip.gif" /><span tal:omit-tag="" i18n:translate="label_download">Download</span></a>
                           <a class="external" tal:attributes="href eguide/online" target="_new" i18n:translate="label_online_version">Online version</a>
                         </div>
                     </div>
