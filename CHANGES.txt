@@ -4,8 +4,10 @@ Changelog
 1.0.14 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- In #10737 we had changed how the sender's email address is computed for
+  notification emails. However that change was too general. It should only have
+  affetcted submiting news and events. This led to bug #10917. Also we fix bug
+  #10918 here [pysailor]
 
 1.0.13 (2014-11-11)
 -------------------
