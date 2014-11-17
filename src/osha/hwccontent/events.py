@@ -2,6 +2,7 @@
 
 from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
 from Products.DCWorkflow.interfaces import IBeforeTransitionEvent
 from five import grok
 from zope.app.container.interfaces import IObjectAddedEvent
@@ -41,13 +42,8 @@ class MailTemplateBase(grok.View):
         self.creator_name = context.key_name
         self.organisation_type = getattr(context, 'organisation_type', '')
         self.content_type = context.Type()
-        member = api.user.get_current()
-        email = member.getProperty('email')
-        fullname = member.getProperty('fullname')
-        warning = context.key_email != email and " (NOT the profile's key user %(name)s <%(email)s>)" % dict(
-            typ=self.content_type, name=context.key_name, email=context.key_email) or ""
-        self.creator_email = "%(name)s <%(email)s>%(warning)s" % dict(
-            name=fullname, email=email, warning=warning)
+        self.creator_email = "%(name)s <%(email)s>" % dict(
+            name=context.key_name, email=context.key_email)
         self.from_addr = "%(name)s <%(email)s>" % dict(
             name=portal.getProperty('email_from_name', ''),
             email=portal.getProperty('email_from_address', ''))
@@ -224,6 +220,26 @@ class OrganisationContentSubmittedMailTemplate(MailTemplateBase):
     grok.context(IDexterityContent)
     grok.layer(IOSHAHWCContentLayer)
     grok.require('cmf.ReviewPortalContent')
+
+    def __init__(self, context, request):
+        super(MailTemplateBase, self).__init__(context, request)
+        portal = getToolByName(context, 'portal_url').getPortalObject()
+        self.object_url = context.absolute_url()
+        self.folder_url = aq_parent(context).absolute_url()
+        self.portal_url = portal.absolute_url()
+        self.creator_name = context.key_name
+        self.organisation_type = getattr(context, 'organisation_type', '')
+        self.content_type = context.Type()
+        member = api.user.get_current()
+        email = safe_unicode(member.getProperty('email'))
+        fullname = safe_unicode(member.getProperty('fullname'))
+        warning = context.key_email != email and " (NOT the profile's key user %(name)s <%(email)s>)" % dict(
+            typ=self.content_type, name=context.key_name, email=context.key_email) or ""
+        self.creator_email = "%(name)s <%(email)s>%(warning)s" % dict(
+            name=fullname, email=email, warning=warning)
+        self.from_addr = "%(name)s <%(email)s>" % dict(
+            name=portal.getProperty('email_from_name', ''),
+            email=portal.getProperty('email_from_address', ''))
 
     def render(self, parent):
         self.subject = 'Content submitted'
