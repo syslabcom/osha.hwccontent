@@ -59,7 +59,7 @@ class PressReleaseListing(ListingView):
         """
         items = []
         lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
-        qurl = '%s/%s/jsonfeed?portal_type=PressRelease&Subject=%s&path=/osha/portal/%s&Language=%s' \
+        qurl = '%s/%s/jsonfeed?portal_type=PressRelease&Subject=%s&path=/%s&Language=%s' \
             % (self.osha_json_url, lang, self.remote_press_release_query_tags, lang, lang)
 
         result = urlopen(qurl)
