@@ -2,9 +2,8 @@ Changelog
 =========
 
 1.0.15 (unreleased)
--------------------
-
-- Nothing changed yet.
+- #10929 Fix path parameter for @@jsonfeed to return translated press
+  releases [deroiste]
 
 
 1.0.14 (2014-11-17)
