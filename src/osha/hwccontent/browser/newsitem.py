@@ -3,6 +3,7 @@ from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCatalog.interfaces import ICatalogBrain
 from five import grok
 from json import load
+from osha.hwccontent import log
 from osha.hwccontent.browser.mixin import ListingView
 from osha.hwccontent.interfaces import IFullWidth
 from plone import api
@@ -43,6 +44,7 @@ class NewsItemListing(ListingView):
         lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
         qurl = '%s/%s/jsonfeed?portal_type=News%%20Item&Subject=%s&path=/%s&Language=%s' \
             % (self.osha_json_url, lang, self.remote_news_query_tags, lang, lang)
+        log.info("Fetching NEWS from {0}".format(qurl))
 
         result = urlopen(qurl)
         if result.code == 200:
