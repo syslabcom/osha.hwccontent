@@ -1,6 +1,7 @@
 # _+- coding: utf-8 -*-
 
 from Acquisition import aq_parent
+from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from Products.DCWorkflow.interfaces import IBeforeTransitionEvent
@@ -323,3 +324,11 @@ def handle_event_edited(obj, event):
 @grok.subscribe(INewsItem, IObjectRemovedEvent)
 def handle_newsitem_edited(obj, event):
     utils.invalidate_storage_cachekey('newsitem')
+
+
+@grok.subscribe(INewsItem, IBeforeTransitionEvent)
+def update_effective_date(obj, event):
+    if not event.transition:
+        return
+    if event.transition.id == "publish":
+        obj.setEffectiveDate(DateTime())
