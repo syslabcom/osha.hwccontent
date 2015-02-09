@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.16 (unreleased)
+1.0.16 (2015-02-09)
 -------------------
 
 - Update the EffectiveDate when a news item is published #11377 [deroiste]
