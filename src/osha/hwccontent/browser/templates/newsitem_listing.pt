@@ -22,7 +22,7 @@
                     tal:attributes="class python:('newsItem' + first + last)">
 
 
-            <div class="tileImage" tal:condition="item/image|item/image_base64|nothing">
+            <div class="tileImage" tal:condition="item/image|item/remote_image|nothing">
               <tal:if_blob tal:condition="item/image|nothing">
                 <img src="" alt=""
                      tal:define="scales obj/@@images;
@@ -34,13 +34,13 @@
                 </p>
               </tal:if_blob>
 
-              <tal:if_base64 tal:condition="item/image_base64|nothing">
+              <tal:if_image_url tal:condition="item/remote_image|nothing">
                 <img src="" alt="" class="tileImage"
-                     tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
-              </tal:if_base64>
+                     tal:attributes="src string:${item/remote_image}" />
+              </tal:if_image_url>
             </div>
 
-            <tal:link define="url python:item.get('remote_item') and context.absolute_url_path()+'/remote-news-item?path='+item.get('path') or item.get('getURL')">
+            <tal:link define="url python:item.get('remote_item') and context.absolute_url_path()+'/remote-news-item?node_id='+item.get('node_id') or item.get('getURL')">
               <h2 class="tileHeadline"><a name="1" tal:attributes="name number"></a><a tal:attributes="href url"><span tal:replace="item/Title">Foo</span></a></h2>
             </tal:link>
             <p class="metadata">

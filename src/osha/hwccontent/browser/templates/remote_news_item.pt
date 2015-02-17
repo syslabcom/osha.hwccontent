@@ -15,8 +15,8 @@
     <metal:content-core fill-slot="content-core">
       <tal:item_exists condition="item">
         <div class="newsImageContainer"
-             tal:condition="item/image_base64|nothing">
-            <img class='newsImage' tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
+             tal:condition="item/remote_image|nothing">
+            <img class='newsImage' tal:attributes="src item/remote_image" />
 
             <p class="discreet"
                tal:condition="context/image_caption|nothing"

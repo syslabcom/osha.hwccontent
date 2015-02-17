@@ -24,7 +24,6 @@ from plone.multilingual.interfaces import (
 )
 from osha.hwccontent.interfaces import IEventAccessor
 from pytz import timezone
-from urllib import urlencode
 from urllib import urlopen
 from zope.interface import implements
 from zope.component.hooks import getSite
@@ -37,7 +36,7 @@ def isotime2dt(isotime, tz):
         spec = isotime.rsplit(separator, 1)[0]
     else:
         spec = isotime
-    dt = datetime.strptime(spec, '%Y-%m-%dT%H:%M:%S')
+    dt = datetime.strptime(spec, '%d/%m/%Y')
     return tz.localize(dt)
 
 
@@ -50,45 +49,50 @@ class JSONEventAccessor(object):
 
     def __init__(self, kw, context):
         self.context = ImplicitAcquisitionWrapper(self, context)
-        self.created = kw['creation_date']
-        self.last_modified = kw['modification_date']
-        self.url = kw['_url']
+        #self.created = kw['creation_date']
+        #self.last_modified = kw['modification_date']
+        self.url = kw['path']
         self.title = kw['title']
         self.description = u''
 
-        tz = kw['startDate'][-6:]
-        minutes = tz[-2:]
-        hours = tz[-5:-3]
-        seconds = int(minutes) * 60 + int(hours) * 3600
-        if tz[0] == '-':
-            seconds = -seconds
-        offset = timedelta(seconds=seconds)
+        # TODO: see if we can get the correct tz
+        # tz = kw['start_date'][-6:]
+        # tz = " GMT+1"
+        # minutes = tz[-2:]
+        # hours = tz[-5:-3]
+        # seconds = int(minutes) * 60 + int(hours) * 3600
+        # if tz[0] == '-':
+        #     seconds = -seconds
+        # offset = timedelta(seconds=seconds)
 
         # We try CET first, because it's most common, and if none works, we use CET anyway.
         # So Brussels should be both first and last in this list:
-        for tzname in ['Europe/Brussels', 'Europe/London', 'Europe/Helsinki', 'Atlantic/Reykjavik']:  # , 'Europe/Brussels']:
-            zone = timezone(tzname)
-            if tz[0] not in '-+':
-                # Naive date time, just assume CET
-                break
+        # for tzname in ['Europe/Brussels', 'Europe/London', 'Europe/Helsinki', 'Atlantic/Reykjavik']:
+        #     zone = timezone(tzname)
+        #     if tz[0] not in '-+':
+        #         # Naive date time, just assume CET
+        #         break
 
-            # Verify this:
-            if isotime2dt(kw['startDate'], zone).utcoffset() == offset:
-                break
+        #     # Verify this:
+        #     if isotime2dt(kw['start_date'], zone).utcoffset() == offset:
+        #         break
 
-        self.start = isotime2dt(kw['startDate'], zone)
-        self.end = isotime2dt(kw['endDate'], zone)
+        # FIXME temporary hardcoding the tz
+        tzname = "Europe/Brussels"
+        zone = timezone(tzname)
+        self.start = isotime2dt(kw['start_date'], zone)
+        self.end = isotime2dt(kw['end_date'], zone)
         self.timezone = tzname
 
-        self.location = kw['location']
-        self.attendees = kw['attendees']
-        self.contact_name = kw['contactName']
-        self.contact_email = kw['contactEmail']
-        self.contact_phone = kw['contactPhone']
-        self.event_url = kw['eventUrl']
-        self.subjects = kw['subject']
-        self.text = kw['text']
-        self.organiser = kw['description']
+        self.location = kw['City']
+        self.attendees = kw['number_of_attendees']  # not used anyway
+        self.contact_name = kw['agency_initial_contact']
+        self.contact_email = kw['agency_contact_reply']
+        self.contact_phone = ""
+        self.event_url = kw['website_of_event']
+        self.subjects = kw['category'].split(",")
+        self.text = kw['body']
+        self.organiser = kw['comments_summary_after_eve']
 
         if kw.get('attachment', None):
             self.attachment = True
@@ -188,23 +192,27 @@ class EventListing(ListingView, EventListing):
         """ Queries the OSHA corporate site for events.
             Items returned in JSON format.
         """
-        items = []
-        lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
-        start, end = self._start_end
-        q = {'portal_type': 'Event',
-             'Subject': self.remote_event_query_tags,
-             'path': '/osha/portal/' + lang,
-             'Language': lang}
-        if start:
-            q['start'] = start.strftime('%Y-%m-%dT%H:%M:%S%z')
-        if end:
-            q['end'] = end.strftime('%Y-%m-%dT%H:%M:%S%z')
+        params = {
+            'base_url': self.osha_json_url,
+            'lang': api.portal.get_tool("portal_languages").getPreferredLanguage(),
+            'query_tags': self.remote_event_query_tags,
+        }
 
-        qurl = '%s/%s/jsonfeed?' % (self.osha_json_url, lang)
-        qurl += urlencode(q)
+        date_range = ""
+        start, end = self._start_end
+        if start:
+            date_range = "&start_date[value][date]=" + start.strftime('%d/%m/%Y')
+        if end:
+            date_range += "&end_date[value][date]=" + end.strftime('%d/%m/%Y')
+        params["date_range"] = date_range
+
+        qurl = '{base_url}/{lang}/services/hw/events/{query_tags}?{date_range}'.format(**params)
+        items = []
         result = urlopen(qurl)
         if result.code == 200:
-            for item in load(result):
+            json = load(result)
+            for node in json.get("nodes"):
+                item = node.get("node")
                 items.append(JSONEventAccessor(item, self))
         return items
 

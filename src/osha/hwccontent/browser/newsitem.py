@@ -13,7 +13,6 @@ from time import time
 from urllib import urlopen
 from zope.interface import Interface
 from zope.interface import implements
-import base64
 
 grok.templatedir("templates")
 
@@ -40,23 +39,27 @@ class NewsItemListing(ListingView):
             Items returned in JSON format.
         """
         items = []
-        lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
-        qurl = '%s/%s/jsonfeed?portal_type=News%%20Item&Subject=%s&path=/%s&Language=%s' \
-            % (self.osha_json_url, lang, self.remote_news_query_tags, lang, lang)
-
+        params = {
+            "base_url": self.osha_json_url,
+            "lang": api.portal.get_tool("portal_languages").getPreferredLanguage(),
+            "query_tags": self.remote_news_query_tags,
+        }
+        qurl = "{base_url}/{lang}/services/hw/news/{query_tags}".format(**params)
         result = urlopen(qurl)
         if result.code == 200:
-            for item in load(result):
+            json = load(result)
+            for node in json.get("nodes"):
+                item = node.get("node")
                 items.append({
                     'remote_item': True,
                     'Title': item['title'],
-                    'Date': item['effectiveDate'],
-                    'getURL': item['_url'],
-                    'path': item['_path'],
-                    'Description': item.get('description', ''),
-                    'text': item.get('text', ''),
-                    'image_base64': item.get('image'),
-                    'image_content_type': item.get('image_type')
+                    'Date': item.get('publication_date', ''),
+                    'getURL': item.get('path'),
+                    'path': item.get('path'),
+                    'Description': item.get('summary', ''),
+                    'text': item.get('body', ''),
+                    'remote_image': item.get('image', ''),
+                    'node_id': item.get('nid'),
                 })
         return items
 
@@ -86,15 +89,18 @@ class NewsItemListing(ListingView):
             if ICatalogBrain.providedBy(items[i]):
                 item = items[i]
                 obj = item.getObject()
-                blob = getattr(obj.image, '_blob', None)
+                has_image = getattr(obj.image, '_blob', False)
+                image_url = ''
+                if has_image:
+                    image_url = obj.absolute_url() + "/@@images/image/preview"
                 items[i] = {
                     'Title': item.Title,
                     'Date': DateTime(item.Date).utcdatetime(),
                     'getURL': item.getURL(),
                     'Description': item.Description,
                     'text': obj.text and obj.text.output or "",
-                    'image': blob and base64.encodestring(blob.open().read()) or None,
-                    'image_caption': blob and obj.image_caption or '',
+                    'image_url': image_url,
+                    'image_caption': obj.image_caption if has_image else '',
                     'obj': obj,
                     'is_local': True,
                 }
@@ -122,39 +128,40 @@ class RemoteNewsItem(grok.View):
             'osha_json_url',
             'https://osha.europa.eu/'
         )
-        self.remote_news_query_tags = getattr(
-            properties.site_properties,
-            'remote_news_query_tags',
-            'stress,hw2014'
-        )
 
-    @ram.cache(lambda method, self, path: (path, time() // (60 * 60 * 24)))
-    def get_remote_news_item(self, path):
+    @ram.cache(lambda method, self, node_id: (node_id, time() // (60 * 60 * 24)))
+    def get_remote_news_item(self, node_id):
         """ Queries the OSHA corporate site for a particular news item, which is returned in JSON
         format.
 
         While it would be possible to cache the results of NewsItemListing.get_remote_news_items and
         look up the details for the relevant news item, it's complicated because the results are
-        batched. Caching for a day based on the path, should be sufficient.
+        batched. Caching for a day based on the node id, should be sufficient.
         """
         items = []
-        path = self.request.form.get("path")
+        node_id = self.request.form.get("node_id")
         lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
-        qurl = '%s/%s/jsonfeed?portal_type=News%%20Item&Subject=%s&path=/%s&Language=%s' \
-            % (self.osha_json_url, lang, self.remote_news_query_tags, path, lang)
+
+        params = {
+            "base_url": self.osha_json_url,
+            "lang": lang,
+            "node_id": node_id,
+        }
+        qurl = "{base_url}/{lang}/services/hw/news1/{node_id}".format(**params)
 
         result = urlopen(qurl)
         if result.code == 200:
-            for item in load(result):
+            json = load(result)
+            for node in json.get("nodes"):
+                item = node.get("node")
                 items.append({
                     'remote_item': True,
                     'Title': item['title'],
-                    'Date': item['effectiveDate'],
-                    'getURL': item['_url'],
-                    'Description': item.get('description', ''),
-                    'text': item.get('text', ''),
-                    'image_base64': item.get('image'),
-                    'image_content_type': item.get('image_type')
+                    'Date': item.get('publication_date', ''),
+                    'getURL': item.get('path'),
+                    'Description': item.get('summary', ''),
+                    'text': item.get('body', ''),
+                    'remote_image': item.get('image', ''),
                 })
         if len(items) > 0:
             return items.pop()
