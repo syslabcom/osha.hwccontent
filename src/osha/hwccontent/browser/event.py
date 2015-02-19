@@ -49,35 +49,10 @@ class JSONEventAccessor(object):
 
     def __init__(self, kw, context):
         self.context = ImplicitAcquisitionWrapper(self, context)
-        #self.created = kw['creation_date']
-        #self.last_modified = kw['modification_date']
         self.url = kw['path']
         self.title = kw['title']
         self.description = u''
 
-        # TODO: see if we can get the correct tz
-        # tz = kw['start_date'][-6:]
-        # tz = " GMT+1"
-        # minutes = tz[-2:]
-        # hours = tz[-5:-3]
-        # seconds = int(minutes) * 60 + int(hours) * 3600
-        # if tz[0] == '-':
-        #     seconds = -seconds
-        # offset = timedelta(seconds=seconds)
-
-        # We try CET first, because it's most common, and if none works, we use CET anyway.
-        # So Brussels should be both first and last in this list:
-        # for tzname in ['Europe/Brussels', 'Europe/London', 'Europe/Helsinki', 'Atlantic/Reykjavik']:
-        #     zone = timezone(tzname)
-        #     if tz[0] not in '-+':
-        #         # Naive date time, just assume CET
-        #         break
-
-        #     # Verify this:
-        #     if isotime2dt(kw['start_date'], zone).utcoffset() == offset:
-        #         break
-
-        # FIXME temporary hardcoding the tz
         tzname = "Europe/Brussels"
         zone = timezone(tzname)
         self.start = isotime2dt(kw['start_date'], zone)
@@ -93,25 +68,7 @@ class JSONEventAccessor(object):
         self.subjects = kw['category'].split(",")
         self.text = kw['body']
         self.organiser = kw['comments_summary_after_eve']
-
-        if kw.get('attachment', None):
-            self.attachment = True
-            self.attachment_content_type = kw.get('_attachment_content_type')
-            self.attachment_filename = kw.get('_attachment_filename')
-            mtr = getToolByName(context, "mimetypes_registry")
-            mime = list(mtr.lookup(self.attachment_content_type))
-            mime.append(mtr.lookupExtension(self.attachment_filename))
-            mime.append(mtr.lookup("application/octet-stream")[0])
-
-            portal_url = api.portal.get().absolute_url()
-            icon_paths = [m.icon_path for m in mime if m.icon_path]
-            if icon_paths:
-                self.attachment_icon = portal_url + "/" + icon_paths[0]
-            else:
-
-                self.attachment_icon = portal_url + "/" + guess_icon_path(mime[0])
-        else:
-            self.attachment = False
+        self.attachment = False
 
     # Unified create method via Accessor
     @classmethod
@@ -124,7 +81,7 @@ class JSONEventAccessor(object):
 
     @property
     def whole_day(self):
-        return False
+        return True
 
     @property
     def open_end(self):
