@@ -8,7 +8,7 @@
   <body>
 
     <metal:title fill-slot="content-title"
-                 tal:define="global item python:view.get_remote_news_item(request.form.get('path'))">
+                 tal:define="global item python:view.get_remote_news_item(request.get('node_id'))">
         <h1 class="documentFirstHeading" tal:content="item/Title|string: Error: No article found"></h1>
     </metal:title>
 

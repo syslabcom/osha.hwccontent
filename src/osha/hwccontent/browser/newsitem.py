@@ -139,7 +139,6 @@ class RemoteNewsItem(grok.View):
         batched. Caching for a day based on the node id, should be sufficient.
         """
         items = []
-        node_id = self.request.form.get("node_id")
         lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
 
         params = {
