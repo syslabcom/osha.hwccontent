@@ -43,10 +43,13 @@ class PublicationListing(ListingView):
                     filename = file_path.split("/")[-1]
                 else:
                     filename = ""
+                pd = item.get('publication_date', '')
                 items.append({
                     'remote_item': True,
                     'Title': item['title'],
-                    'Date': DateTime(item.get('publication_date', '')).utcdatetime(),
+                    'Date': (
+                        pd and DateTime(pd, datefmt="international").strftime(
+                            "%Y/%m/%d %H:%M") or ""),
                     'getURL': item.get('path'),
                     'path': item.get('path'),
                     'Description': item.get('body', ''),

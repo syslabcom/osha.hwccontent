@@ -50,10 +50,13 @@ class NewsItemListing(ListingView):
             json = load(result)
             for node in json.get("nodes"):
                 item = node.get("node")
+                pd = item.get('publication_date', '')
                 items.append({
                     'remote_item': True,
                     'Title': item['title'],
-                    'Date': item.get('publication_date', ''),
+                    'Date': (
+                        pd and DateTime(pd, datefmt="international").strftime(
+                            "%Y/%m/%d %H:%M") or ""),
                     'getURL': item.get('path'),
                     'path': item.get('path'),
                     'Description': item.get('summary', ''),
@@ -153,10 +156,13 @@ class RemoteNewsItem(grok.View):
             json = load(result)
             for node in json.get("nodes"):
                 item = node.get("node")
+                pd = item.get('publication_date', '')
                 items.append({
                     'remote_item': True,
                     'Title': item['title'],
-                    'Date': item.get('publication_date', ''),
+                    'Date': (
+                        pd and DateTime(pd, datefmt="international").strftime(
+                            "%Y/%m/%d %H:%M") or ""),
                     'getURL': item.get('path'),
                     'Description': item.get('summary', ''),
                     'text': item.get('body', ''),
