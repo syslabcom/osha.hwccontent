@@ -25,6 +25,8 @@
         </div>
 
         <p class="documentDescription" tal:content="structure item/Description|nothing"></p>
+        <em tal:define="date item/Date; toLocalizedTime nocall:context/@@plone/toLocalizedTime" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
+
 
         <div id="parent-fieldname-text"
              tal:condition="item/text"
