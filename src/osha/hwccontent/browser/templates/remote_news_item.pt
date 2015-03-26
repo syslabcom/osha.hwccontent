@@ -7,32 +7,34 @@
       i18n:domain="plone">
   <body>
 
-    <metal:title fill-slot="content-title"
-                 tal:define="global item python:view.get_remote_news_item(request.get('node_id'))">
-        <h1 class="documentFirstHeading" tal:content="item/Title|string: Error: No article found"></h1>
-    </metal:title>
+  <metal:main fill-slot="main" tal:define="item python:view.get_remote_news_item(request.get('node_id'))">
+    <tal:item_exists condition="item">
+      <div tal:replace="structure provider:plone.abovecontenttitle" />
+      <h1 class="documentFirstHeading" tal:content="item/Title|string: Error: No article found"></h1>
+      <div tal:replace="structure provider:plone.belowcontenttitle" />
 
-    <metal:content-core fill-slot="content-core">
-      <tal:item_exists condition="item">
-        <div class="newsImageContainer"
-             tal:condition="item/remote_image|nothing">
-            <img class='newsImage' tal:attributes="src item/remote_image" />
-
-            <p class="discreet"
-               tal:condition="context/image_caption|nothing"
-               tal:content="structure context/image_caption" >
-            </p>
-        </div>
-
+      <div id="contentext" class="span12">
         <p class="documentDescription" tal:content="structure item/Description|nothing"></p>
-        <em tal:define="date item/Date; toLocalizedTime nocall:context/@@plone/toLocalizedTime" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
+      </div>
+      <div id="content-core">
+          <div class="newsImageContainer"
+               tal:condition="item/remote_image|nothing">
+              <img class='newsImage' tal:attributes="src item/remote_image" />
 
+              <p class="discreet"
+                 tal:condition="context/image_caption|nothing"
+                 tal:content="structure context/image_caption" >
+              </p>
+          </div>
 
-        <div id="parent-fieldname-text"
-             tal:condition="item/text"
-             tal:content="structure item/text" />
+          <em class="newsdate" tal:define="date item/Date; toLocalizedTime nocall:context/@@plone/toLocalizedTime" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
+
+          <div id="parent-fieldname-text"
+               tal:condition="item/text"
+               tal:content="structure item/text" />
+        </div>
       </tal:item_exists>
-    </metal:content-core>
+    </metal:main>
 
   </body>
 </html>
