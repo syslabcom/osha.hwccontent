@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.17 (unreleased)
+1.0.17 (2015-06-07)
 -------------------
 
 - For remote News, Events, Press Releases and Publications, switch to
