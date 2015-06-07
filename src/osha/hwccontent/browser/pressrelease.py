@@ -57,24 +57,31 @@ class PressReleaseListing(ListingView):
         """ Queries the OSHA corporate site for press releases.
             Items returned in JSON format.
         """
-        items = []
-        lang = api.portal.get_tool("portal_languages").getPreferredLanguage()
-        qurl = '%s/%s/jsonfeed?portal_type=PressRelease&Subject=%s&path=/%s&Language=%s' \
-            % (self.osha_json_url, lang, self.remote_press_release_query_tags, lang, lang)
-
+        params = {
+            "base_url": self.osha_json_url,
+            "lang": api.portal.get_tool("portal_languages").getPreferredLanguage(),
+            "query_tags": self.remote_press_release_query_tags,
+        }
+        qurl = "{base_url}/{lang}/services/hw/pr/{query_tags}".format(**params)
+        print qurl
         result = urlopen(qurl)
+        items = []
         if result.code == 200:
-            for item in load(result):
+            json = load(result)
+            for node in json.get("nodes"):
+                item = node.get("node")
+                pd = item.get('publication_date', '')
                 items.append({
                     'remote_item': True,
                     'Title': item['title'],
-                    'Date': item['effectiveDate'],
-                    'getURL': item['_url'],
-                    'Description': item.get('description', ''),
-                    'image_base64': item.get('image'),
-                    'image_content_type': item.get('image_type'),
-                    'text': self.make_intro(self.make_plain_text(item)),
-
+                    'Date': (
+                        pd and DateTime(pd, datefmt="international").strftime(
+                            "%Y/%m/%d %H:%M") or ""),
+                    'getURL': item.get('path'),
+                    'Description': item.get('summary', ''),
+                    'text': self.make_intro(item.get('body')),
+                    'remote_image': item.get('image', ''),
+                    'node_id': item.get('nid'),
                 })
         return items
 

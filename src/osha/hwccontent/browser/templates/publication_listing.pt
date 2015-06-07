@@ -19,7 +19,7 @@
                 tal:attributes="class python:('newsItem' + first + last)">
 
                 <span tal:omit-tag=""
-                    tal:condition="item/image|item/image_base64|nothing"
+                    tal:condition="item/image|item/remote_image|nothing"
                     tal:attributes="href item/getURL">
                     <div class="span4">
                         <tal:if_blob tal:condition="item/image|nothing">
@@ -29,10 +29,9 @@
                                 tal:replace="structure python:scale and scale.tag() or None" />
                         </tal:if_blob>
 
-                        <tal:if_base64 tal:condition="item/image_base64|nothing">
-                            <img src="" alt=""
-                                tal:attributes="src string:data:${item/image_content_type};;base64,${item/image_base64}" />
-                        </tal:if_base64>
+                        <tal:if_remote_image tal:condition="item/remote_image|nothing">
+                            <img tal:attributes="src item/remote_image" />
+                        </tal:if_remote_image>
                     </div>
                 </span>
 
@@ -51,14 +50,14 @@
                         <p tal:content="item/Description|nothing"/>
                     </tal:if_local>
 
-                    <p class="material-info" tal:define="size item/file_size; kb python:size/1024;">
-                      <span tal:replace="string:${item/filename} - ${kb}kb">en_hwc2012-13_leaflet.pdf - 189kb</span>
+                    <p class="material-info">
+                      <span tal:replace="string:${item/filename} - ${item/file_size}">en_hwc2012-13_leaflet.pdf - 189kb</span>
                     </p>
                 </div>
 
                 <div class="span1" tal:define="icon_path python:view.get_icon_path(content_type=item['file_content_type'])" tal:condition="icon_path">
                   <p class="material-icon">
-                    <a tal:attributes="href string:${item/getURL}/download">
+                    <a tal:attributes="href string:${item/getURL}">
                       <img height="50" width="50px" src="++theme++osha.hwctheme/HWManageStress_files/images/mat-pdf.gif"
                            tal:attributes="src icon_path; alt item/file_content_type; title string:Download ${item/filename}" alt="" title="" />
                     </a>

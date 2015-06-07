@@ -21,6 +21,7 @@
 </metal:head>
 
 <metal:content-core fill-slot="content-core">
+    <em class="newsdate" tal:define="date context/Date; toLocalizedTime nocall:context/@@plone/toLocalizedTime" tal:content="python: toLocalizedTime(date)">2012-01-01</em>
     <metal:block define-macro="content-core"
           tal:define="templateId template/getId;
                       attachment nocall:context/attachment|nothing;

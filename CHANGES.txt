@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.0.17 (2015-06-07)
+-------------------
+
+- For remote News, Events, Press Releases and Publications, switch to
+  format of NCW #11506 [deroiste, pysailor]
+
+
 1.0.16 (2015-02-09)
 -------------------
 
