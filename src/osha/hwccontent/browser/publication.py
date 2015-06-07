@@ -18,7 +18,7 @@ class PublicationListing(ListingView):
         self.remote_publication_query_tags = getattr(
             properties.site_properties,
             'remote_publication_query_tags',
-            'stress,hw2014'
+            'stress+hw2014'
         )
 
     @ram.cache(ListingView.cache_for_minutes(10, 'publication'))
@@ -27,30 +27,37 @@ class PublicationListing(ListingView):
             Items returned in JSON format.
         """
         items = []
-        qurl = '%s/%s/jsonfeed?portal_type=File&Subject=%s&path=/%s' \
-                '&Language=%s&object_provides=slc.publications.interfaces' \
-                '.IPublicationEnhanced' % (
-                    self.osha_json_url,
-                    self.lang,
-                    self.remote_publication_query_tags,
-                    self.lang,
-                    self.lang,
-                )
+        params = {
+            "base_url": self.osha_json_url,
+            "lang": self.lang,
+            "query_tags": self.remote_publication_query_tags,
+        }
+        qurl = "{base_url}/{lang}/services/hw/publications/{query_tags}".format(**params)
         result = urlopen(qurl)
         if result.code == 200:
-            for item in load(result):
+            json = load(result)
+            for node in json.get("nodes"):
+                item = node.get("node")
+                file_path = item.get("file", "")
+                if file_path:
+                    filename = file_path.split("/")[-1]
+                else:
+                    filename = ""
+                pd = item.get('publication_date', '')
                 items.append({
                     'remote_item': True,
                     'Title': item['title'],
-                    'Date': DateTime(item['effectiveDate']).utcdatetime(),
-                    'getURL': item['_url'],
-                    'Description': item.get('description', ''),
-                    'image_base64': item.get('cover_image'),
-                    'image_content_type': item.get(
-                        '_cover_image_content_type'),
-                    'filename': item.get('_file_filename'),
-                    'file_size': item.get('_file_file_size'),
-                    'file_content_type': item.get('_file_content_type'),
+                    'Date': (
+                        pd and DateTime(pd, datefmt="international").strftime(
+                            "%Y/%m/%d %H:%M") or ""),
+                    'getURL': item.get('path'),
+                    'path': item.get('path'),
+                    'Description': item.get('body', ''),
+                    'remote_image': item.get('cover_image_thumbnail', ''),
+                    'node_id': item.get('nid'),
+                    'filename': filename,
+                    'file_size': item.get('file_size', ""),
+                    'file_content_type': item.get('file_content_type', "application/pdf"),
                 })
         return items
 
