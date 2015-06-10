@@ -83,8 +83,14 @@ class NewsItemListing(ListingView):
 
     @ram.cache(ListingView.cache_for_minutes(10, 'newsitem'))
     def get_all_news_items(self):
+        local_news = list(self.get_local_news_items())
+        for news in local_news:
+            news['Date'] = (news['Date'] and DateTime(
+                news['Date'],
+                datefmt="international").strftime("%Y/%m/%d %H:%M") or "")
+        allnews = self.get_remote_news_items() + local_news
         items = sorted(
-            self.get_remote_news_items() + list(self.get_local_news_items()),
+            allnews,
             key=lambda item: item.__getitem__('Date'),
             reverse=True
         )
