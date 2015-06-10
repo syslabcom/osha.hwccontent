@@ -45,23 +45,14 @@
             <h3><a href="news" tal:attributes="href link"
                        tal:content="news_item/Title">Good health and safety is good for business</a></h3>
                 <a href="news" tal:attributes="title news_item/Title; href link">
-                  <tal:if_local omit-tag="" condition="news_item/is_local|nothing">
-                    <tal:if_blob tal:condition="image">
-                        <img src="" alt=""
-                            tal:define="scales obj/@@images;
-                                        scale python:scales.tag('image', width=120, height=125, direction='down')"
-                            tal:replace="structure python:scale" />
-                    </tal:if_blob>
-                    <tal:no_blob tal:condition="not: image">
-                      <img src="http://hw.wolfgang.local/++theme++osha.hwctheme/HWManageStress_files/images/logo.png"
-                        tal:attributes="src string:${portal_url}/++theme++osha.hwctheme/HWManageStress_files/images/logo.png" />
-                    </tal:no_blob>
-                  </tal:if_local>
-
-                    <tal:if_base64 tal:condition="news_item/image_base64|nothing">
-                        <img src="" alt="" class="tileImage"
-                            tal:attributes="src string:data:${news_item/image_content_type};;base64,${news_item/image_base64}" />
-                    </tal:if_base64>
+                    <tal:if_image_url tal:condition="news_item/image_url|nothing">
+                      <img src="" alt=""
+                           tal:attributes="src news_item/image_url" />
+                    </tal:if_image_url>
+                    <tal:if_remote_image tal:condition="news_item/remote_image|nothing">
+                      <img src="" alt="" class="tileImage"
+                           tal:attributes="src string:${news_item/remote_image}" />
+                    </tal:if_remote_image>
                   </a>
                 <p class="data"
                   tal:content="python:plone.toLocalizedTime(news_item['Date'], long_format=False)">17/5/13</p>
