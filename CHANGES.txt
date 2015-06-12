@@ -4,8 +4,7 @@ Changelog
 1.0.19 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Work around bug in NCW #11837 [pysailor]
 
 1.0.18 (2015-06-10)
 -------------------
