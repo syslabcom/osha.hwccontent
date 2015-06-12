@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.19 (unreleased)
+1.0.19 (2015-06-12)
 -------------------
 
 - Work around bug in NCW #11837 [pysailor]
