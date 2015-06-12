@@ -59,7 +59,7 @@ class JSONEventAccessor(object):
         self.end = isotime2dt(kw['end_date'], zone)
         self.timezone = tzname
 
-        self.location = kw['City']
+        self.location = kw.get('City', '')
         self.attendees = kw['number_of_attendees']  # not used anyway
         self.contact_name = kw['agency_initial_contact']
         self.contact_email = kw['agency_contact_reply']
@@ -67,7 +67,7 @@ class JSONEventAccessor(object):
         self.event_url = kw['website_of_event']
         self.subjects = kw['category'].split(",")
         self.text = kw['body']
-        self.organiser = kw['comments_summary_after_eve']
+        self.organiser = kw['organization']
         self.attachment = False
 
     # Unified create method via Accessor
