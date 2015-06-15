@@ -123,7 +123,7 @@
           <ul class="horizontal metadata">
 
             <li tal:condition="data/subjects" itemprop="eventType" class="category">
-              <span tal:repeat="data data/subjects" tal:content="data" />
+              <span tal:replace="data/subjects" />
             </li>
 
             <li tal:condition="data/event_url">
