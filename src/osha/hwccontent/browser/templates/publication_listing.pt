@@ -51,7 +51,8 @@
                     </tal:if_local>
 
                     <p class="material-info">
-                      <span tal:replace="string:${item/filename} - ${item/file_size}">en_hwc2012-13_leaflet.pdf - 189kb</span>
+                      <tal:translate i18n:domain="osha.hwc" i18n:translate="label_download">Download</tal:translate> PDF -
+                      <span tal:replace="${item/file_size}">189kb</span>
                     </p>
                 </div>
 
