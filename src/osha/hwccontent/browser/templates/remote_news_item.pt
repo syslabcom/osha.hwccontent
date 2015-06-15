@@ -14,7 +14,7 @@
       <div tal:replace="structure provider:plone.belowcontenttitle" />
 
       <div id="contentext" class="span12">
-        <p class="documentDescription" tal:content="structure item/Description|nothing"></p>
+        <span class="documentDescription" tal:content="structure item/Description|nothing"></span>
       </div>
       <div id="content-core">
           <div class="newsImageContainer"
