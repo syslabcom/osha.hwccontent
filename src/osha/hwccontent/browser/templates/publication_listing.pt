@@ -50,8 +50,8 @@
                         <p tal:content="item/Description|nothing"/>
                     </tal:if_local>
 
-                    <p class="material-info">
-                      <tal:translate i18n:domain="osha.hwc" i18n:translate="label_download">Download</tal:translate> PDF -
+                    <p class="material-info" i18n:domain="osha.hwc">
+                      <span tal:omit-tag="" i18n:translate="label_download">Download</span> PDF -
                       <span tal:replace="item/file_size">189kb</span>
                     </p>
                 </div>
