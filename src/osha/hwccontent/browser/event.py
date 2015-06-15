@@ -65,7 +65,7 @@ class JSONEventAccessor(object):
         self.contact_email = kw['agency_contact_reply']
         self.contact_phone = ""
         self.event_url = kw['website_of_event']
-        self.subjects = kw['category'].split("\n")
+        self.subjects = kw['category'].split("\\n")
         self.text = kw['body']
         self.organiser = kw['organization']
         self.attachment = False
