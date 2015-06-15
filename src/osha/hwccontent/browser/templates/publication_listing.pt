@@ -4,7 +4,7 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone">
+      i18n:domain="osha.hwc">
 
 <body>
 <metal:block fill-slot="content-core" tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
@@ -50,9 +50,10 @@
                         <p tal:content="item/Description|nothing"/>
                     </tal:if_local>
 
-                    <p class="material-info" i18n:domain="osha.hwc">
-                      <span tal:omit-tag="" i18n:translate="label_download">Download</span> PDF -
-                      <span tal:replace="item/file_size">189kb</span>
+                    <p class="material-info">
+                      PDF -
+                      <span tal:replace="item/file_size">189kb</span> -
+                      <span tal:omit-tag="" i18n:translate="label_download">Download</span>
                     </p>
                 </div>
 
