@@ -4,8 +4,7 @@ Changelog
 1.0.20 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- JSON now contains HTML #11848 [pysailor]
 
 1.0.19 (2015-06-12)
 -------------------
