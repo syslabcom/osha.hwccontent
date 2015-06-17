@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.20 (unreleased)
+1.0.20 (2015-06-17)
 -------------------
 
 - JSON now contains HTML #11848 [pysailor]
