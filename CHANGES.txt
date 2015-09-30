@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.21 (unreleased)
+1.0.21 (2015-09-30)
 -------------------
 
 - Make sure that ampersand, being replaced by saxutils with the
