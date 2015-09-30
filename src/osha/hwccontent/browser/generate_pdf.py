@@ -133,6 +133,7 @@ def generatePDF(self,
             alignment=TA_CENTER)
 
     company = saxutils.escape(company)
+    company = company.replace('&amp;', '&')
     my_canvas.setFont('Arial', 32)
     my_canvas.drawCentredString(x, y, company)
     # P = Paragraph(company, style)
