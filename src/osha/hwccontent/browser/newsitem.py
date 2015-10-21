@@ -59,8 +59,8 @@ class NewsItemListing(ListingView):
                             "%Y/%m/%d %H:%M") or ""),
                     'getURL': item.get('path'),
                     'path': item.get('path'),
-                    'Description': item.get('summary', ''),
-                    'text': item.get('body', ''),
+                    'Description': item.get('summary', '') or item.get('body', ''),
+                    'text': item.get('summary', '') and item.get('body', '') or '',
                     'remote_image': item.get('image', ''),
                     'node_id': item.get('nid'),
                 })
