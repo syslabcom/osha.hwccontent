@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.22 (unreleased)
+1.0.22 (2015-10-21)
 -------------------
 
 - For syndicated news: If Description is empty, use its body text #12580
